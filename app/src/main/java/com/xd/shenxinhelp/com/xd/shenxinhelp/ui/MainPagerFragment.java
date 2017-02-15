@@ -80,21 +80,24 @@ public class MainPagerFragment extends Fragment {
         grid_eye.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(activity, EyeHelpActivity.class);
+                startActivity(intent);
             }
         });
         // 心理帮点击监听
         grid_heart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(activity, MentalityActivity.class);
+                startActivity(intent);
             }
         });
         // 体考帮点击监听
         grid_exam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(activity, ExamHelpActivity.class);
+                startActivity(intent);
             }
         });
     }

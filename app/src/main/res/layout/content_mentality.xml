@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.xd.shenxinhelp.com.xd.shenxinhelp.ui.BodyHelpActivity"
-    tools:showIn="@layout/activity_body_help">
+    tools:context="com.xd.shenxinhelp.com.xd.shenxinhelp.ui.MentalityActivity"
+    tools:showIn="@layout/activity_mentality">
 
     <include layout="@layout/content_body_eye_heart_exam_help" />
+
 </android.support.v4.widget.NestedScrollView>

@@ -32,6 +32,23 @@
         <activity
             android:name=".com.xd.shenxinhelp.ui.BodyHelpActivity"
             android:label="@string/title_activity_body_help"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".com.xd.shenxinhelp.ui.EyeHelpActivity"
+            android:label="@string/title_activity_eye_help"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".com.xd.shenxinhelp.ui.MentalityActivity"
+            android:label="@string/title_activity_mentality"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".com.xd.shenxinhelp.ui.ExamHelpActivity"
+            android:label="@string/title_activity_exam"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".com.xd.shenxinhelp.ui.HelpContentActivity" />
+        <activity
+            android:name=".com.xd.shenxinhelp.ui.RegisterActivity"
+            android:label="@string/title_activity_register"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
