@@ -90,6 +90,22 @@ public class OkHttp {
         getInstance()._get(url, resultCallBack);
     }
 
+
+    public static String getSynchronous(String url) throws IOException {
+        return getInstance()._getSynchronous(url);
+    }
+
+    private String _getSynchronous(String url) throws IOException {
+        Request request = new Request.Builder().url(url).build();
+        Response response = mOkhttpClient.newCall(request).execute();
+        if (response.isSuccessful()) {
+            return response.body().toString();
+        } else {
+            return "Fail";
+        }
+    }
+
+
     public interface ResultCallBack {
         void onError(String str, Exception e);
 

@@ -6,15 +6,35 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.xd.shenxinhelp.R;
 
 public class MentalityActivity extends AppCompatActivity {
+
+
+    private ImageView func1_image;
+    private ImageView func2_image;
+    private ImageView func3_image;
+    private ImageView func4_image;
+    private TextView func1_text1;
+    private TextView func1_text2;
+    private TextView func1_text3;
+    private TextView func1_text4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mentality);
+
+
+        initViews();
+    }
+
+    private void initViews() {
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -22,9 +42,27 @@ public class MentalityActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
             }
         });
+
+        func1_image = (ImageView) findViewById(R.id.content_BEHE_image1);
+        func2_image = (ImageView) findViewById(R.id.content_BEHE_image2);
+        func3_image = (ImageView) findViewById(R.id.content_BEHE_image3);
+        func4_image = (ImageView) findViewById(R.id.content_BEHE_image4);
+        Glide.with(this).load(R.mipmap.mentality_check).into(func1_image);
+        Glide.with(this).load(R.mipmap.mentality_wiki).into(func2_image);
+        Glide.with(this).load(R.mipmap.mentality_story).into(func3_image);
+        Glide.with(this).load(R.mipmap.mentality_music).into(func4_image);
+
+
+        func1_text1 = (TextView) findViewById(R.id.content_BEHE_text1);
+        func1_text2 = (TextView) findViewById(R.id.content_BEHE_text2);
+        func1_text3 = (TextView) findViewById(R.id.content_BEHE_text3);
+        func1_text4 = (TextView) findViewById(R.id.content_BEHE_text4);
+        func1_text1.setText("心理检测");
+        func1_text2.setText("减压百科");
+        func1_text3.setText("心理故事");
+        func1_text4.setText("减压音乐");
     }
 }

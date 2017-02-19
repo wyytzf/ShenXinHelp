@@ -3,7 +3,9 @@ package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -31,9 +33,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.xd.shenxinhelp.R;
+import com.xd.shenxinhelp.com.xd.shenxinhelp.netutils.OkHttp;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Request;
+import okhttp3.Response;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -92,9 +99,7 @@ public class LoginActivity extends AppCompatActivity {
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, ContainerActivity.class);
-                startActivity(intent);
-                //attemptLogin();
+                attemptLogin();
             }
         });
 
@@ -230,22 +235,14 @@ public class LoginActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
+            // TODO: register the new account here.
+            // 返回true代表登录成功
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
+                OkHttp.getSynchronous("http://baidu.com");
+            } catch (IOException e) {
+                e.printStackTrace();
                 return false;
             }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
             return true;
         }
 
@@ -254,7 +251,20 @@ public class LoginActivity extends AppCompatActivity {
             mAuthTask = null;
             showProgress(false);
 
+            // sharePreference
+
             if (success) {
+
+
+                SharedPreferences sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("account", mEmail);
+                editor.putString("password", mPassword);
+                editor.commit();
+
+
+                Intent intent = new Intent(LoginActivity.this, ContainerActivity.class);
+                startActivity(intent);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
