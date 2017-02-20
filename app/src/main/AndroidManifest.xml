@@ -50,6 +50,25 @@
             android:name=".com.xd.shenxinhelp.ui.RegisterActivity"
             android:label="@string/title_activity_register"
             android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".group.RankActivity"
+            android:label="@string/title_activity_body_help"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".group.GroupDetailActivity"
+            android:label="@string/title_activity_body_help"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".group.MyPlanActivity"
+            android:label="@string/title_activity_body_help"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".group.MakePlanActivity"
+            android:label="@string/title_activity_body_help"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+
+
     </application>
 
 </manifest>

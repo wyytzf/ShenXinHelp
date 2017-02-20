@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@color/text_color_sec"
+    android:layout_margin="5dp">
+
+    <Button
+        android:id="@+id/my_plan"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="我的小计划"
+        android:textSize="16sp"
+        android:textColor="@color/viewgroup_unpressed"
+        android:background="@null"/>
+
+    <Button
+        android:id="@+id/make_plan"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="发布小计划"
+        android:textSize="16sp"
+        android:textColor="@color/viewgroup_unpressed"
+        android:background="@null"/>
+
+    <Button
+        android:id="@+id/make_pk"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="发起PK"
+        android:textSize="16sp"
+        android:textColor="@color/viewgroup_unpressed"
+        android:background="@null"/>
+
+
+
+</LinearLayout>

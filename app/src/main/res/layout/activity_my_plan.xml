@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:paddingLeft="5dp" >
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_margin="5dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cardview_light_background"
+            android:text="返回"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/cardview_light_background"
+            android:text="我的小计划"
+            android:textSize="22dp" />
+        <Button
+            android:id="@+id/btn_more"
+            android:layout_margin="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cardview_light_background"
+            android:text="更多"
+            android:visibility="gone"
+            android:textSize="16sp"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/title">
+        <ListView
+            android:id="@+id/lv_my_plan_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="#00000000"
+            android:divider="@null"
+            android:listSelector="#00000000"
+            >
+        </ListView>
+    </RelativeLayout>
+</LinearLayout>

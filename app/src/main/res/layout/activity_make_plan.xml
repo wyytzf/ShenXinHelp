@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:paddingLeft="5dp" >
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_margin="5dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cardview_light_background"
+            android:text="返回"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/cardview_light_background"
+            android:text="制定小计划"
+            android:textSize="22dp" />
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_margin="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cardview_light_background"
+            android:text="保存"
+            android:textSize="16sp"/>
+    </RelativeLayout>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/textview_bg"
+        android:layout_margin="10dp"
+        android:gravity="left|top"
+        android:hint="请输入计划内容"
+        android:minLines="8"
+
+        />
+</LinearLayout>
