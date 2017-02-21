@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xd.shenxinhelp.R;
-import com.xd.shenxinhelp.com.xd.shenxinhelp.netutils.OkHttp;
+import com.xd.shenxinhelp.netutils.OkHttp;
 
 public class BodyHelpActivity extends AppCompatActivity {
 
@@ -28,9 +28,7 @@ public class BodyHelpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_body_help);
 
-
         initView();
-
 
         Request();
     }

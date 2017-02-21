@@ -1,4 +1,4 @@
-package com.xd.shenxinhelp.com.xd.shenxinhelp.netutils;
+package com.xd.shenxinhelp.netutils;
 
 import android.os.Handler;
 import android.os.Looper;
