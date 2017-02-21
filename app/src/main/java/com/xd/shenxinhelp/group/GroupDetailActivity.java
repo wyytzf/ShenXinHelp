@@ -74,37 +74,37 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         });
         btnMore = (Button) findViewById(R.id.btn_more);
 
-//        LayoutInflater inflater = LayoutInflater.from(this);
-//        // 引入窗口配置文件
-//        View view = inflater.inflate(R.layout.popmenu, null);
-//        Button myPlan = (Button) view.findViewById(R.id.my_plan);
-//        Button makePlan = (Button) view.findViewById(R.id.make_plan);
-//        Button makePk = (Button) view.findViewById(R.id.make_pk);
-//        myPlan.setOnClickListener(this);
-//        makePlan.setOnClickListener(this);
-//        makePk.setOnClickListener(this);
-//
-//        // 创建PopupWindow对象
-//        pop = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, false);
-//        pop.setBackgroundDrawable(new BitmapDrawable());
-//        //设置点击窗口外边窗口消失
-//        pop.setOutsideTouchable(true);
-//        // 设置此参数获得焦点，否则无法点击
-//        pop.setFocusable(true);
-//        btnMore.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                if (pop.isShowing()) {
-//                    // 隐藏窗口，如果设置了点击窗口外小时即不需要此方式隐藏
-//                    pop.dismiss();
-//                } else {
-//                    // 显示窗口
-//                    pop.showAsDropDown(v);
-//                }
-//
-//            }
-//        });
+        LayoutInflater inflater = LayoutInflater.from(this);
+        // 引入窗口配置文件
+        View view = inflater.inflate(R.layout.popmenu, null);
+        Button myPlan = (Button) view.findViewById(R.id.my_plan);
+        Button makePlan = (Button) view.findViewById(R.id.make_plan);
+        Button makePk = (Button) view.findViewById(R.id.make_pk);
+        myPlan.setOnClickListener(this);
+        makePlan.setOnClickListener(this);
+        makePk.setOnClickListener(this);
+
+        // 创建PopupWindow对象
+        pop = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, false);
+        pop.setBackgroundDrawable(new BitmapDrawable());
+        //设置点击窗口外边窗口消失
+        pop.setOutsideTouchable(true);
+        // 设置此参数获得焦点，否则无法点击
+        pop.setFocusable(true);
+        btnMore.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (pop.isShowing()) {
+                    // 隐藏窗口，如果设置了点击窗口外小时即不需要此方式隐藏
+                    pop.dismiss();
+                } else {
+                    // 显示窗口
+                    pop.showAsDropDown(v);
+                }
+
+            }
+        });
 
         llRank = (LinearLayout) headerView.findViewById(R.id.ll_rank);
         llRank.setOnClickListener(new View.OnClickListener() {
@@ -188,34 +188,34 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View view) {
-//        Intent intent;
-//        switch (view.getId()) {
-//            case R.id.my_plan:
-//
-//                if (pop.isShowing()) {
-//                    // 隐藏窗口，如果设置了点击窗口外小时即不需要此方式隐藏
-//                    pop.dismiss();
-//                }
-//                intent = new Intent(GroupDetailActivity.this, MyPlanActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.make_plan:
-//
-//                if (pop.isShowing()) {
-//                    // 隐藏窗口，如果设置了点击窗口外小时即不需要此方式隐藏
-//                    pop.dismiss();
-//                }
-//                intent = new Intent(GroupDetailActivity.this, MakePlanActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.make_pk:
-//                Toast.makeText(getApplicationContext(), "3333", Toast.LENGTH_SHORT).show();
-//                if (pop.isShowing()) {
-//                    // 隐藏窗口，如果设置了点击窗口外小时即不需要此方式隐藏
-//                    pop.dismiss();
-//                }
-//                break;
-//        }
+        Intent intent;
+        switch (view.getId()) {
+            case R.id.my_plan:
+
+                if (pop.isShowing()) {
+                    // 隐藏窗口，如果设置了点击窗口外小时即不需要此方式隐藏
+                    pop.dismiss();
+                }
+                intent = new Intent(GroupDetailActivity.this, MyPlanActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.make_plan:
+
+                if (pop.isShowing()) {
+                    // 隐藏窗口，如果设置了点击窗口外小时即不需要此方式隐藏
+                    pop.dismiss();
+                }
+                intent = new Intent(GroupDetailActivity.this, MakePlanActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.make_pk:
+                Toast.makeText(getApplicationContext(), "3333", Toast.LENGTH_SHORT).show();
+                if (pop.isShowing()) {
+                    // 隐藏窗口，如果设置了点击窗口外小时即不需要此方式隐藏
+                    pop.dismiss();
+                }
+                break;
+        }
 
     }
 
@@ -266,16 +266,13 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == android.R.id.home) {
-            finish();
+
         } else if (itemId == R.id.my_little_plan) {
-            Intent intent = new Intent(GroupDetailActivity.this, MyPlanActivity.class);
-            startActivity(intent);
+
         } else if (itemId == R.id.go_little_plan) {
-            Intent intent = new Intent(GroupDetailActivity.this, MakePlanActivity.class);
-            startActivity(intent);
+
         } else if (itemId == R.id.go_pk) {
-//            Intent intent = new Intent(GroupDetailActivity.this, );
-//            startActivity(intent);
+
         }
         return super.onOptionsItemSelected(item);
     }
