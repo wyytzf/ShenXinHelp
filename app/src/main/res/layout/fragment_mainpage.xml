@@ -201,7 +201,7 @@
                             <ImageView
                                 android:id="@+id/news1_image"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="80dp"
                                 android:layout_centerHorizontal="true"
                                 android:src="@mipmap/heart" />
 
@@ -228,7 +228,7 @@
                             <ImageView
                                 android:id="@+id/news2_image"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="80dp"
                                 android:layout_centerHorizontal="true"
                                 android:src="@mipmap/heart" />
 
@@ -258,7 +258,7 @@
                             <ImageView
                                 android:id="@+id/news3_image"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="80dp"
                                 android:layout_centerHorizontal="true"
                                 android:src="@mipmap/heart" />
 
@@ -285,7 +285,7 @@
                             <ImageView
                                 android:id="@+id/news4_image"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="80dp"
                                 android:layout_centerHorizontal="true"
                                 android:src="@mipmap/heart" />
 
