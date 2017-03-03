@@ -195,14 +195,14 @@
                             android:layout_weight="1"
                             android:background="?android:attr/selectableItemBackground"
                             android:clickable="true"
-                            android:paddingBottom="12dp"
-                            android:paddingTop="12dp">
+                            android:padding="12dp">
 
                             <ImageView
                                 android:id="@+id/news1_image"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="120dp"
                                 android:layout_centerHorizontal="true"
+                                android:scaleType="fitXY"
                                 android:src="@mipmap/heart" />
 
                             <TextView
@@ -222,14 +222,14 @@
                             android:layout_weight="1"
                             android:background="?android:attr/selectableItemBackground"
                             android:clickable="true"
-                            android:paddingBottom="12dp"
-                            android:paddingTop="12dp">
+                            android:padding="12dp">
 
                             <ImageView
                                 android:id="@+id/news2_image"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="120dp"
                                 android:layout_centerHorizontal="true"
+                                android:scaleType="fitXY"
                                 android:src="@mipmap/heart" />
 
                             <TextView
@@ -252,14 +252,14 @@
                             android:layout_weight="1"
                             android:background="?android:attr/selectableItemBackground"
                             android:clickable="true"
-                            android:paddingBottom="12dp"
-                            android:paddingTop="12dp">
+                            android:padding="12dp">
 
                             <ImageView
                                 android:id="@+id/news3_image"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="120dp"
                                 android:layout_centerHorizontal="true"
+                                android:scaleType="fitXY"
                                 android:src="@mipmap/heart" />
 
                             <TextView
@@ -279,14 +279,14 @@
                             android:layout_weight="1"
                             android:background="?android:attr/selectableItemBackground"
                             android:clickable="true"
-                            android:paddingBottom="12dp"
-                            android:paddingTop="12dp">
+                            android:padding="12dp">
 
                             <ImageView
                                 android:id="@+id/news4_image"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="120dp"
                                 android:layout_centerHorizontal="true"
+                                android:scaleType="fitXY"
                                 android:src="@mipmap/heart" />
 
                             <TextView

@@ -58,6 +58,7 @@ public class OkHttp {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 deliverResponse(resultCallBack, response.body().string());
+                response.close();
             }
         });
     }

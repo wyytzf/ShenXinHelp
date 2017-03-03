@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">身心帮</string>
+    <string name="app_name">青少年身心帮</string>
     <string name="app_name_e">ShenXinHelp</string>
     <!-- Strings related to login -->
     <string name="prompt_email">请输入用户名</string>
@@ -15,7 +15,7 @@
     <string name="forget_password">忘记密码？</string>
     <string name="register_now">立即注册</string>
     <string name="other_sign_in">第三方登录</string>
-    <string name="title_activity_container">ContainerActivity</string>
+    <string name="title_activity_container">青少年身心帮</string>
     <string name="bottom_navi_first">首页</string>
     <string name="bottom_navi_second">圈子</string>
     <string name="bottom_navi_thrid">我的</string>
