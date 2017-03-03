@@ -3,7 +3,6 @@ package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.xd.shenxinhelp.R;
-import com.xd.shenxinhelp.com.xd.shenxinhelp.netutils.OkHttp;
+import com.xd.shenxinhelp.netutils.OkHttp;
 
 import java.io.IOException;
 

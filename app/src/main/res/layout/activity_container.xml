@@ -4,6 +4,7 @@
     android:id="@+id/content_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navi_view"
         android:layout_width="match_parent"
@@ -11,10 +12,11 @@
         android:layout_alignParentBottom="true"
         app:itemBackground="@android:color/white"
         app:menu="@menu/menu_bottom_navi" />
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_above="@id/bottom_navi_view"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navi_view" />
 
 </RelativeLayout>
