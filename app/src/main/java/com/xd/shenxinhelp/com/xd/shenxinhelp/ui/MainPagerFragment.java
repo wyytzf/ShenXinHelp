@@ -88,8 +88,7 @@ public class MainPagerFragment extends Fragment {
                                 titles.add(t[i]);
                             }
                         }
-                        initViews();
-                        initListener();
+                        initTop();
                         getHomePageImages("4");
                     } catch (JSONException e) {
                         Log.e("mmm", e.getMessage());
@@ -127,12 +126,11 @@ public class MainPagerFragment extends Fragment {
                     break;
                 }
                 case -1:{
-                    String des=(String)msg.obj;
-                    Dialog alertDialog = new AlertDialog.Builder(activity).
-                            setTitle("温馨提示").
-                            setMessage(des).
-                            create();
-                    alertDialog.show();
+
+                    break;
+                }
+                case -2:{
+
                     break;
                 }
                 default:
@@ -148,7 +146,8 @@ public class MainPagerFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_mainpage, container, false);
         activity = getActivity();
         getHomePageImages("3");
-
+        initViews();
+        initListener();
         return root;
     }
 
@@ -161,13 +160,7 @@ public class MainPagerFragment extends Fragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-        // 轮播图点击监听
-        banner.setOnBannerClickListener(new OnBannerClickListener() {
-            @Override
-            public void OnBannerClick(int position) {
 
-            }
-        });
         // 身材帮点击监听
         grid_body.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -242,15 +235,8 @@ public class MainPagerFragment extends Fragment {
             }
         }.start();
     }
-    private void initViews() {
 
-//        images = new ArrayList<>();
-//        titles = new ArrayList<>();
-//        for (int i = 0; i < urls.length; i++) {
-//            images.add(urls[i]);
-//            titles.add(t[i]);
-//        }
-
+    public void initTop(){
         banner = (Banner) root.findViewById(R.id.banner);
 
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
@@ -271,6 +257,25 @@ public class MainPagerFragment extends Fragment {
         //banner设置方法全部调用完毕时最后调用
         banner.start();
         banner.startAutoPlay();
+
+        // 轮播图点击监听
+        banner.setOnBannerClickListener(new OnBannerClickListener() {
+            @Override
+            public void OnBannerClick(int position) {
+
+            }
+        });
+    }
+    private void initViews() {
+
+//        images = new ArrayList<>();
+//        titles = new ArrayList<>();
+//        for (int i = 0; i < urls.length; i++) {
+//            images.add(urls[i]);
+//            titles.add(t[i]);
+//        }
+
+
 
         swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swiperefreshlayout);
 
