@@ -55,12 +55,12 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".group.RankActivity"
-            android:label="@string/title_activity_body_help"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".group.GroupDetailActivity"
-            android:label="@string/title_activity_body_help"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".group.MyPlanActivity"
             android:label="@string/title_activity_body_help"
