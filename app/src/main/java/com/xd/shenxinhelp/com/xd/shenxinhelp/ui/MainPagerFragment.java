@@ -46,8 +46,8 @@ public class MainPagerFragment extends Fragment {
     private View grid_eye;
     private View grid_heart;
     private View grid_exam;
-    private ImageView news1_image,news2_image,news3_image,news4_image;
-    private TextView news1_text,news2_text,news3_text,news4_text;
+    private ImageView news1_image, news2_image, news3_image, news4_image;
+    private TextView news1_text, news2_text, news3_text, news4_text;
     String[] urls = {"http://img3.imgtn.bdimg.com/it/u=1340784719,3145976582&fm=21&gp=0.jpg",
             "http://mvimg2.meitudata.com/569b0bb20a8af8855.jpg",
             "http://imgsrc.baidu.com/forum/pic/item/7aec54e736d12f2e42db1cf54fc2d5628435684d.jpg"};
@@ -68,22 +68,22 @@ public class MainPagerFragment extends Fragment {
 
                     try {
                         JSONObject result = new JSONObject((String) msg.obj);
-                        JSONArray array= result.getJSONArray("images");
+                        JSONArray array = result.getJSONArray("images");
                         JSONObject object;
                         images = new ArrayList<>();
                         titles = new ArrayList<>();
-                        for (int i=0;i<array.length();i++){
-                            object= array.getJSONObject(i);
+                        for (int i = 0; i < array.length(); i++) {
+                            object = array.getJSONObject(i);
                             String title = object.getString("title");
-                            String image =object.getString("imageUrl");
+                            String image = object.getString("imageUrl");
 
                             images.add(image);
                             titles.add(title);
                         }
-                        if (images==null){
+                        if (images == null) {
                             images.clear();
                             titles.clear();
-                            for (int i=0;i<urls.length;i++){
+                            for (int i = 0; i < urls.length; i++) {
                                 images.add(urls[i]);
                                 titles.add(t[i]);
                             }
@@ -96,26 +96,26 @@ public class MainPagerFragment extends Fragment {
                 }
 
                 break;
-                case 4:{
+                case 4: {
                     try {
                         JSONObject result = new JSONObject((String) msg.obj);
-                        JSONArray array= result.getJSONArray("images");
+                        JSONArray array = result.getJSONArray("images");
                         JSONObject object;
                         images2 = new ArrayList<>();
                         titles2 = new ArrayList<>();
-                        for (int i=0;i<array.length();i++){
-                            object= array.getJSONObject(i);
+                        for (int i = 0; i < array.length(); i++) {
+                            object = array.getJSONObject(i);
                             String title = object.getString("title");
-                            String image =object.getString("imageUrl");
+                            String image = object.getString("imageUrl");
                             images2.add(image);
                             titles2.add(title);
                         }
-                        System.out.println("--------------"+images2.get(0));
-                        imageLoader= new GlideImageLoader();
-                        imageLoader.displayImage(activity,images2.get(0), news1_image);
-                        imageLoader.displayImage(activity,images2.get(1), news2_image);
-                        imageLoader.displayImage(activity,images2.get(2), news3_image);
-                        imageLoader.displayImage(activity,images2.get(3), news4_image);
+                        System.out.println("--------------" + images2.get(0));
+                        imageLoader = new GlideImageLoader();
+                        imageLoader.displayImage(activity, images2.get(0), news1_image);
+                        imageLoader.displayImage(activity, images2.get(1), news2_image);
+                        imageLoader.displayImage(activity, images2.get(2), news3_image);
+                        imageLoader.displayImage(activity, images2.get(3), news4_image);
                         news1_text.setText(titles2.get(0));
                         news2_text.setText(titles2.get(1));
                         news3_text.setText(titles2.get(2));
@@ -125,11 +125,11 @@ public class MainPagerFragment extends Fragment {
                     }
                     break;
                 }
-                case -1:{
+                case -1: {
 
                     break;
                 }
-                case -2:{
+                case -2: {
 
                     break;
                 }
@@ -140,6 +140,7 @@ public class MainPagerFragment extends Fragment {
             super.handleMessage(msg);
         }
     };
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -194,14 +195,15 @@ public class MainPagerFragment extends Fragment {
             }
         });
     }
-    public void getHomePageImages(final String typeStr){
+
+    public void getHomePageImages(final String typeStr) {
 
 
         new Thread() {
             @Override
             public void run() {
                 final Message message = new Message();
-                String urlget = ConnectUtil.GetHomePageImages+"?type="+typeStr;
+                String urlget = ConnectUtil.GetHomePageImages + "?type=" + typeStr;
 
                 HttpUtil.get(activity, urlget, new ResponseHandler() {
                     @Override
@@ -209,15 +211,14 @@ public class MainPagerFragment extends Fragment {
                         String jsonStr = new String(response);
                         try {
                             JSONObject result = new JSONObject(jsonStr);
-                            String status= result.getString("reCode");
-                            if (status.equalsIgnoreCase("success")){
-                                message.obj=jsonStr;
-                                message.what=Integer.parseInt(typeStr) ;
+                            String status = result.getString("reCode");
+                            if (status.equalsIgnoreCase("success")) {
+                                message.obj = jsonStr;
+                                message.what = Integer.parseInt(typeStr);
                                 handler.sendMessage(message);
-                            }
-                            else{
-                                message.what=-1;//失败
-                                message.obj="获取失败";
+                            } else {
+                                message.what = -1;//失败
+                                message.obj = "获取失败";
                                 handler.sendMessage(message);
                             }
                         } catch (JSONException e) {
@@ -227,8 +228,8 @@ public class MainPagerFragment extends Fragment {
 
                     @Override
                     public void onFailure(Throwable e) {
-                        message.what=-1;
-                        message.obj="获取数据失败";
+                        message.what = -1;
+                        message.obj = "获取数据失败";
                         handler.sendMessage(message);
                     }
                 });
@@ -236,7 +237,7 @@ public class MainPagerFragment extends Fragment {
         }.start();
     }
 
-    public void initTop(){
+    public void initTop() {
         banner = (Banner) root.findViewById(R.id.banner);
 
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
@@ -266,6 +267,7 @@ public class MainPagerFragment extends Fragment {
             }
         });
     }
+
     private void initViews() {
 
 //        images = new ArrayList<>();
@@ -276,7 +278,6 @@ public class MainPagerFragment extends Fragment {
 //        }
 
 
-
         swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swiperefreshlayout);
 
         grid_body = root.findViewById(R.id.grid1);
@@ -284,22 +285,24 @@ public class MainPagerFragment extends Fragment {
         grid_heart = root.findViewById(R.id.grid3);
         grid_exam = root.findViewById(R.id.grid4);
 
-        news1_image= (ImageView) root.findViewById(R.id.news1_image);
-        news2_image= (ImageView) root.findViewById(R.id.news2_image);
-        news3_image= (ImageView) root.findViewById(R.id.news3_image);
-        news4_image= (ImageView) root.findViewById(R.id.news4_image);
+        news1_image = (ImageView) root.findViewById(R.id.news1_image);
+        news2_image = (ImageView) root.findViewById(R.id.news2_image);
+        news3_image = (ImageView) root.findViewById(R.id.news3_image);
+        news4_image = (ImageView) root.findViewById(R.id.news4_image);
 
-        news1_text= (TextView) root.findViewById(R.id.news1_text);
-        news2_text= (TextView) root.findViewById(R.id.news2_text);
-        news3_text= (TextView) root.findViewById(R.id.news3_text);
-        news4_text= (TextView) root.findViewById(R.id.news4_text);
+        news1_text = (TextView) root.findViewById(R.id.news1_text);
+        news2_text = (TextView) root.findViewById(R.id.news2_text);
+        news3_text = (TextView) root.findViewById(R.id.news3_text);
+        news4_text = (TextView) root.findViewById(R.id.news4_text);
 
 
     }
 
     @Override
     public void onDestroyView() {
+        if (banner != null)
+            banner.stopAutoPlay();
         super.onDestroyView();
-        banner.stopAutoPlay();
+
     }
 }
