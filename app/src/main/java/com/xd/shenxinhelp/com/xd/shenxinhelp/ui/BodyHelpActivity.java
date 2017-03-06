@@ -182,7 +182,7 @@ public class BodyHelpActivity extends AppCompatActivity {
         ArrayList<Entry> values = new ArrayList<Entry>();
         for (int i = 0; i < count; i++) {
             float val = (float) (Math.random() * range) + 3;
-            values.add(new Entry(i + 1, val, getResources().getDrawable(R.drawable.ic_assignment_black_24dp)));
+            values.add(new Entry(i + 1, val, null));
         }
 
         LineDataSet set1;
