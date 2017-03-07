@@ -117,6 +117,7 @@ public class BodyHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BodyHelpActivity.this, HelpContentActivity.class);
+                intent.putExtra("buwei","3");
                 startActivity(intent);
             }
         });
@@ -124,6 +125,7 @@ public class BodyHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BodyHelpActivity.this, HelpContentActivity.class);
+                intent.putExtra("buwei","2");
                 startActivity(intent);
             }
         });
@@ -131,6 +133,7 @@ public class BodyHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BodyHelpActivity.this, HelpContentActivity.class);
+                intent.putExtra("buwei","1");
                 startActivity(intent);
             }
         });
@@ -138,6 +141,7 @@ public class BodyHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BodyHelpActivity.this, HelpContentActivity.class);
+                intent.putExtra("buwei","4");
                 startActivity(intent);
             }
         });
