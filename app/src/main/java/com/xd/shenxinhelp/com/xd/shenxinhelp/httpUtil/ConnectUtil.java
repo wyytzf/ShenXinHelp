@@ -44,7 +44,7 @@ public class ConnectUtil {
 	public final static String API_HOST = "http://192.168.0.21:8080/BodyMindHelper/";
 //	public final static String API_HOST = "http://192.168.0.151:8080/ASEYiYi/";
 	public static String GetHomePageImages = API_HOST + "GetHomePageImages";
-
+	public static String GetExerciseItem = API_HOST + "GetExerciseItem";
 
 	public static boolean isNetworkAvailable(Context context) {
 		ConnectivityManager connect = (ConnectivityManager) context
