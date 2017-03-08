@@ -3,6 +3,7 @@ package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,7 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.xd.shenxinhelp.R;
+import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
 import com.xd.shenxinhelp.netutils.OkHttp;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -146,13 +151,15 @@ public class RegisterActivity extends AppCompatActivity {
 
             // TODO: register the new account here.
             // 返回true代表登录成功
+            boolean result;
             try {
-                OkHttp.getSynchronous("http://baidu.com");
+                String synchronous = OkHttp.getSynchronous(AppUtil.REGISTER + "account=" + mEmail + "&" + "psw=" + mPassword);
+                result = parseRegister(synchronous);
             } catch (IOException e) {
                 e.printStackTrace();
                 return false;
             }
-            return true;
+            return result;
         }
 
         @Override
@@ -161,12 +168,12 @@ public class RegisterActivity extends AppCompatActivity {
             showProgress(false);
 
             if (success) {
-//                Intent intent = new Intent(LoginActivity.this, ContainerActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(RegisterActivity.this, FirstLoginActivity.class);
+                startActivity(intent);
                 finish();
             } else {
-//                mPasswordView.setError(getString(R.string.error_incorrect_password));
-//                mPasswordView.requestFocus();
+                mAccount.setError(getString(R.string.account_exist));
+                mAccount.requestFocus();
             }
         }
 
@@ -175,6 +182,23 @@ public class RegisterActivity extends AppCompatActivity {
             mAuthTask = null;
             showProgress(false);
         }
+    }
+
+    private boolean parseRegister(String str) {
+        boolean result = false;
+        try {
+            JSONObject jb = new JSONObject(str);
+            String reCode = jb.getString("reCode");
+            if (reCode.equals("SUCCESS")) {
+                result = true;
+            } else if (reCode.equals("FAIL")) {
+                result = false;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return result;
     }
 
     /**

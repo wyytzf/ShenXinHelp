@@ -122,5 +122,6 @@
     <string name="title_activity_register">RegisterActivity</string>
     <string name="please_confirm_password">请确认密码</string>
     <string name="different_password">两次密码不一致</string>
+    <string name="account_exist">帐号已存在</string>
 
 </resources>

@@ -20,9 +20,14 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.xd.shenxinhelp.R;
+import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
 import com.xd.shenxinhelp.netutils.OkHttp;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -53,9 +58,9 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-
-
     private TextView register;
+
+    private boolean isNetConnect = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
         register.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, FirstLoginActivity.class);
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
         });
@@ -219,35 +224,38 @@ public class LoginActivity extends AppCompatActivity {
 
             // TODO: register the new account here.
             // 返回true代表登录成功
+            boolean result = false;
             try {
-                OkHttp.getSynchronous("http://baidu.com");
+                // 解析拿到的String字符串，判断是否登录成功
+                String synchronous = OkHttp.getSynchronous(AppUtil.LOGIN + "account=" + mEmail + "&" + "psw=" + mPassword);
+                result = parseResponse(synchronous);
             } catch (IOException e) {
                 e.printStackTrace();
                 return false;
             }
-            return true;
+            isNetConnect = true;
+            return result;
         }
 
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             showProgress(false);
-
+//            Intent intent = new Intent(LoginActivity.this, ContainerActivity.class);
+//            startActivity(intent);
+//            finish();
             // sharePreference
-
+            if (!isNetConnect) {
+                Toast.makeText(LoginActivity.this, "网络链接不可用,请检查网络", Toast.LENGTH_LONG).show();
+                return;
+            }
             if (success) {
-
-
                 SharedPreferences sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("account", mEmail);
                 editor.putString("password", mPassword);
                 editor.commit();
 
-
-                Intent intent = new Intent(LoginActivity.this, ContainerActivity.class);
-                startActivity(intent);
-                finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
@@ -259,6 +267,39 @@ public class LoginActivity extends AppCompatActivity {
             mAuthTask = null;
             showProgress(false);
         }
+    }
+
+    private boolean parseResponse(String synchronous) {
+        boolean result = false;
+        String recode = "";
+        try {
+            JSONObject js = new JSONObject(synchronous);
+            recode = js.getString("reCode");
+            SharedPreferences sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("userid", js.getString("userid"));
+            editor.putString("sex", js.getString("sex"));
+            editor.putString("age", js.getString("age"));
+            editor.putString("height", js.getString("height"));
+            editor.putString("weight", js.getString("weight"));
+            editor.putString("credits", js.getString("credits"));
+            editor.putString("health_degree", js.getString("health_degree"));
+            editor.putString("level", js.getString("level"));
+            editor.putString("head_url", js.getString("head_url"));
+            editor.putString("class_id", js.getString("class_id"));
+            editor.putString("school_id", js.getString("school_id"));
+            editor.putString("className", js.getString("className"));
+            editor.putString("schoolName", js.getString("schoolName"));
+            editor.commit();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
+        if (recode.equals("SUCCESS"))
+            result = true;
+        else
+            result = false;
+        return result;
     }
 }
 

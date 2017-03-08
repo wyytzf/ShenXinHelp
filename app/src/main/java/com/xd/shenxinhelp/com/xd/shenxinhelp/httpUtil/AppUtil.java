@@ -29,13 +29,19 @@ public class AppUtil extends Application {
         return context;
     }
 
-    private static final String BASE_URL= "http://10.170.67.107:8080/";
-//    private static final String BASE_URL= "http://192.168.0.151:8080/";
-    private static final String BASE_AUTH_URL= getBaseUrl()+"authz/oauth/token";
-    private static final String BASE_RS_URL= getBaseUrl()+"rs/rs/";
+    //    private static final String BASE_URL= "http://10.170.67.107:8080/";
+    private static final String BASE_URL = "http://192.168.0.21:8080/BodyMindHelper/";
+    private static final String BASE_AUTH_URL = getBaseUrl() + "authz/oauth/token";
+    private static final String BASE_RS_URL = getBaseUrl() + "rs/rs/";
+
+
+    public static final String LOGIN = getBaseUrl() + "Login?";
+    public static final String REGISTER = getBaseUrl() + "Register?";
+    public static final String GETSCHOOL = getBaseUrl() + "GetAllSchool";
+    public static final String ADDPERSONINFO = getBaseUrl() + "AddPersonInfo?";
 
     public static String getBaseUrl() {
-       return BASE_URL;
+        return BASE_URL;
     }
 
     public static String getBaseAuthUrl() {
@@ -45,7 +51,6 @@ public class AppUtil extends Application {
     public static String getBaseRsUrl() {
         return BASE_RS_URL;
     }
-
 
 
 }
