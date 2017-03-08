@@ -100,7 +100,7 @@ public class OkHttp {
         Request request = new Request.Builder().url(url).build();
         Response response = mOkhttpClient.newCall(request).execute();
         if (response.isSuccessful()) {
-            return response.body().toString();
+            return response.body().string();
         } else {
             return "Fail";
         }
