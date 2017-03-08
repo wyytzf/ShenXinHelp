@@ -57,18 +57,22 @@
             android:layout_margin="6dp" >
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_margin="5dp" >
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
 
                 <GridView
                     android:id="@+id/grid"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
                     android:gravity="center"
                     android:numColumns="auto_fit"
                     android:stretchMode="spacingWidthUniform" >
                 </GridView>
+
+
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
