@@ -2,11 +2,15 @@ package com.xd.shenxinhelp.group;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,8 +26,16 @@ import android.widget.Toast;
 
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.adapter.GroupLittleGoalListAdapter;
+import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ConnectUtil;
+import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.HttpUtil;
+import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ResponseHandler;
+import com.xd.shenxinhelp.model.HelpContent;
 import com.xd.shenxinhelp.model.LittleGoal;
 import com.xd.shenxinhelp.model.User;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +46,7 @@ import java.util.List;
 
 public class GroupDetailActivity extends AppCompatActivity implements View.OnClickListener {
     GridView gridView;
-    List<User> cityList;
+    List<User> userList;
     private Button btnBack, btnMore;
     private View headerView;
     private ListView listView;
@@ -42,7 +54,64 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
     private LinearLayout llRank;
     List<LittleGoal> goalList;
     PopupWindow pop;
+    SharedPreferences sp ;
+    String userID;
+    String groupID;
+    String type;
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            // 要做的事情
+            //dismissRequestDialog();
+            switch (msg.what) {
+                case 1: {
 
+                    try {
+                        JSONObject result = new JSONObject((String) msg.obj);
+                        JSONArray array = result.getJSONArray("rings");
+                        JSONObject object;
+                        userList.clear();
+
+                        for (int i = 0; i < array.length(); i++) {
+                            User user=new User();
+                            object = array.getJSONObject(i);
+
+                            user.setName(object.getString("userid"));
+                            user.setSex(object.getString("sex"));
+                            user.setAge(object.getString("age"));
+                            user.setHeight(object.getString("height"));
+                            user.setCredits(object.getString("credits"));
+                            user.setHealth_degree(object.getString("health_degree"));
+                            user.setLevel(object.getString("level"));
+                            user.setPhotoUrl(object.getString("head_url"));
+                            user.setClass_id(object.getString("class_id"));
+                            user.setSchool_id(object.getString("school_id"));
+                            userList.add(user);
+
+                        }
+                        if (userList == null||userList.size()==0) {
+
+                        }
+                        adapter.notifyDataSetChanged();
+
+//                        recyclerVie
+                    } catch (JSONException e) {
+                        Log.e("mmm", e.getMessage());
+                    }
+                }
+
+                break;
+
+                case -1: {
+
+                    break;
+                }
+                default:
+                    break;
+            }
+
+            super.handleMessage(msg);
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +123,8 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         toolbar.setTitle("");
         toolbar.inflateMenu(R.menu.group_detail_toolbar_menu);
         setSupportActionBar(toolbar);
+        sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
+        userID=sp.getString("account", "");
 //        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 //            @Override
 //            public boolean onMenuItemClick(MenuItem item) {
@@ -115,6 +186,9 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
             }
         });
         listView.addHeaderView(headerView);
+
+        userList = new ArrayList<User>();
+        goalList = new ArrayList<LittleGoal>();
         setData();
         setGridView();
         initData();
@@ -125,7 +199,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
     }
 
     void initData() {
-        goalList = new ArrayList<LittleGoal>();
+
         LittleGoal data1 = new LittleGoal();
         goalList.add(data1);
         goalList.add(data1);
@@ -134,30 +208,68 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         goalList.addAll(goalList);
 
     }
+    public void getMyGroup() {
 
+
+        new Thread() {
+            @Override
+            public void run() {
+                final Message message = new Message();
+
+                String urlget = ConnectUtil.GetRingMember + "?ringID="+groupID+"&type="+type+"&top=5&userID=" + userID;
+
+                HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
+                    @Override
+                    public void onSuccess(byte[] response) {
+                        String jsonStr = new String(response);
+                        try {
+                            JSONObject result = new JSONObject(jsonStr);
+                            String status = result.getString("reCode");
+                            if (status.equalsIgnoreCase("success")) {
+                                message.obj = jsonStr;
+                                message.what = 1;
+                                handler.sendMessage(message);
+                            } else {
+                                message.what = -1;//失败
+                                message.obj = "获取失败";
+                                handler.sendMessage(message);
+                            }
+                        } catch (JSONException e) {
+                            Log.e("mmm", e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable e) {
+                        message.what = -1;
+                        message.obj = "获取数据失败";
+                        handler.sendMessage(message);
+                    }
+                });
+            }
+        }.start();
+    }
     /**
      * 设置数据
      */
     private void setData() {
-        cityList = new ArrayList<User>();
+
         User item = new User();
         item.setName("深圳");
-        cityList.add(item);
+        userList.add(item);
         item = new User();
         item.setName("上海");
-        cityList.add(item);
+        userList.add(item);
         item = new User();
         item.setName("广州");
-        cityList.add(item);
+        userList.add(item);
         item = new User();
         item.setName("北京");
-        cityList.add(item);
+        userList.add(item);
         item = new User();
         item.setName("武汉");
-        cityList.add(item);
-        item = new User();
-        item.setName("孝感");
-        cityList.add(item);
+        userList.add(item);
+
         //cityList.addAll(cityList);
     }
 
@@ -165,7 +277,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
      * 设置GirdView参数，绑定数据
      */
     private void setGridView() {
-        int size = cityList.size();
+        int size = userList.size();
         int length = 55;
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -174,7 +286,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         int itemWidth = (int) (length * density);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                gridviewWidth, LinearLayout.LayoutParams.FILL_PARENT);
+                gridviewWidth, LinearLayout.LayoutParams.MATCH_PARENT);
         gridView.setLayoutParams(params); // 设置GirdView布局参数,横向布局的关键
         gridView.setColumnWidth(itemWidth); // 设置列表项宽
         gridView.setHorizontalSpacing(5); // 设置列表项水平间距
@@ -182,7 +294,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         gridView.setNumColumns(size); // 设置列数量=列表集合数
 
         GridViewAdapter adapter = new GridViewAdapter(getApplicationContext(),
-                cityList);
+                userList);
         gridView.setAdapter(adapter);
     }
 
