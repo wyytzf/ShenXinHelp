@@ -2,6 +2,8 @@ package com.xd.shenxinhelp.group;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -18,7 +20,7 @@ import java.util.List;
  */
 
 public class MyPlanActivity extends AppCompatActivity {
-    private Button btnBack;
+
     private GroupLittleGoalListAdapter adapter;
     List<LittleGoal> goalList;
     private ListView listView;
@@ -26,19 +28,26 @@ public class MyPlanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_plan);
-        btnBack=(Button)findViewById(R.id.btn_back);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+
 
         listView= (ListView)findViewById(R.id.lv_my_plan_list);
         initData();
         adapter = new GroupLittleGoalListAdapter(getApplicationContext(),
                 goalList);
         listView.setAdapter(adapter);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
     void initData(){
         goalList = new ArrayList<LittleGoal>();

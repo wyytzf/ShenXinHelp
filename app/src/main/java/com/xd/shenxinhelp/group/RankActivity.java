@@ -6,6 +6,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -26,7 +28,7 @@ public class RankActivity  extends AppCompatActivity implements ListItemClickLis
     private List<Rank> datas = null;
     private RankAdapterMy adapter = null;
     private SwipeRefreshLayout listview;
-    private Button btnBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,14 +64,19 @@ public class RankActivity  extends AppCompatActivity implements ListItemClickLis
                 listview.setRefreshing(false);
             }
         });
-        btnBack=(Button)findViewById(R.id.btn_back);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
     void initData(){
         datas= new ArrayList<Rank>();

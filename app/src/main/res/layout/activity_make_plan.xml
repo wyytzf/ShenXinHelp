@@ -1,46 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <RelativeLayout
-        android:id="@+id/title"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        android:paddingLeft="5dp" >
-
-        <Button
-            android:id="@+id/btn_back"
-            android:layout_margin="5dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:background="@null"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/cardview_light_background"
-            android:text="返回"
-            android:textSize="16sp"/>
+        android:layout_height="?attr/actionBarSize"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
 
         <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="@color/cardview_light_background"
-            android:text="制定小计划"
-            android:textSize="22dp" />
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_margin="5dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@null"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/cardview_light_background"
-            android:text="保存"
-            android:textSize="16sp"/>
-    </RelativeLayout>
+            android:text="成员"
+            android:textColor="@android:color/white"
+            android:textSize="20dp" />
+    </android.support.v7.widget.Toolbar>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
