@@ -241,9 +241,7 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             showProgress(false);
-//            Intent intent = new Intent(LoginActivity.this, ContainerActivity.class);
-//            startActivity(intent);
-//            finish();
+//
             // sharePreference
             if (!isNetConnect) {
                 Toast.makeText(LoginActivity.this, "网络链接不可用,请检查网络", Toast.LENGTH_LONG).show();
@@ -255,7 +253,9 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("account", mEmail);
                 editor.putString("password", mPassword);
                 editor.commit();
-
+                Intent intent = new Intent(LoginActivity.this, ContainerActivity.class);
+                startActivity(intent);
+                finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
