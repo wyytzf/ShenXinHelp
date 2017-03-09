@@ -64,7 +64,10 @@
             android:name=".group.MyPlanActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".group.MakePlanActivity"
+        android:name=".group.MakePlanActivity"
+        android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".group.GroupMemberActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
