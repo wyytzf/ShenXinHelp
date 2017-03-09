@@ -32,6 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mAccount;
     private EditText mPassword;
     private EditText mConfirmPassword;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,6 +170,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             if (success) {
                 Intent intent = new Intent(RegisterActivity.this, FirstLoginActivity.class);
+                intent.putExtra("userID", userID);
                 startActivity(intent);
                 finish();
             } else {
@@ -191,6 +193,7 @@ public class RegisterActivity extends AppCompatActivity {
             String reCode = jb.getString("reCode");
             if (reCode.equals("SUCCESS")) {
                 result = true;
+                userID = jb.getString("userID");
             } else if (reCode.equals("FAIL")) {
                 result = false;
             }

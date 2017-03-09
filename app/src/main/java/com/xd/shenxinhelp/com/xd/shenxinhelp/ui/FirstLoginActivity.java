@@ -43,13 +43,20 @@ public class FirstLoginActivity extends AppCompatActivity {
 
     private int check_age = 0;
 
+
+    private String userId;
+    private String schoolId;
+    private ArrayList<Object> classes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_login);
 
+        userId = getIntent().getStringExtra("userID");
         initViews();
         requestSchool();
+        requestClass();
     }
 
 
@@ -159,6 +166,23 @@ public class FirstLoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void requestClass() {
+        classes = new ArrayList<>();
+        OkHttp.get(AppUtil.GETSCHOOL, new OkHttp.ResultCallBack() {
+            @Override
+            public void onError(String str, Exception e) {
+
+            }
+
+            @Override
+            public void onResponse(String str) {
+                parseSchool(str);
+                completeSpinner();
+            }
+        });
+    }
+
 
     private void completeSpinner() {
         SpinnerAdapter spinnerAdapter = new SpinnerAdapter();
