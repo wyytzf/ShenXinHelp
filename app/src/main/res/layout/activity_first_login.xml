@@ -90,6 +90,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp" />
 
+            <Spinner
+                android:id="@+id/register_spinner_class"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp" />
+
             <Button
                 android:id="@+id/register_button"
                 style="?android:textAppearanceSmall"
@@ -97,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="@android:color/holo_blue_dark"
-                android:text="@string/register_confirm"
+                android:text="@string/AddInformation"
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />
         </LinearLayout>

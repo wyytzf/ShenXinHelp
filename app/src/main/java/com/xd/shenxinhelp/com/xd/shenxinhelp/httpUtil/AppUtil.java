@@ -41,6 +41,9 @@ public class AppUtil extends Application {
     public static final String GETCLASS = getBaseUrl() + "GetClassBySchoolID?";
     public static final String ADDPERSONINFO = getBaseUrl() + "AddPersonInfo?";
 
+    public static final String GETEXERCISETOFOUR = getBaseUrl() + "GetExerciseToFour?";
+
+
     public static String getBaseUrl() {
         return BASE_URL;
     }

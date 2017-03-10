@@ -7,12 +7,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.Toast;
 
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.adapter.MainGroupAdapter;
@@ -49,6 +55,7 @@ public class GroupFragment extends Fragment {
     MainGroupAdapter adapter;
     List<Group> datas;
     private ExpandableListView exListView;
+
     public GroupFragment() {
         // Required empty public constructor
     }
@@ -84,19 +91,39 @@ public class GroupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        root =  inflater.inflate(R.layout.fragment_group, container, false);
+        root = inflater.inflate(R.layout.fragment_group, container, false);
         activity = getActivity();
         initData();
         initView();
 
-
         return root;
     }
-    public void initView(){
+
+
+    public void initView() {
+
+        Toolbar toolbar = (Toolbar) root.findViewById(R.id.toolbar);
+        ((AppCompatActivity) activity).setSupportActionBar(toolbar);
+        setHasOptionsMenu(true);
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.add_group) {
+                    Toast.makeText(activity, "1", Toast.LENGTH_LONG).show();
+                }
+                if (item.getItemId() == R.id.creat_group) {
+                    Toast.makeText(activity, "2", Toast.LENGTH_LONG).show();
+                }
+                return true;
+            }
+        });
+
+
         exListView = (ExpandableListView) root.findViewById(R.id.group_refresh_listview);
-        adapter = new MainGroupAdapter(activity,datas);
+        adapter = new MainGroupAdapter(activity, datas);
         exListView.setAdapter(adapter);
-        for (int i=0;i<adapter.getGroupCount();i++){
+        for (int i = 0; i < adapter.getGroupCount(); i++) {
             exListView.expandGroup(i);
         }
 
@@ -107,37 +134,38 @@ public class GroupFragment extends Fragment {
         exListView.setDivider(null);
 
     }
-    public void initData(){
-        datas= new ArrayList<Group>();
 
-        Group data1= new Group();
+    public void initData() {
+        datas = new ArrayList<Group>();
+
+        Group data1 = new Group();
         data1.setName("学校");
-        GroupDetail datadetail1= new GroupDetail();
+        GroupDetail datadetail1 = new GroupDetail();
         datadetail1.setName("学校");
         datadetail1.setDes("一个很good的学校");
-        List<GroupDetail> list1= new ArrayList<GroupDetail>();
+        List<GroupDetail> list1 = new ArrayList<GroupDetail>();
         list1.add(datadetail1);
         data1.setGroupList(list1);
         datas.add(data1);
-        Group data2= new Group();
+        Group data2 = new Group();
         data2.setName("班级");
-        GroupDetail datadetail2= new GroupDetail();
+        GroupDetail datadetail2 = new GroupDetail();
         datadetail2.setName("班级");
         datadetail2.setDes("一个很good的班级一个很good的班级一个很good的班级一个很good的班级一个很good的班级一个很good的班级一个很good的班级一个很good的班级");
-        List<GroupDetail> list2= new ArrayList<GroupDetail>();
+        List<GroupDetail> list2 = new ArrayList<GroupDetail>();
         list2.add(datadetail2);
         data2.setGroupList(list2);
         datas.add(data2);
 
-        Group data3= new Group();
+        Group data3 = new Group();
         data3.setName("圈子");
-        GroupDetail datadetail3= new GroupDetail();
+        GroupDetail datadetail3 = new GroupDetail();
         datadetail3.setName("圈子1");
         datadetail3.setDes("一个很good的圈子");
-        GroupDetail datadetail4= new GroupDetail();
+        GroupDetail datadetail4 = new GroupDetail();
         datadetail4.setName("圈子2");
         datadetail4.setDes("一个很bad的圈子");
-        List<GroupDetail> list3= new ArrayList<GroupDetail>();
+        List<GroupDetail> list3 = new ArrayList<GroupDetail>();
         list3.add(datadetail3);
         list3.add(datadetail4);
         data3.setGroupList(list3);
@@ -160,12 +188,13 @@ public class GroupFragment extends Fragment {
     public class MyOnChildClickListener implements OnChildClickListener {
 
         public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
+                                    int groupPosition, int childPosition, long id) {
             Intent intent = new Intent(activity, GroupDetailActivity.class);
             startActivity(intent);
             return true;
         }
     }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -204,4 +233,12 @@ public class GroupFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_group, menu);
+    }
+
+
 }
