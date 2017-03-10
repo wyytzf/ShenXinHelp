@@ -42,7 +42,7 @@ public class AppUtil extends Application {
     public static final String ADDPERSONINFO = getBaseUrl() + "AddPersonInfo?";
 
     public static final String GETEXERCISETOFOUR = getBaseUrl() + "GetExerciseToFour?";
-
+    public static final String GETDOEXERCISEINFO = getBaseUrl() + "GetDoExerciseInfo?";
 
     public static String getBaseUrl() {
         return BASE_URL;

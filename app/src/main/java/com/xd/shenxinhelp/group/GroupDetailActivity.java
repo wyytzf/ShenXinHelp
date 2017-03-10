@@ -57,12 +57,12 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
     private LinearLayout llRank;
     private List<LittleGoal> goalList;
     private PopupWindow pop;
-    private SharedPreferences sp ;
+    private SharedPreferences sp;
     private String userID;
     private String groupID;
     private String type;
     private GridViewAdapter gridAdapter;
-    private ImageView image1,image2,image3,image4,image5;
+    private ImageView image1, image2, image3, image4, image5;
     private LinearLayout addView;
     private ImageLoaderInterface imageLoader;
     private Handler handler = new Handler() {
@@ -79,7 +79,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                         userList.clear();
 
                         for (int i = 0; i < array.length(); i++) {
-                            User user=new User();
+                            User user = new User();
                             object = array.getJSONObject(i);
 
                             user.setName(object.getString("userid"));
@@ -97,22 +97,20 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                         }
                         imageLoader = new GlideImageLoader();
 
-                        if (userList == null||userList.size()==0) {
+                        if (userList == null || userList.size() == 0) {
                             image1.setVisibility(View.INVISIBLE);
                             image2.setVisibility(View.INVISIBLE);
                             image3.setVisibility(View.INVISIBLE);
                             image4.setVisibility(View.INVISIBLE);
                             image5.setVisibility(View.INVISIBLE);
-                        }
-                        else if(userList.size()==1){
+                        } else if (userList.size() == 1) {
                             image1.setVisibility(View.VISIBLE);
                             imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
                             image2.setVisibility(View.INVISIBLE);
                             image3.setVisibility(View.INVISIBLE);
                             image4.setVisibility(View.INVISIBLE);
                             image5.setVisibility(View.INVISIBLE);
-                        }
-                        else if(userList.size()==2){
+                        } else if (userList.size() == 2) {
                             image1.setVisibility(View.VISIBLE);
                             imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
                             image2.setVisibility(View.VISIBLE);
@@ -120,8 +118,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                             image3.setVisibility(View.INVISIBLE);
                             image4.setVisibility(View.INVISIBLE);
                             image5.setVisibility(View.INVISIBLE);
-                        }
-                        else if(userList.size()==3){
+                        } else if (userList.size() == 3) {
                             image1.setVisibility(View.VISIBLE);
                             imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
                             image2.setVisibility(View.VISIBLE);
@@ -130,8 +127,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                             imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image3);
                             image4.setVisibility(View.INVISIBLE);
                             image5.setVisibility(View.INVISIBLE);
-                        }
-                        else if(userList.size()==4){
+                        } else if (userList.size() == 4) {
                             image1.setVisibility(View.VISIBLE);
                             imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
                             image2.setVisibility(View.VISIBLE);
@@ -141,8 +137,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                             image4.setVisibility(View.VISIBLE);
                             imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image4);
                             image5.setVisibility(View.INVISIBLE);
-                        }
-                        else if(userList.size()==5){
+                        } else if (userList.size() == 5) {
                             image1.setVisibility(View.VISIBLE);
                             imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
                             image2.setVisibility(View.VISIBLE);
@@ -154,7 +149,6 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                             image5.setVisibility(View.VISIBLE);
                             imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image5);
                         }
-
 
 
 //                        recyclerVie
@@ -176,6 +170,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
             super.handleMessage(msg);
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -188,7 +183,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         toolbar.inflateMenu(R.menu.group_detail_toolbar_menu);
         setSupportActionBar(toolbar);
         sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
-        userID=sp.getString("account", "");
+        userID = sp.getString("account", "");
 //        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 //            @Override
 //            public boolean onMenuItemClick(MenuItem item) {
@@ -208,12 +203,12 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
 //            }
 //        });
 //        btnMore = (Button) findViewById(R.id.btn_more);
-        image1=(ImageView)headerView.findViewById(R.id.ItemImage1);
-        image2=(ImageView)headerView.findViewById(R.id.ItemImage2);
-        image3=(ImageView)headerView.findViewById(R.id.ItemImage3);
-        image4=(ImageView)headerView.findViewById(R.id.ItemImage4);
-        image5=(ImageView)headerView.findViewById(R.id.ItemImage5);
-        addView=(LinearLayout)headerView.findViewById(R.id.addImage);
+        image1 = (ImageView) headerView.findViewById(R.id.ItemImage1);
+        image2 = (ImageView) headerView.findViewById(R.id.ItemImage2);
+        image3 = (ImageView) headerView.findViewById(R.id.ItemImage3);
+        image4 = (ImageView) headerView.findViewById(R.id.ItemImage4);
+        image5 = (ImageView) headerView.findViewById(R.id.ItemImage5);
+        addView = (LinearLayout) headerView.findViewById(R.id.addImage);
         addView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -285,6 +280,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         goalList.addAll(goalList);
 
     }
+
     public void getGroupMember() {
 
 
@@ -326,6 +322,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
             }
         }.start();
     }
+
     /**
      * 设置数据
      */
