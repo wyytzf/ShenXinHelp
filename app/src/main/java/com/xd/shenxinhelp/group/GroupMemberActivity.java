@@ -1,5 +1,6 @@
 package com.xd.shenxinhelp.group;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,18 +15,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.xd.shenxinhelp.GlideImageLoader;
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.View.MyGridDivider;
-import com.xd.shenxinhelp.adapter.RankAdapterMy;
+import com.xd.shenxinhelp.adapter.GroupMemberAdapter;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ConnectUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.HttpUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ResponseHandler;
 import com.xd.shenxinhelp.listener.ListItemClickListener;
-import com.xd.shenxinhelp.model.Rank;
 import com.xd.shenxinhelp.model.User;
-import com.youth.banner.loader.ImageLoaderInterface;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,14 +33,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by MMY on 2017/2/14.
+ * Created by MMY on 2017/3/8.
  */
 
-public class RankActivity  extends AppCompatActivity implements ListItemClickListener {
+public class GroupMemberActivity extends AppCompatActivity implements ListItemClickListener {
     private List<User> datas = null;
-    private RankAdapterMy adapter = null;
+    private GroupMemberAdapter adapter = null;
     private SwipeRefreshLayout listview;
-    //private ImageLoaderInterface imageLoader;
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             // 要做的事情
@@ -73,12 +70,11 @@ public class RankActivity  extends AppCompatActivity implements ListItemClickLis
                             datas.add(user);
 
                         }
+                        if (datas==null||datas.size()==0){
+                            testData();
+                        }
                         //imageLoader = new GlideImageLoader();
                         adapter.notifyDataSetChanged();
-
-
-
-//                        recyclerVie
                     } catch (JSONException e) {
                         Log.e("mmm", e.getMessage());
                     }
@@ -100,30 +96,34 @@ public class RankActivity  extends AppCompatActivity implements ListItemClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rank);
+        setContentView(R.layout.activity_group_member);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
         datas= new ArrayList<User>();
         getGroupMember();
-        //initData();
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_group_member);
         //设置可以滑出底栏
         recyclerView.setClipToPadding(false);
         recyclerView.setPadding(0,0,0, (int) getResources().getDimension(R.dimen.BottomBarHeight));
-        listview=(SwipeRefreshLayout)findViewById(R.id.listview_get_resource);
-        adapter = new RankAdapterMy(datas,RankActivity.this, this);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
+        listview=(SwipeRefreshLayout)findViewById(R.id.listview_group_member);
+        adapter = new GroupMemberAdapter(datas,GroupMemberActivity.this, GroupMemberActivity.this);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 5);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
                 if (adapter.getItemViewType(position) == 0) {
                     return 1;
                 } else {
-                    return 1;
+                    return 5;
                 }
             }
         });
         listview.setColorSchemeResources(R.color.red_light, R.color.green_light, R.color.blue_light, R.color.orange_light);
         recyclerView.addItemDecoration(new MyGridDivider(1,
-                ContextCompat.getColor(this, R.color.colorDivider)));
+                ContextCompat.getColor(this,R.color.colorDivider)));
         recyclerView.setLayoutManager(layoutManager);
 
         recyclerView.setAdapter(adapter);
@@ -134,30 +134,6 @@ public class RankActivity  extends AppCompatActivity implements ListItemClickLis
                 listview.setRefreshing(false);
             }
         });
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == android.R.id.home) {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-    void initData(){
-        datas= new ArrayList<User>();
-        User rank1= new User();
-        rank1.setName("夏利i");
-        rank1.setHealth_degree("120");
-        User rank2= new User();
-        rank2.setName("夏利i");
-        rank2.setHealth_degree("120");
-        datas.add(rank1);
-        datas.add(rank2);
     }
     public void getGroupMember() {
 
@@ -168,7 +144,7 @@ public class RankActivity  extends AppCompatActivity implements ListItemClickLis
                 final Message message = new Message();
 
                 //String urlget = ConnectUtil.GetRingMember + "?ringID="+groupID+"&type="+type+"&top=5&userID=" + userID;
-                String urlget = AppUtil.GetRingMember + "?ringID=7&type=2&top=15";
+                String urlget =  AppUtil.GetRingMember  + "?ringID=7&type=2&top=15";
                 HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
                     @Override
                     public void onSuccess(byte[] response) {
@@ -201,10 +177,36 @@ public class RankActivity  extends AppCompatActivity implements ListItemClickLis
         }.start();
     }
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
     public void onListItemClick(View v, int position) {
-
+        //openApi = datas.get(position);
 
 
     }
+    private void testData() {
 
+        User item = new User();
+        item.setName("深圳");
+        datas.add(item);
+        item = new User();
+        item.setName("上海");
+        datas.add(item);
+        item = new User();
+        item.setName("广州");
+        datas.add(item);
+        item = new User();
+        item.setName("北京");
+        datas.add(item);
+        item = new User();
+        item.setName("武汉");
+        datas.add(item);
+
+        //cityList.addAll(cityList);
+    }
 }

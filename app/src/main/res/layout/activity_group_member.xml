@@ -1,10 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rr1"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -17,23 +15,24 @@
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay">
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="圈子"
+                android:text="成员"
                 android:textColor="@android:color/white"
                 android:textSize="20dp" />
         </android.support.v7.widget.Toolbar>
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/listview_group_member"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view_group_member"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.v4.widget.SwipeRefreshLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <ExpandableListView
-        android:id="@+id/group_refresh_listview"
-
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@color/bg_color"
-        android:cacheColorHint="#00000000" />
 
 </LinearLayout>

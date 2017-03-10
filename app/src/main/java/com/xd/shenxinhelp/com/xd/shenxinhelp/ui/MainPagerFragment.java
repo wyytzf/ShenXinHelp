@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.xd.shenxinhelp.GlideImageLoader;
 import com.xd.shenxinhelp.R;
+import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ConnectUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.HttpUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ResponseHandler;
@@ -149,6 +150,7 @@ public class MainPagerFragment extends Fragment {
         getHomePageImages("3");
         initViews();
         initListener();
+
         return root;
     }
 
@@ -203,7 +205,7 @@ public class MainPagerFragment extends Fragment {
             @Override
             public void run() {
                 final Message message = new Message();
-                String urlget = ConnectUtil.GetHomePageImages + "?type=" + typeStr;
+                String urlget =  AppUtil.GetHomePageImages + "?type=" + typeStr;
 
                 HttpUtil.get(activity, urlget, new ResponseHandler() {
                     @Override

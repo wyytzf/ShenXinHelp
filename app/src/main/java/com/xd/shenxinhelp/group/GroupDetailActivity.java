@@ -19,19 +19,23 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import com.xd.shenxinhelp.GlideImageLoader;
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.adapter.GroupLittleGoalListAdapter;
+import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ConnectUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.HttpUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ResponseHandler;
 import com.xd.shenxinhelp.model.HelpContent;
 import com.xd.shenxinhelp.model.LittleGoal;
 import com.xd.shenxinhelp.model.User;
+import com.youth.banner.loader.ImageLoaderInterface;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,19 +49,23 @@ import java.util.List;
  */
 
 public class GroupDetailActivity extends AppCompatActivity implements View.OnClickListener {
-    GridView gridView;
-    List<User> userList;
+    private GridView gridView;
+    private List<User> userList;
     private Button btnBack, btnMore;
     private View headerView;
     private ListView listView;
     private GroupLittleGoalListAdapter adapter;
     private LinearLayout llRank;
-    List<LittleGoal> goalList;
-    PopupWindow pop;
-    SharedPreferences sp ;
-    String userID;
-    String groupID;
-    String type;
+    private List<LittleGoal> goalList;
+    private PopupWindow pop;
+    private SharedPreferences sp;
+    private String userID;
+    private String groupID;
+    private String type;
+    private GridViewAdapter gridAdapter;
+    private ImageView image1, image2, image3, image4, image5;
+    private LinearLayout addView;
+    private ImageLoaderInterface imageLoader;
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             // 要做的事情
@@ -67,12 +75,12 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
 
                     try {
                         JSONObject result = new JSONObject((String) msg.obj);
-                        JSONArray array = result.getJSONArray("rings");
+                        JSONArray array = result.getJSONArray("students");
                         JSONObject object;
                         userList.clear();
 
                         for (int i = 0; i < array.length(); i++) {
-                            User user=new User();
+                            User user = new User();
                             object = array.getJSONObject(i);
 
                             user.setName(object.getString("userid"));
@@ -88,10 +96,61 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                             userList.add(user);
 
                         }
-                        if (userList == null||userList.size()==0) {
+                        imageLoader = new GlideImageLoader();
 
+                        if (userList == null || userList.size() == 0) {
+                            image1.setVisibility(View.INVISIBLE);
+                            image2.setVisibility(View.INVISIBLE);
+                            image3.setVisibility(View.INVISIBLE);
+                            image4.setVisibility(View.INVISIBLE);
+                            image5.setVisibility(View.INVISIBLE);
+                        } else if (userList.size() == 1) {
+                            image1.setVisibility(View.VISIBLE);
+                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
+                            image2.setVisibility(View.INVISIBLE);
+                            image3.setVisibility(View.INVISIBLE);
+                            image4.setVisibility(View.INVISIBLE);
+                            image5.setVisibility(View.INVISIBLE);
+                        } else if (userList.size() == 2) {
+                            image1.setVisibility(View.VISIBLE);
+                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
+                            image2.setVisibility(View.VISIBLE);
+                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image2);
+                            image3.setVisibility(View.INVISIBLE);
+                            image4.setVisibility(View.INVISIBLE);
+                            image5.setVisibility(View.INVISIBLE);
+                        } else if (userList.size() == 3) {
+                            image1.setVisibility(View.VISIBLE);
+                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
+                            image2.setVisibility(View.VISIBLE);
+                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image2);
+                            image3.setVisibility(View.VISIBLE);
+                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image3);
+                            image4.setVisibility(View.INVISIBLE);
+                            image5.setVisibility(View.INVISIBLE);
+                        } else if (userList.size() == 4) {
+                            image1.setVisibility(View.VISIBLE);
+                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
+                            image2.setVisibility(View.VISIBLE);
+                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image2);
+                            image3.setVisibility(View.VISIBLE);
+                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image3);
+                            image4.setVisibility(View.VISIBLE);
+                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image4);
+                            image5.setVisibility(View.INVISIBLE);
+                        } else if (userList.size() == 5) {
+                            image1.setVisibility(View.VISIBLE);
+                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
+                            image2.setVisibility(View.VISIBLE);
+                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image2);
+                            image3.setVisibility(View.VISIBLE);
+                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image3);
+                            image4.setVisibility(View.VISIBLE);
+                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image4);
+                            image5.setVisibility(View.VISIBLE);
+                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image5);
                         }
-                        adapter.notifyDataSetChanged();
+
 
 //                        recyclerVie
                     } catch (JSONException e) {
@@ -112,6 +171,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
             super.handleMessage(msg);
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,7 +184,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         toolbar.inflateMenu(R.menu.group_detail_toolbar_menu);
         setSupportActionBar(toolbar);
         sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
-        userID=sp.getString("account", "");
+        userID = sp.getString("account", "");
 //        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 //            @Override
 //            public boolean onMenuItemClick(MenuItem item) {
@@ -136,15 +196,27 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         listView = (ListView) findViewById(R.id.lv_comment_list);
         headerView = (View) LayoutInflater.from(GroupDetailActivity.this).inflate(R.layout.activity_group_detail_header, null);
         gridView = (GridView) headerView.findViewById(R.id.grid);
-        btnBack = (Button) findViewById(R.id.btn_back);
-        btnBack.setOnClickListener(new View.OnClickListener() {
+//        btnBack = (Button) findViewById(R.id.btn_back);
+//        btnBack.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                finish();
+//            }
+//        });
+//        btnMore = (Button) findViewById(R.id.btn_more);
+        image1 = (ImageView) headerView.findViewById(R.id.ItemImage1);
+        image2 = (ImageView) headerView.findViewById(R.id.ItemImage2);
+        image3 = (ImageView) headerView.findViewById(R.id.ItemImage3);
+        image4 = (ImageView) headerView.findViewById(R.id.ItemImage4);
+        image5 = (ImageView) headerView.findViewById(R.id.ItemImage5);
+        addView = (LinearLayout) headerView.findViewById(R.id.addImage);
+        addView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Intent intent = new Intent(GroupDetailActivity.this, GroupMemberActivity.class);
+                startActivity(intent);
             }
         });
-        btnMore = (Button) findViewById(R.id.btn_more);
-
 //        LayoutInflater inflater = LayoutInflater.from(this);
 //        // 引入窗口配置文件
 //        View view = inflater.inflate(R.layout.popmenu, null);
@@ -189,8 +261,9 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
 
         userList = new ArrayList<User>();
         goalList = new ArrayList<LittleGoal>();
-        setData();
-        setGridView();
+        //setData();
+        getGroupMember();
+        //setGridView();
         initData();
         adapter = new GroupLittleGoalListAdapter(getApplicationContext(),
                 goalList);
@@ -208,7 +281,8 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         goalList.addAll(goalList);
 
     }
-    public void getMyGroup() {
+
+    public void getGroupMember() {
 
 
         new Thread() {
@@ -216,8 +290,8 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
             public void run() {
                 final Message message = new Message();
 
-                String urlget = ConnectUtil.GetRingMember + "?ringID="+groupID+"&type="+type+"&top=5&userID=" + userID;
-
+                //String urlget = ConnectUtil.GetRingMember + "?ringID="+groupID+"&type="+type+"&top=5&userID=" + userID;
+                String urlget =  AppUtil.GetRingMember  + "?ringID=7&type=2&top=5";
                 HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
                     @Override
                     public void onSuccess(byte[] response) {
@@ -249,6 +323,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
             }
         }.start();
     }
+
     /**
      * 设置数据
      */
@@ -292,8 +367,8 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         gridView.setHorizontalSpacing(5); // 设置列表项水平间距
         gridView.setStretchMode(GridView.NO_STRETCH);
         gridView.setNumColumns(size); // 设置列数量=列表集合数
-
-        GridViewAdapter adapter = new GridViewAdapter(getApplicationContext(),
+//        gridView.add
+        gridAdapter = new GridViewAdapter(getApplicationContext(),
                 userList);
         gridView.setAdapter(adapter);
     }

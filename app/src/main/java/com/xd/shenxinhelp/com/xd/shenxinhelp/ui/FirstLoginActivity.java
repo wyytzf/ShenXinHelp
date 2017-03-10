@@ -1,12 +1,13 @@
 package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,9 +15,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
+import com.xd.shenxinhelp.model.Class;
 import com.xd.shenxinhelp.model.School;
 import com.xd.shenxinhelp.netutils.OkHttp;
 
@@ -38,6 +41,7 @@ public class FirstLoginActivity extends AppCompatActivity {
     private EditText mWeight;
     private Button mRegisterButton;
     private Spinner mSchool;
+    private Spinner mClass;
     private List<School> schools;
 
 
@@ -46,17 +50,16 @@ public class FirstLoginActivity extends AppCompatActivity {
 
     private String userId;
     private String schoolId;
-    private ArrayList<Object> classes;
+    private String classId;
+    private ArrayList<Class> classes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_login);
-
         userId = getIntent().getStringExtra("userID");
         initViews();
         requestSchool();
-        requestClass();
     }
 
 
@@ -69,6 +72,7 @@ public class FirstLoginActivity extends AppCompatActivity {
         mHeight = (EditText) findViewById(R.id.register_height);
         mWeight = (EditText) findViewById(R.id.register_weight);
         mSchool = (Spinner) findViewById(R.id.register_spinner);
+        mClass = (Spinner) findViewById(R.id.register_spinner_class);
         mRegisterButton = (Button) findViewById(R.id.register_button);
         mMale.setChecked(true);
 
@@ -89,6 +93,8 @@ public class FirstLoginActivity extends AppCompatActivity {
                 attemptRegister();
             }
         });
+
+
     }
 
 
@@ -133,21 +139,42 @@ public class FirstLoginActivity extends AppCompatActivity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            OkHttp.get(AppUtil.ADDPERSONINFO, new OkHttp.ResultCallBack() {
+            schoolId = schools.get(mSchool.getSelectedItemPosition()).getId();
+            classId = classes.get(mClass.getSelectedItemPosition()).getClassId();
+            OkHttp.get(AppUtil.ADDPERSONINFO + "userID=" + userId + "&sex=" + check_age + "&age=" + age +
+                    "&height=" + height + "&weight=" + weight + "&schoolID=" + schoolId + "&classID=" + classId, new OkHttp.ResultCallBack() {
                 @Override
                 public void onError(String str, Exception e) {
-
+                    Toast.makeText(FirstLoginActivity.this, "网络出错", Toast.LENGTH_LONG).show();
                 }
 
                 @Override
                 public void onResponse(String str) {
-
+                    boolean result = parseAddInfo(str);
+                    if (result) {
+                        Intent intent = new Intent(FirstLoginActivity.this, ContainerActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(FirstLoginActivity.this, "网络出错", Toast.LENGTH_LONG).show();
+                    }
                 }
             });
 
         }
 
 
+    }
+
+    private boolean parseAddInfo(String str) {
+        try {
+            JSONObject jb = new JSONObject(str);
+            String reCode = jb.getString("reCode");
+            if (reCode.equals("SUCCESS"))
+                return true;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 
@@ -162,14 +189,15 @@ public class FirstLoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(String str) {
                 parseSchool(str);
-                completeSpinner();
+                completeSchoolSpinner();
+                requestClass();
             }
         });
     }
 
     private void requestClass() {
         classes = new ArrayList<>();
-        OkHttp.get(AppUtil.GETSCHOOL, new OkHttp.ResultCallBack() {
+        OkHttp.get(AppUtil.GETCLASS + "schoolID=" + schoolId, new OkHttp.ResultCallBack() {
             @Override
             public void onError(String str, Exception e) {
 
@@ -177,15 +205,36 @@ public class FirstLoginActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(String str) {
-                parseSchool(str);
-                completeSpinner();
+                parseClasses(str);
+                completeClassSpinner();
             }
         });
     }
 
+    private void completeClassSpinner() {
+        ClassSpinnerAdapter classSpinnerAdapter = new ClassSpinnerAdapter();
+        mClass.setAdapter(classSpinnerAdapter);
+    }
 
-    private void completeSpinner() {
-        SpinnerAdapter spinnerAdapter = new SpinnerAdapter();
+    private void parseClasses(String str) {
+        try {
+            JSONObject js = new JSONObject(str);
+            JSONArray ja = js.getJSONArray("classes");
+            for (int i = 0; i < ja.length(); i++) {
+                JSONObject jb = ja.getJSONObject(i);
+                Class sc = new Class();
+                sc.setClassId(jb.getString("classid"));
+                sc.setClassName(jb.getString("className"));
+                classes.add(sc);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void completeSchoolSpinner() {
+        SchoolSpinnerAdapter spinnerAdapter = new SchoolSpinnerAdapter();
         mSchool.setAdapter(spinnerAdapter);
 
     }
@@ -207,7 +256,7 @@ public class FirstLoginActivity extends AppCompatActivity {
         }
     }
 
-    public class SpinnerAdapter extends BaseAdapter {
+    public class SchoolSpinnerAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
@@ -234,5 +283,47 @@ public class FirstLoginActivity extends AppCompatActivity {
             }
             return inflate;
         }
+    }
+
+    public class ClassSpinnerAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return classes.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return classes.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = LayoutInflater.from(FirstLoginActivity.this);
+            View inflate = inflater.inflate(android.R.layout.simple_spinner_dropdown_item, null);
+            if (inflate != null) {
+                TextView textView = (TextView) inflate.findViewById(android.R.id.text1);
+                textView.setText(classes.get(position).getClassName());
+            }
+            return inflate;
+        }
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void makeDialog() {
+
     }
 }
