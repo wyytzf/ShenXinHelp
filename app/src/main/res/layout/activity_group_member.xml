@@ -15,7 +15,6 @@
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay">
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -23,6 +22,17 @@
                 android:textColor="@android:color/white"
                 android:textSize="20dp" />
         </android.support.v7.widget.Toolbar>
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/listview_group_member"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view_group_member"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.v4.widget.SwipeRefreshLayout>
     </android.support.design.widget.AppBarLayout>
+
+
 </LinearLayout>

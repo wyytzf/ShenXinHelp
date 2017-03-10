@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.xd.shenxinhelp.GlideImageLoader;
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.adapter.GroupLittleGoalListAdapter;
+import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ConnectUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.HttpUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ResponseHandler;
@@ -294,7 +295,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                 final Message message = new Message();
 
                 //String urlget = ConnectUtil.GetRingMember + "?ringID="+groupID+"&type="+type+"&top=5&userID=" + userID;
-                String urlget = ConnectUtil.GetRingMember + "?ringID=7&type=2&top=5";
+                String urlget =  AppUtil.GetRingMember  + "?ringID=7&type=2&top=5";
                 HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
                     @Override
                     public void onSuccess(byte[] response) {

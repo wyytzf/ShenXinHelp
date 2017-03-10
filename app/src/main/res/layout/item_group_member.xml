@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/group_member_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:background="?attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:paddingTop="8dp">
+        <ImageView
+            android:id="@+id/ItemImage"
+            android:layout_width="50dp"
+            android:layout_height="50dip"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/timg">
+        </ImageView>
+        <TextView
+            android:id="@+id/title"
+            style="@style/text_16_sec"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:maxLines="1"
+            android:gravity="center"
+            tools:text="板块的题目的标题" />
+        <TextView
+            android:id="@+id/des"
+            style="@style/text_14_sec"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:maxLines="1"
+            android:gravity="center"
+            tools:text="板块的题目的标题" />
+    </LinearLayout>
+</FrameLayout>
