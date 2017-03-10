@@ -159,12 +159,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isAccountValid(String account) {
         //TODO: Replace this with your own logic
-        return account.length() > 6;
+        return account.length() > 3;
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 6;
+        return password.length() > 3;
     }
 
     /**
@@ -243,19 +243,22 @@ public class LoginActivity extends AppCompatActivity {
             showProgress(false);
 //
             // sharePreference
-            if (!isNetConnect) {
-                Toast.makeText(LoginActivity.this, "网络链接不可用,请检查网络", Toast.LENGTH_LONG).show();
-                return;
-            }
+//            if (!isNetConnect) {
+//                Toast.makeText(LoginActivity.this, "网络链接不可用,请检查网络", Toast.LENGTH_LONG).show();
+//                return;
+//            }
+            Intent intent = new Intent(LoginActivity.this, ContainerActivity.class);
+            startActivity(intent);
+            finish();
             if (success) {
                 SharedPreferences sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("account", mEmail);
                 editor.putString("password", mPassword);
                 editor.commit();
-                Intent intent = new Intent(LoginActivity.this, ContainerActivity.class);
-                startActivity(intent);
-                finish();
+//                Intent intent = new Intent(LoginActivity.this, ContainerActivity.class);
+//                startActivity(intent);
+//                finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

@@ -149,6 +149,7 @@ public class MainPagerFragment extends Fragment {
         getHomePageImages("3");
         initViews();
         initListener();
+
         return root;
     }
 

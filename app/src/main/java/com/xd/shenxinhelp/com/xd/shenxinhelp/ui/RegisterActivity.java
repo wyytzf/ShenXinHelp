@@ -120,12 +120,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean isAccountValid(String account) {
         //TODO: Replace this with your own logic
-        return account.length() > 6;
+        return account.length() > 3;
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 6;
+        return password.length() > 3;
     }
 
     private boolean isConfimePasswordValid(String password, String confirmPassword) {
