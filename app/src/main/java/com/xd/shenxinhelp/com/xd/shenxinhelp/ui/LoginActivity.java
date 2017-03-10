@@ -159,12 +159,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isAccountValid(String account) {
         //TODO: Replace this with your own logic
-        return account.length() > 3;
+        return account.length() > 1;
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 3;
+        return password.length() > 1;
     }
 
     /**

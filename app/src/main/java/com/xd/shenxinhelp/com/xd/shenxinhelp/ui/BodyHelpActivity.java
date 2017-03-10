@@ -1,6 +1,8 @@
 package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.drawable.Drawable;
@@ -61,12 +63,16 @@ public class BodyHelpActivity extends AppCompatActivity {
     private static final int TYPE = 0;
 
     private ArrayList<BodyItem> news_list;
-
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_body_help);
+
+        SharedPreferences sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
+        userID = sp.getString("userid", "1");
+
 
         initView();
 
@@ -255,7 +261,7 @@ public class BodyHelpActivity extends AppCompatActivity {
 
 
     private void RequestLineChart() {
-        OkHttp.get("http://baidu.com", new OkHttp.ResultCallBack() {
+        OkHttp.get(AppUtil.GETDOEXERCISEINFO + "userID=" + userID, new OkHttp.ResultCallBack() {
             @Override
             public void onError(String str, Exception e) {
                 // 已经是主线程了，直接操作
@@ -265,9 +271,19 @@ public class BodyHelpActivity extends AppCompatActivity {
             @Override
             public void onResponse(String str) {
                 // 已经是主线程了，直接操作
-                parseRecommendar(str);
+                parseLineChart(str);
             }
         });
+    }
+
+    private void parseLineChart(String str) {
+
+        try {
+            JSONObject js = new JSONObject(str);
+            JSONArray ja = js.getJSONArray("infos");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void parseRecommendar(String str) {
