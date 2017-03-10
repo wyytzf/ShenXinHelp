@@ -47,7 +47,7 @@ public class ConnectUtil {
 	public static String GetExerciseItem = API_HOST + "GetExerciseItem";
 	public static String GetAllMyRing= API_HOST +"GetAllMyRing";
 	public static String GetRingMember= API_HOST +"GetRingMember";
-	public static String Feedback = API_HOST+ "Feedback";
+
 
 	public static boolean isNetworkAvailable(Context context) {
 		ConnectivityManager connect = (ConnectivityManager) context
