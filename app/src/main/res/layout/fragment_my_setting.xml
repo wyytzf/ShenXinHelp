@@ -96,7 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/text_16_sec"
-                    android:text="222"/>
+                    android:text="等级"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -115,7 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/text_16_sec"
-                    android:text="222"/>
+                    android:text="健康度"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -134,7 +134,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/text_16_sec"
-                    android:text="222"/>
+                    android:text="积分"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -144,7 +144,8 @@
         android:orientation="vertical"
         android:layout_marginTop="20dp"
         android:background="@color/viewgroup_unpressed">
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/mysetting_feefback"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -153,14 +154,23 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="111"
-                style="@style/text_20_pri"/>
-        </LinearLayout>
+                android:layout_centerVertical="true"
+                android:text="反馈"
+                style="@style/text_18_pri"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/go_next_arrow"/>
+        </RelativeLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
             android:background="@color/bg_color"/>
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -169,14 +179,24 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="111"
-                style="@style/text_20_pri"/>
-        </LinearLayout>
+                android:layout_centerVertical="true"
+                android:text="关于"
+                style="@style/text_18_pri"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/go_next_arrow"/>
+        </RelativeLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
             android:background="@color/bg_color"/>
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/mysetting_exit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -185,26 +205,22 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="111"
-                style="@style/text_20_pri"/>
-        </LinearLayout>
+                android:layout_centerVertical="true"
+                android:text="退出"
+                style="@style/text_18_pri"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/go_next_arrow"/>
+        </RelativeLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
             android:background="@color/bg_color"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-
-            android:layout_margin="10dp"
-            android:paddingLeft="30dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="111"
-                style="@style/text_20_pri"/>
-        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>
