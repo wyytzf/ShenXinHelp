@@ -1,14 +1,17 @@
 package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.xd.shenxinhelp.R;
+import com.xd.shenxinhelp.mySetting.Feedback;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +26,8 @@ public class MySettingFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private RelativeLayout rl_feedback;
+    private RelativeLayout rl_exit;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -34,14 +39,7 @@ public class MySettingFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MySettingFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static MySettingFragment newInstance(String param1, String param2) {
         MySettingFragment fragment = new MySettingFragment();
@@ -65,7 +63,26 @@ public class MySettingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_setting, container, false);
+        View view=inflater.inflate(R.layout.fragment_my_setting, container, false);
+        rl_feedback = (RelativeLayout) view.findViewById(R.id.mysetting_feefback);
+        rl_feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getContext(), Feedback.class);
+                startActivity(intent);
+            }
+        });
+
+        rl_exit = (RelativeLayout) view.findViewById(R.id.mysetting_exit);
+        rl_exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent  = new Intent(getContext(),LoginActivity.class);
+                //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -78,12 +95,7 @@ public class MySettingFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
+
     }
 
     @Override
@@ -92,16 +104,7 @@ public class MySettingFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

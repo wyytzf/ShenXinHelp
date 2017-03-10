@@ -75,7 +75,8 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".com.xd.shenxinhelp.ui.VideoPlayerActivity" />
-        <activity android:name=".com.xd.shenxinhelp.ui.LineChartActivity"></activity>
+        <activity android:name=".com.xd.shenxinhelp.ui.LineChartActivity" />
+        <activity android:name=".mySetting.Feedback" />
     </application>
 
 </manifest>
