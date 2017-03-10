@@ -29,6 +29,7 @@ import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.xd.shenxinhelp.GlideImageLoader;
 import com.xd.shenxinhelp.R;
+import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ConnectUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.HttpUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ResponseHandler;
@@ -203,7 +204,7 @@ public class HelpContentActivity extends AppCompatActivity {
             @Override
             public void run() {
                 final Message message = new Message();
-                String urlget = ConnectUtil.GetExerciseItem + "?type=1&buwei=" + buwei;
+                String urlget = AppUtil.GetExerciseItem + "?type=1&buwei=" + buwei;
 
                 HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
                     @Override

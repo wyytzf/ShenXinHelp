@@ -9,20 +9,19 @@ import android.widget.TextView;
 
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.listener.ListItemClickListener;
-import com.xd.shenxinhelp.model.Rank;
 import com.xd.shenxinhelp.model.User;
 
 import java.util.List;
 
 /**
- * Created by MMY on 2017/2/14.
+ * Created by MMY on 2016/12/28.
  */
 
-public class RankAdapterMy extends MyBaseAdapter {
+public class GroupMemberAdapter extends MyBaseAdapter{
     protected Context context;
     private List<User> datas = null;
 
-    public RankAdapterMy(List<User> dataSet, Context context, ListItemClickListener listener) {
+    public GroupMemberAdapter(List<User> dataSet, Context context, ListItemClickListener listener) {
         this.context = context;
         this.datas = dataSet;
         setItemListener(listener);
@@ -42,28 +41,30 @@ public class RankAdapterMy extends MyBaseAdapter {
 
     @Override
     protected BaseViewHolder getItemViewHolder(ViewGroup parent, int viewType) {
-        return new ChildViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_rank_detail, parent, false));
+        return new GroupMemberAdapter.ChildViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_group_member, parent, false));
     }
     private class ChildViewHolder extends BaseViewHolder {
 
-        ImageView img;
         TextView title;
-        TextView grade;
+        TextView des;
+        ImageView imageView;
         View container;
 
         ChildViewHolder(View itemView) {
             super(itemView);
-            img = (ImageView) itemView.findViewById(R.id.img);
             title = (TextView) itemView.findViewById(R.id.title);
-            grade = (TextView) itemView.findViewById(R.id.grade);
-            container = itemView.findViewById(R.id.rank_list_item_detail);
+            des = (TextView) itemView.findViewById(R.id.des);
+            imageView=(ImageView)itemView.findViewById(R.id.ItemImage);
+            container = itemView.findViewById(R.id.group_member_item);
         }
 
         @Override
         void setData(final int position) {
             final User single = datas.get(position);
             title.setText(single.getName());
-            grade.setText(single.getHealth_degree());
+            des.setVisibility(View.GONE);
+            //des.setText(single.getDescription());
+
 
 //            Drawable dra = ImageUtils.getForunlogo(context, fid);
 //            img.setImageDrawable(dra);
