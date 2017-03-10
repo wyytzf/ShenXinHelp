@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -20,24 +19,24 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.renderer.LineChartRenderer;
 import com.github.mikephil.charting.utils.Utils;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.xd.shenxinhelp.R;
+import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
+import com.xd.shenxinhelp.model.BodyItem;
 import com.xd.shenxinhelp.netutils.OkHttp;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class BodyHelpActivity extends AppCompatActivity {
 
@@ -58,11 +57,10 @@ public class BodyHelpActivity extends AppCompatActivity {
 
 
     private LineChart lineChart;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
+
+    private static final int TYPE = 0;
+
+    private ArrayList<BodyItem> news_list;
 
 
     @Override
@@ -72,9 +70,11 @@ public class BodyHelpActivity extends AppCompatActivity {
 
         initView();
 
-        Request();
+        RequestRecommendar();
+        RequestLineChart();
 
     }
+
 
     private void initView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -117,7 +117,7 @@ public class BodyHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BodyHelpActivity.this, HelpContentActivity.class);
-                intent.putExtra("buwei","3");
+                intent.putExtra("buwei", "3");
                 startActivity(intent);
             }
         });
@@ -125,7 +125,7 @@ public class BodyHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BodyHelpActivity.this, HelpContentActivity.class);
-                intent.putExtra("buwei","2");
+                intent.putExtra("buwei", "2");
                 startActivity(intent);
             }
         });
@@ -133,7 +133,7 @@ public class BodyHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BodyHelpActivity.this, HelpContentActivity.class);
-                intent.putExtra("buwei","1");
+                intent.putExtra("buwei", "1");
                 startActivity(intent);
             }
         });
@@ -141,7 +141,7 @@ public class BodyHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BodyHelpActivity.this, HelpContentActivity.class);
-                intent.putExtra("buwei","4");
+                intent.putExtra("buwei", "4");
                 startActivity(intent);
             }
         });
@@ -236,21 +236,63 @@ public class BodyHelpActivity extends AppCompatActivity {
         }
     }
 
-    private void Request() {
-        OkHttp.get("http://www.baidu.com", new OkHttp.ResultCallBack() {
+    private void RequestRecommendar() {
+        OkHttp.get(AppUtil.GETEXERCISETOFOUR + "type=" + TYPE, new OkHttp.ResultCallBack() {
             @Override
             public void onError(String str, Exception e) {
                 // 已经是主线程了，直接操作
-                Log.i("wyy", str);
+
             }
 
             @Override
             public void onResponse(String str) {
                 // 已经是主线程了，直接操作
-                Log.i("wyy", str);
+                parseRecommendar(str);
             }
         });
 
+    }
+
+
+    private void RequestLineChart() {
+        OkHttp.get("http://baidu.com", new OkHttp.ResultCallBack() {
+            @Override
+            public void onError(String str, Exception e) {
+                // 已经是主线程了，直接操作
+
+            }
+
+            @Override
+            public void onResponse(String str) {
+                // 已经是主线程了，直接操作
+                parseRecommendar(str);
+            }
+        });
+    }
+
+    private void parseRecommendar(String str) {
+        news_list = new ArrayList<>();
+        try {
+            JSONObject js = new JSONObject(str);
+            JSONArray ja = js.getJSONArray("exercisees");
+            for (int i = 0; i < ja.length(); i++) {
+                JSONObject jb = ja.getJSONObject(i);
+                BodyItem bodyitem = new BodyItem();
+                bodyitem.setId(jb.getString("id"));
+                bodyitem.setBuwei(jb.getString("buwei"));
+                bodyitem.setName(jb.getString("name"));
+                bodyitem.setReosurce_url(jb.getString("reosurce_url"));
+                bodyitem.setTotal_time(jb.getString("total_time"));
+                bodyitem.setFee_cridits(jb.getString("fee_cridits"));
+                bodyitem.setHeat(jb.getString("heat"));
+                bodyitem.setGet_degree(jb.getString("get_degree"));
+                bodyitem.setDiffculty(jb.getString("diffculty"));
+                bodyitem.setWebUrl(jb.getString("webUrl"));
+                news_list.add(bodyitem);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
