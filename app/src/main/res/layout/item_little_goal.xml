@@ -69,11 +69,21 @@
                     android:id="@+id/interaction_comment_content"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
                     android:gravity="left"
                     android:paddingBottom="4dp"
                     android:layout_marginTop="4dp"
                     android:text="我的留言我的留言我的留言我的留言我的留言我的留言我的留言我的留言我的留言我的留言我的留言我的留言我的留言"
                     style="@style/text_14_sec" />
+                <GridView
+                    android:id="@+id/planGridview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:numColumns="3"
+                    android:scrollbars="none"
+                    android:visibility="gone">
+                </GridView>
             </LinearLayout>
 
         </LinearLayout>

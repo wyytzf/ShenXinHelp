@@ -41,5 +41,11 @@
             android:divider="@null"
             android:listSelector="#00000000"></ListView>
     </RelativeLayout>
+    <TextView
+        android:id="@+id/no_posts"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="暂无圈子动态"/>
 
 </LinearLayout>

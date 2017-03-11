@@ -5,11 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.xd.shenxinhelp.GlideImageLoader;
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.model.LittleGoal;
+import com.xd.shenxinhelp.model.Post;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,17 +23,19 @@ import java.util.List;
 
 public class GroupLittleGoalListAdapter extends BaseAdapter {
 
-    private List<LittleGoal> commentVos = null;
+//    private List<LittleGoal> commentVos = null;
+    private List<Post> commentVos = null;
     private LayoutInflater inflater;
     private Context context;
     ViewHolder holder = null;
+    private PlanAdapter adapter=null;
 
-    public GroupLittleGoalListAdapter(Context context, List<LittleGoal> commentVos) {
+    public GroupLittleGoalListAdapter(Context context, List<Post> commentVos) {
         inflater = LayoutInflater.from(context);
         if (commentVos != null) {
             this.commentVos = commentVos;
         } else {
-            this.commentVos = new ArrayList<LittleGoal>();
+            this.commentVos = new ArrayList<Post>();
         }
         this.context = context;
     }
@@ -52,7 +57,7 @@ public class GroupLittleGoalListAdapter extends BaseAdapter {
 
     public View getView(int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
-        LittleGoal vo = (LittleGoal) commentVos.get(position);
+        Post vo = (Post) commentVos.get(position);
 
         if (convertView == null) {
             holder = new ViewHolder();
@@ -62,6 +67,7 @@ public class GroupLittleGoalListAdapter extends BaseAdapter {
             holder.ItemDate = (TextView) convertView.findViewById(R.id.interaction_comment_date);
             holder.ItemPhoto = (ImageView) convertView.findViewById(R.id.interaction_comment_photo);
 //			holder.ItemClass = (TextView) convertView.findViewById(R.id.interaction_comment_class);
+            holder.ItemPlanGrideView = (GridView)convertView.findViewById(R.id.planGridview);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -69,6 +75,17 @@ public class GroupLittleGoalListAdapter extends BaseAdapter {
 //        holder.ItemComment.setText(vo.getContent());
 //        holder.ItemName.setText(vo.getName());
 //
+        holder.ItemComment.setText(vo.getContent());
+        holder.ItemName.setText(vo.getName());
+        holder.ItemDate.setText(vo.getDate());
+        new GlideImageLoader().displayImage(context,vo.getHead_url(), holder.ItemPhoto);
+        if(vo.getPlans().size() == 0){
+            holder.ItemPlanGrideView.setVisibility(View.GONE);
+        }else{
+            holder.ItemPlanGrideView.setVisibility(View.VISIBLE);
+        }
+        adapter = new PlanAdapter(context,vo.getPlans());
+        holder.ItemPlanGrideView.setAdapter(adapter);
         return convertView;
 
     }
@@ -81,6 +98,7 @@ public class GroupLittleGoalListAdapter extends BaseAdapter {
         public TextView ItemDate;
         public TextView ItemComment;
         public ImageView ItemPhoto;
+        public GridView ItemPlanGrideView;
     }
 
 }
