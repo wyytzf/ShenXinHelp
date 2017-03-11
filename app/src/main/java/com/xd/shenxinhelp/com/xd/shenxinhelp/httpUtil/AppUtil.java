@@ -48,10 +48,8 @@ public class AppUtil extends Application {
     public static String GetExerciseItem = getBaseUrl() + "GetExerciseItem";
     public static String GetAllMyRing= getBaseUrl() +"GetAllMyRing";
     public static String GetRingMember= getBaseUrl() +"GetRingMember";
-
-
-
     public static String Feedback = getBaseUrl() + "Feedback";
+
     public static String getBaseUrl() {
         return BASE_URL;
     }
