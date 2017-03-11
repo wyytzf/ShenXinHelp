@@ -78,8 +78,8 @@ public class MySettingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent  = new Intent(getContext(),LoginActivity.class);
-                //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                getActivity().onBackPressed();
             }
         });
         return view;
