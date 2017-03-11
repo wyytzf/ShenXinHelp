@@ -32,9 +32,9 @@ public class MyPlanActivity extends AppCompatActivity {
 
         listView= (ListView)findViewById(R.id.lv_my_plan_list);
         initData();
-        adapter = new GroupLittleGoalListAdapter(getApplicationContext(),
-                goalList);
-        listView.setAdapter(adapter);
+//        adapter = new GroupLittleGoalListAdapter(getApplicationContext(),
+//                goalList);
+//        listView.setAdapter(adapter);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbar.setTitle("");

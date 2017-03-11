@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xd.shenxinhelp.GlideImageLoader;
@@ -34,6 +35,8 @@ import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.HttpUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ResponseHandler;
 import com.xd.shenxinhelp.model.HelpContent;
 import com.xd.shenxinhelp.model.LittleGoal;
+import com.xd.shenxinhelp.model.Plan;
+import com.xd.shenxinhelp.model.Post;
 import com.xd.shenxinhelp.model.User;
 import com.youth.banner.loader.ImageLoaderInterface;
 
@@ -66,6 +69,8 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
     private ImageView image1, image2, image3, image4, image5;
     private LinearLayout addView;
     private ImageLoaderInterface imageLoader;
+    private List<Post> postList = new ArrayList<Post>();
+    private TextView noPosts;
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             // 要做的事情
@@ -265,10 +270,79 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         getGroupMember();
         //setGridView();
         initData();
+//        adapter = new GroupLittleGoalListAdapter(getApplicationContext(),
+//                goalList);
+//        listView.setAdapter(adapter);
+        noPosts = (TextView)findViewById(R.id.no_posts);
         adapter = new GroupLittleGoalListAdapter(getApplicationContext(),
-                goalList);
+                postList);
         listView.setAdapter(adapter);
+        getPosts();
 
+    }
+
+    private void getPosts() {
+        new Thread() {
+            @Override
+            public void run() {
+                final Message message = new Message();
+
+                String urlget =  AppUtil.GetAllPosts  + "?type=3&id=7&userID="+userID;
+                HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
+                    @Override
+                    public void onSuccess(byte[] response) {
+                        String jsonStr = new String(response);
+                        Log.i("kmj","-------" + jsonStr);
+                        parseResponse(jsonStr);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable e) {
+
+                    }
+                });
+            }
+        }.start();
+    }
+
+    private void parseResponse(String jsonStr) {
+        try {
+            JSONObject result = new JSONObject(jsonStr);
+            String status = result.getString("reCode");
+            if (status.equalsIgnoreCase("success")) {
+                postList.clear();
+                JSONArray postArray = result.getJSONArray("posts");
+                for(int i=0; i < postArray.length();i++){
+                    Post post = new Post();
+                    JSONObject jo = postArray.getJSONObject(i);
+                    post.setPostId(jo.getInt("postid"));
+                    post.setName(jo.getString("name"));
+                    post.setHead_url(jo.getString("head_url"));
+                    post.setDate(jo.getString("date"));
+                    post.setContent(jo.getString("content"));
+                    post.setIsPraise(jo.getString("isPraise"));
+                    post.setPraiseCount(jo.getInt("praiseCount"));
+                    JSONArray planArray = jo.getJSONArray("plans");
+                    List<Plan> plans = new ArrayList<Plan>();
+                    for(int j=0;j<planArray.length();j++){
+                        JSONObject jop = planArray.getJSONObject(j);
+                        Plan plan = new Plan();
+                        plan.setTitle(jop.getString("title"));
+                        plan.setImageUrl(jop.getString("imageUrl"));
+                        plans.add(plan);
+                    }
+                    post.setPlans(plans);
+                    postList.add(post);
+                }
+                adapter.notifyDataSetChanged();
+            }else{
+                Toast.makeText(GroupDetailActivity.this, "获取圈子动态失败，请重试", Toast.LENGTH_LONG).show();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+        }
     }
 
     void initData() {
