@@ -33,7 +33,6 @@ public class Feedback extends AppCompatActivity {
     private Dialog mDialog=null;
     private SharedPreferences sp;
     private String userID;
-    private String content;
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -69,7 +68,6 @@ public class Feedback extends AppCompatActivity {
     void initData(){
         sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
         userID=sp.getString("account", "");
-        content=et_feedback_content.getText().toString();
     }
 
     void initViews(){
@@ -105,7 +103,7 @@ public class Feedback extends AppCompatActivity {
             public void run() {
                 super.run();
                 final Message message= new Message();
-                String url= AppUtil.Feedback + "?userID="+userID+"&content="+content;
+                String url= AppUtil.Feedback + "?userID="+userID+"&content="+et_feedback_content.getText().toString();
                 HttpUtil.get(getApplicationContext(), url, new ResponseHandler() {
                     @Override
                     public void onSuccess(byte[] response) {
@@ -147,22 +145,6 @@ public class Feedback extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    /*public void showRequestDialog() {
-        if (mDialog != null) {
-            mDialog.dismiss();
-            mDialog = null;
-        }
-        mDialog = DialogFactory.creatRequestDialog(Feedback.this, "正在提交...");
-        mDialog.show();
-    }
-
-    public void dismissRequestDialog() {
-        if (mDialog != null) {
-            mDialog.dismiss();
-            mDialog = null;
-        }
-    }*/
-
 
 
 }
