@@ -7,7 +7,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -71,6 +73,10 @@ public class Feedback extends AppCompatActivity {
     }
 
     void initViews(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_feedback);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        setSupportActionBar(toolbar);
+
         et_feedback_content = (EditText)findViewById(R.id.feefback_content);
         bt_submit = (Button) findViewById(R.id.feedback_submit);
         bt_submit.setOnClickListener(new View.OnClickListener() {
@@ -108,11 +114,11 @@ public class Feedback extends AppCompatActivity {
                             JSONObject result = new JSONObject(jsonStr);
                             String status = result.getString("reCode");
                             if (status.equalsIgnoreCase("SUCCESS")) {
-                                message.what = 1;//提交成功
+                                message.what = 1;
                                 message.obj = "提交成功";
                                 handler.sendMessage(message);
                             } else {
-                                message.what = -1;//失败
+                                message.what = -1;
                                 message.obj = "提交失败";
                                 handler.sendMessage(message);
                             }
@@ -133,6 +139,14 @@ public class Feedback extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
     /*public void showRequestDialog() {
         if (mDialog != null) {
             mDialog.dismiss();
