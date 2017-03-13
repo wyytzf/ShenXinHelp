@@ -2,8 +2,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.xd.shenxinhelp.com.xd.shenxinhelp.ui.MySettingFragment">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="我的"
+                android:textColor="@android:color/white"
+                android:textSize="20dp" />
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -87,6 +111,7 @@
                 android:gravity="center"
                 android:layout_margin="10dp">
                 <TextView
+                    android:id="@+id/user_level"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="111"
@@ -96,7 +121,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/text_16_sec"
-                    android:text="222"/>
+                    android:text="等级"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -106,6 +131,7 @@
                 android:gravity="center"
                 android:layout_margin="10dp">
                 <TextView
+                    android:id="@+id/user_health_degree"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="111"
@@ -115,7 +141,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/text_16_sec"
-                    android:text="222"/>
+                    android:text="健康度"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -125,6 +151,7 @@
                 android:gravity="center"
                 android:layout_margin="10dp">
                 <TextView
+                    android:id="@+id/user_credits"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="111"
@@ -134,7 +161,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/text_16_sec"
-                    android:text="222"/>
+                    android:text="积分"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -144,23 +171,35 @@
         android:orientation="vertical"
         android:layout_marginTop="20dp"
         android:background="@color/viewgroup_unpressed">
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/mysetting_feefback"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_margin="10dp"
-            android:paddingLeft="30dp">
+            android:paddingLeft="30dp"
+            tools:ignore="RtlSymmetry">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="111"
-                style="@style/text_20_pri"/>
-        </LinearLayout>
+                android:layout_centerVertical="true"
+                android:text="反馈"
+                style="@style/text_18_pri"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/go_next_arrow"/>
+        </RelativeLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
             android:background="@color/bg_color"/>
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/mysetting_about"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -169,14 +208,24 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="111"
-                style="@style/text_20_pri"/>
-        </LinearLayout>
+                android:layout_centerVertical="true"
+                android:text="关于"
+                style="@style/text_18_pri"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/go_next_arrow"/>
+        </RelativeLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
             android:background="@color/bg_color"/>
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/mysetting_exit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -185,26 +234,22 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="111"
-                style="@style/text_20_pri"/>
-        </LinearLayout>
+                android:layout_centerVertical="true"
+                android:text="退出"
+                style="@style/text_18_pri"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/go_next_arrow"/>
+        </RelativeLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
             android:background="@color/bg_color"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-
-            android:layout_margin="10dp"
-            android:paddingLeft="30dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="111"
-                style="@style/text_20_pri"/>
-        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>
