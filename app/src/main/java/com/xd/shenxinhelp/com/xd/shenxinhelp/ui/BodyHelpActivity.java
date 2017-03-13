@@ -65,6 +65,13 @@ public class BodyHelpActivity extends AppCompatActivity {
     private ArrayList<BodyItem> news_list;
     private String userID;
 
+
+
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -254,9 +261,13 @@ public class BodyHelpActivity extends AppCompatActivity {
             public void onResponse(String str) {
                 // 已经是主线程了，直接操作
                 parseRecommendar(str);
+                fillViews();
             }
         });
 
+    }
+
+    private void fillViews() {
     }
 
 
