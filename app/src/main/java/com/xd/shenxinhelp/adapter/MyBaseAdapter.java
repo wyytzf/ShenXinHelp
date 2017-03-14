@@ -172,7 +172,7 @@ public abstract class MyBaseAdapter extends RecyclerView.Adapter<MyBaseAdapter.B
     }
 
 
-    abstract class BaseViewHolder extends RecyclerView.ViewHolder
+    public abstract class BaseViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener{
 
         BaseViewHolder(View itemView) {

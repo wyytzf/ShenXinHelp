@@ -60,7 +60,8 @@ public class RankActivity  extends AppCompatActivity implements ListItemClickLis
                             User user=new User();
                             object = array.getJSONObject(i);
 
-                            user.setName(object.getString("userid"));
+                            user.setUid(object.getString("userid"));
+                            user.setName(object.getString("account"));
                             user.setSex(object.getString("sex"));
                             user.setAge(object.getString("age"));
                             user.setHeight(object.getString("height"));
