@@ -65,11 +65,13 @@ public class BodyHelpActivity extends AppCompatActivity {
     private ArrayList<BodyItem> news_list;
     private String userID;
 
+    private View news1;
+    private ImageView news1_image;
+    private TextView news1_text;
 
-
-
-
-
+    private View news2;
+    private ImageView news2_image;
+    private TextView news2_text;
 
 
     @Override
@@ -82,7 +84,6 @@ public class BodyHelpActivity extends AppCompatActivity {
 
 
         initView();
-
         RequestRecommendar();
         RequestLineChart();
 
@@ -192,6 +193,16 @@ public class BodyHelpActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        news1 = findViewById(R.id.body_news_1);
+        news1_image = (ImageView) findViewById(R.id.body_news1_image);
+        news1_text = (TextView) findViewById(R.id.body_news1_text);
+
+        news2 = findViewById(R.id.body_news_2);
+        news2_image = (ImageView) findViewById(R.id.body_news2_image);
+        news2_text = (TextView) findViewById(R.id.body_news2_text);
+
+
     }
 
     private void setData(int count, float range) {
@@ -249,6 +260,7 @@ public class BodyHelpActivity extends AppCompatActivity {
         }
     }
 
+    ///  首页新闻
     private void RequestRecommendar() {
         OkHttp.get(AppUtil.GETEXERCISETOFOUR + "type=" + TYPE, new OkHttp.ResultCallBack() {
             @Override
@@ -271,6 +283,7 @@ public class BodyHelpActivity extends AppCompatActivity {
     }
 
 
+    // 统计图表
     private void RequestLineChart() {
         OkHttp.get(AppUtil.GETDOEXERCISEINFO + "userID=" + userID, new OkHttp.ResultCallBack() {
             @Override

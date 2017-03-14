@@ -66,7 +66,7 @@ public class HelpContentActivity extends AppCompatActivity {
                         contentList.clear();
 
                         for (int i = 0; i < array.length(); i++) {
-                            HelpContent helpContent=new HelpContent();
+                            HelpContent helpContent = new HelpContent();
                             object = array.getJSONObject(i);
                             helpContent.setId(object.getString("id"));
                             helpContent.setBuwei(object.getString("buwei"));
@@ -82,11 +82,11 @@ public class HelpContentActivity extends AppCompatActivity {
                             contentList.add(helpContent);
 
                         }
-                        if (contentList == null||contentList.size()==0) {
+                        if (contentList == null || contentList.size() == 0) {
                             contentList.clear();
                             for (int i = 0; i < 5; i++) {
-                                HelpContent helpContent=new HelpContent();
-                                helpContent.setId(i+"");
+                                HelpContent helpContent = new HelpContent();
+                                helpContent.setId(i + "");
                                 helpContent.setBuwei("手臂");
                                 helpContent.setName("燃烧吧，手臂");
                                 helpContent.setReosurce_url("http://baobab.wdjcdn.com/14564977406580.mp4");
@@ -121,12 +121,13 @@ public class HelpContentActivity extends AppCompatActivity {
             super.handleMessage(msg);
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help_content);
         Intent intent = getIntent();
-        buwei=intent.getStringExtra("buwei");
+        buwei = intent.getStringExtra("buwei");
         contentList = new ArrayList<HelpContent>();
         getHelpContent();
         initView();
@@ -148,9 +149,11 @@ public class HelpContentActivity extends AppCompatActivity {
 
     class HelpContentAdapter extends RecyclerView.Adapter<HelpContentAdapter.MyViewHolder> {
         List<HelpContent> helpContents;
-        HelpContentAdapter(List<HelpContent> helpContents){
-            this.helpContents= helpContents;
+
+        HelpContentAdapter(List<HelpContent> helpContents) {
+            this.helpContents = helpContents;
         }
+
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View inflate = LayoutInflater.from(HelpContentActivity.this).inflate(R.layout.item_help_content, parent, false);
@@ -162,12 +165,12 @@ public class HelpContentActivity extends AppCompatActivity {
         public void onBindViewHolder(MyViewHolder holder, int position) {
 //            Glide.with(HelpContentActivity.this).
 //                    load("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488273623&di=ea34c54ab63f18a6ae02b94d99d70b25&imgtype=jpg&er=1&src=http%3A%2F%2Fwww.bz55.com%2Fuploads%2Fallimg%2F150318%2F140-15031PUR6.jpg").into(holder.imageView);
-            HelpContent helpContent=helpContents.get(position);
+            HelpContent helpContent = helpContents.get(position);
             holder.textView.setText(helpContent.getName());
             holder.standardGSYVideoPlayer.setUp(helpContent.getReosurce_url(), true, "");
             holder.totalTime.setText(helpContent.getTotal_time());
             holder.calorie.setText(helpContent.getHeat());
-            float numStars= Float.parseFloat(helpContent.getDiffculty());
+            float numStars = Float.parseFloat(helpContent.getDiffculty());
             holder.difficult.setRating(numStars);
             //holder.standardGSYVideoPlayer.setUp("http://baobab.wdjcdn.com/14564977406580.mp4", true, "");
 
@@ -186,17 +189,19 @@ public class HelpContentActivity extends AppCompatActivity {
             TextView totalTime;
             TextView calorie;
             RatingBar difficult;
+
             public MyViewHolder(View itemView) {
                 super(itemView);
                 standardGSYVideoPlayer = (StandardGSYVideoPlayer) itemView.findViewById(R.id.item_imageview);
 //                imageView = (ImageView) itemView.findViewById(R.id.item_imageview);
                 textView = (TextView) itemView.findViewById(R.id.item_textview_time);
-                totalTime =(TextView) itemView.findViewById(R.id.item_textview_time);
-                calorie =(TextView) itemView.findViewById(R.id.item_textview_calorie);
-                difficult=(RatingBar)itemView.findViewById(R.id.item_ratingbar_difficult);
+                totalTime = (TextView) itemView.findViewById(R.id.item_textview_time);
+                calorie = (TextView) itemView.findViewById(R.id.item_textview_calorie);
+                difficult = (RatingBar) itemView.findViewById(R.id.item_ratingbar_difficult);
             }
         }
     }
+
     public void getHelpContent() {
 
 
@@ -237,6 +242,7 @@ public class HelpContentActivity extends AppCompatActivity {
             }
         }.start();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();

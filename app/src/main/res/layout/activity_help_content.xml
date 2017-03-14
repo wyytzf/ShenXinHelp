@@ -22,9 +22,9 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <TextView
+                android:id="@+id/toolbar_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="班级"
                 android:textColor="@android:color/white"
                 android:textSize="20dp" />
         </android.support.v7.widget.Toolbar>
