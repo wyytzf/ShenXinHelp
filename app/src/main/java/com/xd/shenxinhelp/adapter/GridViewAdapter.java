@@ -1,30 +1,36 @@
 package com.xd.shenxinhelp.adapter;
 
 import android.content.Context;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xd.shenxinhelp.GlideImageLoader;
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.listener.ListItemClickListener;
-import com.xd.shenxinhelp.model.Rank;
+import com.xd.shenxinhelp.model.Post;
 import com.xd.shenxinhelp.model.User;
 import com.youth.banner.loader.ImageLoaderInterface;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by MMY on 2017/2/14.
+ * Created by MMY on 2017/3/14.
  */
 
-public class RankAdapterMy extends MyBaseAdapter {
+public class GridViewAdapter extends MyBaseAdapter {
     protected Context context;
     private List<User> datas = null;
     private ImageLoaderInterface imageLoader;
-    public RankAdapterMy(List<User> dataSet, Context context, ListItemClickListener listener) {
+    public GridViewAdapter(List<User> dataSet, Context context, ListItemClickListener listener) {
         this.context = context;
         this.datas = dataSet;
         setItemListener(listener);
@@ -44,32 +50,25 @@ public class RankAdapterMy extends MyBaseAdapter {
     }
 
     @Override
-    protected BaseViewHolder getItemViewHolder(ViewGroup parent, int viewType) {
-        return new ChildViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_rank_detail, parent, false));
+    protected MyBaseAdapter.BaseViewHolder getItemViewHolder(ViewGroup parent, int viewType) {
+        return new ChildViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_grid_view, parent, false));
     }
-    private class ChildViewHolder extends BaseViewHolder {
+    private class ChildViewHolder extends MyBaseAdapter.BaseViewHolder {
 
-        ImageView img;
-        TextView title;
-        TextView grade;
+        ImageView imageView;
         View container;
 
         ChildViewHolder(View itemView) {
             super(itemView);
-            img = (ImageView) itemView.findViewById(R.id.img);
-            title = (TextView) itemView.findViewById(R.id.title);
-            grade = (TextView) itemView.findViewById(R.id.grade);
-            container = itemView.findViewById(R.id.rank_list_item_detail);
+            imageView=(ImageView)itemView.findViewById(R.id.ItemImage);
+            container = itemView.findViewById(R.id.member_item);
         }
 
         @Override
         void setData(final int position) {
             final User single = datas.get(position);
-            title.setText(single.getName());
-            grade.setText("健康度"+single.getHealth_degree());
-            imageLoader.displayImage(context, single.getPhotoUrl(), img);
-//            Drawable dra = ImageUtils.getForunlogo(context, fid);
-//            img.setImageDrawable(dra);
+            imageLoader.displayImage(context, single.getPhotoUrl(), imageView);
         }
     }
+
 }

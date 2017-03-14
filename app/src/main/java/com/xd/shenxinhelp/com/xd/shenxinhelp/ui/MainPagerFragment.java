@@ -57,6 +57,7 @@ public class MainPagerFragment extends Fragment {
     List<String> titles2;
     List<String> images;
     List<String> titles;
+    List<String> webUrls;
     private ImageLoaderInterface imageLoader;
     Activity activity;
     View root;
@@ -73,13 +74,15 @@ public class MainPagerFragment extends Fragment {
                         JSONObject object;
                         images = new ArrayList<>();
                         titles = new ArrayList<>();
+                        webUrls=new ArrayList<>();
                         for (int i = 0; i < array.length(); i++) {
                             object = array.getJSONObject(i);
                             String title = object.getString("title");
                             String image = object.getString("imageUrl");
-
+                            String web=object.getString("webUrl");
                             images.add(image);
                             titles.add(title);
+                            webUrls.add(web);
                         }
                         if (images == null) {
                             images.clear();
