@@ -124,5 +124,6 @@
     <string name="different_password">两次密码不一致</string>
     <string name="account_exist">帐号已存在</string>
     <string name="AddInformation">完善资料</string>
+    <string name="title_activity_web_view">WebViewActivity</string>
 
 </resources>
