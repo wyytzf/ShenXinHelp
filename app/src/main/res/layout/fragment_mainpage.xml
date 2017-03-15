@@ -241,7 +241,9 @@
                                     android:layout_below="@id/news1_image"
                                     android:layout_centerHorizontal="true"
                                     android:layout_marginTop="6dp"
-                                    android:text="新闻新闻新闻新闻" />
+                                    android:text="新闻新闻新闻新闻"
+                                    style="@style/text_14_sec"
+                                    android:maxLines="1"/>
                             </RelativeLayout>
 
                             <RelativeLayout
@@ -268,7 +270,9 @@
                                     android:layout_below="@id/news2_image"
                                     android:layout_centerHorizontal="true"
                                     android:layout_marginTop="6dp"
-                                    android:text="新闻新闻新闻新闻" />
+                                    android:text="新闻新闻新闻新闻"
+                                    style="@style/text_14_sec"
+                                    android:maxLines="1"/>
                             </RelativeLayout>
                         </TableRow>
 
@@ -298,7 +302,9 @@
                                     android:layout_below="@id/news3_image"
                                     android:layout_centerHorizontal="true"
                                     android:layout_marginTop="6dp"
-                                    android:text="新闻新闻新闻新闻" />
+                                    android:text="新闻新闻新闻新闻"
+                                    style="@style/text_14_sec"
+                                    android:maxLines="1"/>
                             </RelativeLayout>
 
                             <RelativeLayout
@@ -325,7 +331,9 @@
                                     android:layout_below="@id/news4_image"
                                     android:layout_centerHorizontal="true"
                                     android:layout_marginTop="6dp"
-                                    android:text="新闻新闻新闻新闻" />
+                                    android:text="新闻新闻新闻新闻"
+                                    style="@style/text_14_sec"
+                                    android:maxLines="1"/>
                             </RelativeLayout>
                         </TableRow>
                     </TableLayout>
