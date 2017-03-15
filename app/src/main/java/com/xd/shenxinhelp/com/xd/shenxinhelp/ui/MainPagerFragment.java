@@ -1,7 +1,6 @@
 package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,7 +8,6 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +18,6 @@ import android.widget.TextView;
 import com.xd.shenxinhelp.GlideImageLoader;
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
-import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ConnectUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.HttpUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ResponseHandler;
 import com.youth.banner.Banner;
@@ -47,6 +44,13 @@ public class MainPagerFragment extends Fragment {
     private View grid_eye;
     private View grid_heart;
     private View grid_exam;
+
+    private View news1;
+    private View news2;
+    private View news3;
+    private View news4;
+
+
     private ImageView news1_image, news2_image, news3_image, news4_image;
     private TextView news1_text, news2_text, news3_text, news4_text;
     String[] urls = {"http://img3.imgtn.bdimg.com/it/u=1340784719,3145976582&fm=21&gp=0.jpg",
@@ -57,6 +61,8 @@ public class MainPagerFragment extends Fragment {
     List<String> titles2;
     List<String> images;
     List<String> titles;
+    List<String> weburls2;
+    List<String> weburls;
     private ImageLoaderInterface imageLoader;
     Activity activity;
     View root;
@@ -73,13 +79,15 @@ public class MainPagerFragment extends Fragment {
                         JSONObject object;
                         images = new ArrayList<>();
                         titles = new ArrayList<>();
+                        weburls = new ArrayList<>();
                         for (int i = 0; i < array.length(); i++) {
                             object = array.getJSONObject(i);
                             String title = object.getString("title");
                             String image = object.getString("imageUrl");
-
+                            String weburl = object.getString("webUrl");
                             images.add(image);
                             titles.add(title);
+                            weburls.add(weburl);
                         }
                         if (images == null) {
                             images.clear();
@@ -104,12 +112,15 @@ public class MainPagerFragment extends Fragment {
                         JSONObject object;
                         images2 = new ArrayList<>();
                         titles2 = new ArrayList<>();
+                        weburls2 = new ArrayList<>();
                         for (int i = 0; i < array.length(); i++) {
                             object = array.getJSONObject(i);
                             String title = object.getString("title");
                             String image = object.getString("imageUrl");
+                            String url = object.getString("webUrl");
                             images2.add(image);
                             titles2.add(title);
+                            weburls2.add(url);
                         }
                         System.out.println("--------------" + images2.get(0));
                         imageLoader = new GlideImageLoader();
@@ -205,7 +216,7 @@ public class MainPagerFragment extends Fragment {
             @Override
             public void run() {
                 final Message message = new Message();
-                String urlget =  AppUtil.GetHomePageImages + "?type=" + typeStr;
+                String urlget = AppUtil.GetHomePageImages + "?type=" + typeStr;
 
                 HttpUtil.get(activity, urlget, new ResponseHandler() {
                     @Override
@@ -265,7 +276,25 @@ public class MainPagerFragment extends Fragment {
         banner.setOnBannerClickListener(new OnBannerClickListener() {
             @Override
             public void OnBannerClick(int position) {
-
+                Intent intent = new Intent(activity, WebViewActivity.class);
+                switch (position) {
+                    case 1:
+                        intent.putExtra("url", weburls.get(0));
+                        intent.putExtra("title", titles.get(0));
+                        intent.putExtra("image_url", images.get(0));
+                        break;
+                    case 2:
+                        intent.putExtra("url", weburls.get(0));
+                        intent.putExtra("title", titles.get(1));
+                        intent.putExtra("image_url", images.get(1));
+                        break;
+                    case 3:
+                        intent.putExtra("url", weburls.get(0));
+                        intent.putExtra("title", titles.get(2));
+                        intent.putExtra("image_url", images.get(2));
+                        break;
+                }
+                startActivity(intent);
             }
         });
     }
@@ -296,6 +325,52 @@ public class MainPagerFragment extends Fragment {
         news2_text = (TextView) root.findViewById(R.id.news2_text);
         news3_text = (TextView) root.findViewById(R.id.news3_text);
         news4_text = (TextView) root.findViewById(R.id.news4_text);
+
+
+        news1 = root.findViewById(R.id.news_1);
+        news2 = root.findViewById(R.id.news_2);
+        news3 = root.findViewById(R.id.news_3);
+        news4 = root.findViewById(R.id.news_4);
+        news1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, WebViewActivity.class);
+                intent.putExtra("url", weburls2.get(0));
+                intent.putExtra("title", titles2.get(0));
+                intent.putExtra("image_url", images2.get(0));
+                startActivity(intent);
+            }
+        });
+        news2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, WebViewActivity.class);
+                intent.putExtra("url", weburls2.get(1));
+                intent.putExtra("title", titles2.get(1));
+                intent.putExtra("image_url", images2.get(1));
+                startActivity(intent);
+            }
+        });
+        news3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, WebViewActivity.class);
+                intent.putExtra("url", weburls2.get(2));
+                intent.putExtra("title", titles2.get(2));
+                intent.putExtra("image_url", images2.get(2));
+                startActivity(intent);
+            }
+        });
+        news4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, WebViewActivity.class);
+                intent.putExtra("url", weburls2.get(3));
+                intent.putExtra("title", titles2.get(3));
+                intent.putExtra("image_url", images2.get(3));
+                startActivity(intent);
+            }
+        });
 
 
     }

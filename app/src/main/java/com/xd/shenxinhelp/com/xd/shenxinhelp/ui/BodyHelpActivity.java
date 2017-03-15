@@ -42,6 +42,11 @@ import java.util.Calendar;
 
 public class BodyHelpActivity extends AppCompatActivity {
 
+    private static final String TUIBU = "2";
+    private static final String FUBU = "1";
+    private static final String SHOUBI = "0";
+    private static final String QUANSHEN = "3";
+
     private ImageView func1_image;
     private ImageView func2_image;
     private ImageView func3_image;
@@ -131,7 +136,8 @@ public class BodyHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BodyHelpActivity.this, HelpContentActivity.class);
-                intent.putExtra("buwei", "3");
+                intent.putExtra("buwei", TUIBU);
+                intent.putExtra("type", TYPE);
                 startActivity(intent);
             }
         });
@@ -139,7 +145,8 @@ public class BodyHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BodyHelpActivity.this, HelpContentActivity.class);
-                intent.putExtra("buwei", "2");
+                intent.putExtra("buwei", FUBU);
+                intent.putExtra("type", TYPE);
                 startActivity(intent);
             }
         });
@@ -147,7 +154,8 @@ public class BodyHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BodyHelpActivity.this, HelpContentActivity.class);
-                intent.putExtra("buwei", "1");
+                intent.putExtra("buwei", SHOUBI);
+                intent.putExtra("type", TYPE);
                 startActivity(intent);
             }
         });
@@ -155,7 +163,8 @@ public class BodyHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BodyHelpActivity.this, HelpContentActivity.class);
-                intent.putExtra("buwei", "4");
+                intent.putExtra("buwei", QUANSHEN);
+                intent.putExtra("type", TYPE);
                 startActivity(intent);
             }
         });
