@@ -91,7 +91,10 @@
         <activity
             android:name=".com.xd.shenxinhelp.ui.WebViewActivity"
             android:label="@string/title_activity_web_view"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".com.xd.shenxinhelp.ui.DrawUpPlanActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
