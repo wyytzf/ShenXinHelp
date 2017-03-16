@@ -48,7 +48,7 @@ public class WebViewActivity extends AppCompatActivity {
         Glide.with(this).load(image_url).into(background);
 
         mWebView = (WebView) findViewById(R.id.webview);
-        mWebView.getSettings().setDefaultTextEncodingName("UTF-8");
+        mWebView.getSettings().setDefaultTextEncodingName("GBK");
         mWebView.getSettings().setJavaScriptEnabled(true);
 //        mWebView.getSettings().setUseWideViewPort(true);
         mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
@@ -57,7 +57,7 @@ public class WebViewActivity extends AppCompatActivity {
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                view.loadUrl(url);
+                view.loadUrl(url);
                 return false;
             }
 
