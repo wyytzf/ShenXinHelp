@@ -51,6 +51,7 @@ public class AppUtil extends Application {
     public static String Feedback = getBaseUrl() + "Feedback";
     public static String GetAllPosts= getBaseUrl() +"GetAllPosts";
     public static String GetPlanByDate= getBaseUrl() +"GetPlanByDate";
+    public static String CreatePK= getBaseUrl() +"CreatePK";
 
     public static String getBaseUrl() {
         return BASE_URL;

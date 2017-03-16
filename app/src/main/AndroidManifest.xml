@@ -64,6 +64,10 @@
             android:name=".group.MyPlanActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".group.LaunchPKActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
         android:name=".group.MakePlanActivity"
         android:theme="@style/AppTheme.NoActionBar" />
         <activity

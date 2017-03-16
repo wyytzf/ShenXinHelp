@@ -26,6 +26,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.xd.shenxinhelp.GlideImageLoader;
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.adapter.GroupLittleGoalListAdapter;
@@ -177,6 +178,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         }
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -190,6 +192,8 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         setSupportActionBar(toolbar);
         sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
         userID = sp.getString("account", "");
+
+
 //        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 //            @Override
 //            public boolean onMenuItemClick(MenuItem item) {
@@ -535,8 +539,8 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
             Intent intent = new Intent(GroupDetailActivity.this, MakePlanActivity.class);
             startActivity(intent);
         } else if (itemId == R.id.go_pk) {
-//            Intent intent = new Intent(GroupDetailActivity.this, );
-//            startActivity(intent);
+            Intent intent = new Intent(GroupDetailActivity.this,LaunchPKActivity.class );
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
