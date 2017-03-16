@@ -68,8 +68,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-        android:name=".group.MakePlanActivity"
-        android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".group.MakePlanActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".group.GroupMemberActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -84,6 +84,10 @@
         <activity android:name=".com.xd.shenxinhelp.ui.VideoPlayerActivity" />
         <activity android:name=".com.xd.shenxinhelp.ui.LineChartActivity" />
         <activity android:name=".mySetting.Feedback" />
+        <activity
+            android:name=".com.xd.shenxinhelp.ui.WebViewActivity"
+            android:label="@string/title_activity_web_view"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
