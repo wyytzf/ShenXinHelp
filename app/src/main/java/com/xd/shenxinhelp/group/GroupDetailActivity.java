@@ -496,6 +496,9 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         } else if (itemId == R.id.go_pk) {
             Intent intent = new Intent(GroupDetailActivity.this,LaunchPKActivity.class );
             startActivity(intent);
+        }else if (itemId == R.id.pk_history){
+            Intent intent = new Intent(GroupDetailActivity.this,PKHistoryActivity.class );
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
