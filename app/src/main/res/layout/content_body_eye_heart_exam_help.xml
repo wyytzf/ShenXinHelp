@@ -213,40 +213,47 @@
     </TableLayout>
 
     <LinearLayout
+        android:id="@+id/linechart_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="12dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/redline" />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
-            android:text="我的锻炼" />
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/redline" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:text="我的锻炼" />
+
+        </LinearLayout>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/linechart"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="6dp"
+            android:background="@android:color/white" />
+
+        <TextView
+            android:id="@+id/check_more"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center"
+            android:padding="12dp"
+            android:text="查看更多" />
     </LinearLayout>
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/linechart"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_margin="6dp"
-        android:background="@android:color/white" />
-
-    <TextView
-        android:id="@+id/check_more"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:gravity="center"
-        android:padding="12dp"
-        android:text="查看更多" />
 </LinearLayout>

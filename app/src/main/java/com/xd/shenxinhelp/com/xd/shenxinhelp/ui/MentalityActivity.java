@@ -93,6 +93,7 @@ public class MentalityActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.linechart_container).setVisibility(View.GONE);
         func1_image = (ImageView) findViewById(R.id.content_BEHE_image1);
         func2_image = (ImageView) findViewById(R.id.content_BEHE_image2);
         func3_image = (ImageView) findViewById(R.id.content_BEHE_image3);
