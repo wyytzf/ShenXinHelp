@@ -71,7 +71,7 @@ public class BodyHelpActivity extends AppCompatActivity {
 
     private LineChart lineChart;
 
-    private static final int TYPE = 0;
+    private static final String TYPE = "0";
 
     private ArrayList<News> news_list;
     private String userID;
