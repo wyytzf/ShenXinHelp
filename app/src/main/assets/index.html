@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="视力疲劳,缓解视力疲劳,视力疲劳缓解">
+    <meta name="description" content="本页提供视力疲劳缓解方法,缓解视力疲劳图,视力疲劳缓解远视图">
+    <meta name="author" content="时刻知(www.shikezhi.com)">
+    <title>love_my_eyes</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <style>
+        body{
+            background:#000000;
+        }
+        #descbox{
+            color:#139533;
+            width:500px;
+            margin:auto;
+        }
+    </style>
+</head>
+<body>
+   <a href="eyes_dong.html" id="linkDong">动态图</a>
+   <a href="love_eyes.html" id="linkMore">更多</a>
+   <img src="images/huanjie_pilao.png" style="display: block;"/>
+   <div id="descbox">
+        <dl>
+            <dt>“远视图”使用方法：</dt>
+            <dd>1.将图平贴于光线充足的平面，如墙面，中心点与眼睛等高。</dd>
+            <dd>2.裸眼距离1-5米(看清楚为宜),每日视图3次，每次5分钟。</dd>
+            <dd>3.眼睛平视中心点，想象中心处延伸，稍后远视图会呈立体效果。</dd>
+        </dl>
+   </div>
+</body>
+</html>
+<script>
+    $(function(){
+        var winWidth=$(window).width();
+        var winHeight=$(window).height();
+        var linkDongHeight=$('#linkDong').height();
+        var linkMoreHeight=$('#linkMore').height();
+        var imgHeight=winHeight-(linkDongHeight+linkMoreHeight);
+        $("img").attr('style','display:block;max-width:'+winWidth+'px;max-height:'+imgHeight+'px;margin:auto;');
+    });
+</script>

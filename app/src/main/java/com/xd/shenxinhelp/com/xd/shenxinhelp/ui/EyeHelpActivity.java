@@ -48,6 +48,12 @@ public class EyeHelpActivity extends AppCompatActivity {
     private TextView func1_text3;
     private TextView func1_text4;
 
+    private View Liner1;
+    private View Liner2;
+    private View Liner3;
+    private View Liner4;
+
+
     private LineChart lineChart;
 
     private static final int TYPE = 1;
@@ -109,7 +115,49 @@ public class EyeHelpActivity extends AppCompatActivity {
         func1_text1.setText("视力检查");
         func1_text2.setText("眼保健操");
         func1_text3.setText("眨眼护眼");
-        func1_text4.setText("视力保健");
+        func1_text4.setText("缓解疲劳");
+
+        Liner1 = findViewById(R.id.content_BEHE_liner1);
+        Liner2 = findViewById(R.id.content_BEHE_liner2);
+        Liner3 = findViewById(R.id.content_BEHE_liner3);
+        Liner4 = findViewById(R.id.content_BEHE_liner4);
+
+        Liner1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EyeHelpActivity.this, WebViewActivity.class);
+                intent.putExtra("url", "file:///android_asset/love_eyes.html");
+                intent.putExtra("title", "眼保健操");
+                intent.putExtra("image_url", "");
+                startActivity(intent);
+            }
+        });
+        Liner2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        Liner3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EyeHelpActivity.this, WebViewActivity.class);
+                intent.putExtra("url", "file:///android_asset/love_eyes.html");
+                intent.putExtra("title", "视力远眺图，观看可保护眼睛");
+                intent.putExtra("image_url", "");
+                startActivity(intent);
+            }
+        });
+        Liner4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EyeHelpActivity.this, WebViewActivity.class);
+                intent.putExtra("url", "file:///android_asset/eyes_dong.html");
+                intent.putExtra("title", "观看动图，可有效缓解疲劳");
+                intent.putExtra("image_url", "");
+                startActivity(intent);
+            }
+        });
 
 
         lineChart = (LineChart) findViewById(R.id.linechart);

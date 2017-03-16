@@ -129,7 +129,16 @@ public class BodyHelpActivity extends AppCompatActivity {
         DecimalFormat df = new DecimalFormat("#.00");
         double v = Double.valueOf(mWeight) / Math.pow(Double.valueOf(mHeight) / 100, 2);
         BMI.setText("BMI指数：" + df.format(v));
-
+        BMI.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(BodyHelpActivity.this, WebViewActivity.class);
+                intent.putExtra("url", "file:///android_asset/bmi_image.html");
+                intent.putExtra("title", "中国青少年BMI分类标准");
+                intent.putExtra("image_url", "");
+                startActivity(intent);
+            }
+        });
 
         func1_image = (ImageView) findViewById(R.id.content_BEHE_image1);
         func2_image = (ImageView) findViewById(R.id.content_BEHE_image2);

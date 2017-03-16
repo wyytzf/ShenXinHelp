@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1.0,minimum-scale=0.5,maximum-scale=2.0,user-scalable=yes"/>
+<head>
+    <meta charset="UTF-8">
+    <title>love_my_eyes</title>
+    <script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <style>
+        body{
+            background:#000000;
+        }
+
+
+    </style>
+</head>
+<body>
+<p> 观看动图，可有效缓解视力疲劳</p>
+<img src="images/0.gif" style="display: block;"/>
+</body>
+</html>
+<script>
+    $(function(){
+        var winWidth=$(window).width();
+        var winHeight=$(window).height();
+        var imgHeight=winHeight;
+        $("img").attr('style','display:block;max-width:'+winWidth+'px;max-height:'+imgHeight+'px;margin:auto;position:absolute;left:0;right:0;top:0;bottom:0;');
+    });
+
+
+</script>
