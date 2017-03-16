@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -26,20 +27,45 @@ public class LineChartActivity extends AppCompatActivity {
 
     private LineChart lineChart;
 
+    private String xiaohao;
+    private String shuliang;
+    private String tishi;
+
+    private String lineTishi;
+    private int shangxian;
+
+    private TextView mXiaohao;
+    private TextView mShuliang;
+    private TextView mTishi;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line_chart);
+        xiaohao = getIntent().getStringExtra("xiaohao");
+        shuliang = getIntent().getStringExtra("shuliang");
+        tishi = getIntent().getStringExtra("tishi");
+        lineTishi = getIntent().getStringExtra("lineTishi");
+        shangxian = getIntent().getIntExtra("shangxian", 10);
         initViews();
     }
 
     private void initViews() {
+
+        mXiaohao = (TextView) findViewById(R.id.xiaohao);
+        mShuliang = (TextView) findViewById(R.id.shuliang);
+        mTishi = (TextView) findViewById(R.id.tishi);
+        mXiaohao.setText(xiaohao);
+        mShuliang.setText(shuliang);
+        mTishi.setText(tishi);
+
+
         lineChart = (LineChart) findViewById(R.id.linechart);
         lineChart.setDoubleTapToZoomEnabled(false);
         lineChart.setScaleEnabled(false);
         Description description = new Description();
-        description.setText("消耗热量");
+        description.setText(lineTishi);
         lineChart.setDescription(description);
         lineChart.getXAxis().setDrawGridLines(false);
         lineChart.getAxisLeft().setDrawGridLines(false);
@@ -57,14 +83,14 @@ public class LineChartActivity extends AppCompatActivity {
             }
         });
         lineChart.setNoDataText("暂无数据");
-        setData(7, 100);
+        setData(7, shangxian);
     }
 
     private void setData(int count, float range) {
 
         ArrayList<Entry> values = new ArrayList<Entry>();
         for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range) + 3;
+            int val = (int) (Math.random() * range) + 3;
             values.add(new Entry(i + 1, val, getResources().getDrawable(R.drawable.ic_assignment_black_24dp)));
         }
 
@@ -78,7 +104,7 @@ public class LineChartActivity extends AppCompatActivity {
             lineChart.notifyDataSetChanged();
         } else {
             // create a dataset and give it a type
-            set1 = new LineDataSet(values, "消耗热量");
+            set1 = new LineDataSet(values, lineTishi);
 
 //            set1.setDrawIcons(false);
 

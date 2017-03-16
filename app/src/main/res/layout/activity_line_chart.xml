@@ -20,6 +20,7 @@
         android:background="@android:color/white" />
 
     <TextView
+        android:id="@+id/xiaohao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="本周累计消耗热量" />
@@ -31,6 +32,7 @@
         android:padding="12dp">
 
         <TextView
+            android:id="@+id/shuliang"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="428卡路里"
@@ -38,6 +40,7 @@
             android:textStyle="bold" />
 
         <TextView
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
@@ -50,6 +53,7 @@
         android:background="@color/red_light" />
 
     <TextView
+        android:id="@+id/tishi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"

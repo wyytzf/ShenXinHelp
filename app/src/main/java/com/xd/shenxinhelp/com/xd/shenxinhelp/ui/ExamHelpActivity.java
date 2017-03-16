@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.LineChart;
@@ -48,6 +49,11 @@ public class ExamHelpActivity extends AppCompatActivity {
     private TextView func1_text2;
     private TextView func1_text3;
     private TextView func1_text4;
+
+
+    private View Liner1;
+    private View Liner2;
+
 
     private LineChart lineChart;
 
@@ -89,6 +95,8 @@ public class ExamHelpActivity extends AppCompatActivity {
 
             }
         });
+        fab.setVisibility(View.GONE);
+        findViewById(R.id.linechart_container).setVisibility(View.GONE);
 
         func1_image = (ImageView) findViewById(R.id.content_BEHE_image1);
         func2_image = (ImageView) findViewById(R.id.content_BEHE_image2);
@@ -108,6 +116,29 @@ public class ExamHelpActivity extends AppCompatActivity {
         func1_text1.setText("会考");
         func1_text2.setText("考试");
 
+        Liner1 = findViewById(R.id.content_BEHE_liner1);
+        Liner2 = findViewById(R.id.content_BEHE_liner2);
+
+        Liner1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ExamHelpActivity.this, WebViewActivity.class);
+                intent.putExtra("url", "file:///android_asset/huikao.html");
+                intent.putExtra("title", "会考");
+                intent.putExtra("image_url", "");
+                startActivity(intent);
+            }
+        });
+        Liner2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ExamHelpActivity.this, WebViewActivity.class);
+                intent.putExtra("url", "file:///android_asset/kaishi.html");
+                intent.putExtra("title", "考试");
+                intent.putExtra("image_url", "");
+                startActivity(intent);
+            }
+        });
 
         lineChart = (LineChart) findViewById(R.id.linechart);
         Description description = new Description();
