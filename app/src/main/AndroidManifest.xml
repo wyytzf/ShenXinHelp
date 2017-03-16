@@ -64,8 +64,12 @@
             android:name=".group.MyPlanActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".group.MakePlanActivity"
+            android:name=".group.LaunchPKActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+        android:name=".group.MakePlanActivity"
+        android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".group.GroupMemberActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -79,19 +83,7 @@
 
         <activity android:name=".com.xd.shenxinhelp.ui.VideoPlayerActivity" />
         <activity android:name=".com.xd.shenxinhelp.ui.LineChartActivity" />
-        <activity
-            android:name=".mySetting.Feedback"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mySetting.AboutActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mySetting.AboutShenxinbangActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".com.xd.shenxinhelp.ui.WebViewActivity"
-            android:label="@string/title_activity_web_view"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".mySetting.Feedback" />
     </application>
 
 </manifest>
