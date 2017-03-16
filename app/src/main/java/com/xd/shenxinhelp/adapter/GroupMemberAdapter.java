@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.xd.shenxinhelp.GlideImageLoader;
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.listener.ListItemClickListener;
 import com.xd.shenxinhelp.model.User;
+import com.youth.banner.loader.ImageLoaderInterface;
 
 import java.util.List;
 
@@ -20,18 +22,19 @@ import java.util.List;
 public class GroupMemberAdapter extends MyBaseAdapter{
     protected Context context;
     private List<User> datas = null;
-
+    private ImageLoaderInterface imageLoader;
     public GroupMemberAdapter(List<User> dataSet, Context context, ListItemClickListener listener) {
         this.context = context;
         this.datas = dataSet;
         setItemListener(listener);
         disableLoadMore();
         setIsenablePlaceHolder(false);
+        imageLoader=new GlideImageLoader();
     }
 
     @Override
     protected int getDataCount() {
-        return datas.size();
+        return datas.size()+1;
     }
 
     @Override
@@ -60,9 +63,17 @@ public class GroupMemberAdapter extends MyBaseAdapter{
 
         @Override
         void setData(final int position) {
+            if(position==datas.size()){
+                title.setText("添加");
+                des.setVisibility(View.GONE);
+                imageView.setImageResource(R.drawable.timg);
+                return;
+            }
             final User single = datas.get(position);
             title.setText(single.getName());
-            des.setVisibility(View.GONE);
+            des.setText("健康度："+single.getHealth_degree());
+            imageLoader.displayImage(context, single.getPhotoUrl(), imageView);
+//            des.setVisibility(View.GONE);
             //des.setText(single.getDescription());
 
 

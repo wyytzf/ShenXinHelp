@@ -1,17 +1,14 @@
 package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
-import android.os.Handler;
-import android.os.Message;
-import android.provider.MediaStore;
+import android.content.SharedPreferences;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,21 +16,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.shuyu.gsyvideoplayer.GSYPreViewManager;
-import com.shuyu.gsyvideoplayer.GSYVideoManager;
-import com.shuyu.gsyvideoplayer.listener.StandardVideoAllCallBack;
+import com.shuyu.gsyvideoplayer.GSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
-import com.xd.shenxinhelp.GlideImageLoader;
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
-import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ConnectUtil;
-import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.HttpUtil;
-import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ResponseHandler;
 import com.xd.shenxinhelp.model.HelpContent;
+import com.xd.shenxinhelp.netutils.OkHttp;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,8 +33,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import wseemann.media.FFmpegMediaMetadataRetriever;
-
 public class HelpContentActivity extends AppCompatActivity {
 
 
@@ -51,94 +40,32 @@ public class HelpContentActivity extends AppCompatActivity {
     private HelpContentAdapter helpContentAdapter;
     private OrientationUtils orientationutils;
     private String buwei;
+    private String type;
     private List<HelpContent> contentList;
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            // 要做的事情
-            //dismissRequestDialog();
-            switch (msg.what) {
-                case 1: {
+    private String userID;
 
-                    try {
-                        JSONObject result = new JSONObject((String) msg.obj);
-                        JSONArray array = result.getJSONArray("exercisees");
-                        JSONObject object;
-                        contentList.clear();
-
-                        for (int i = 0; i < array.length(); i++) {
-                            HelpContent helpContent=new HelpContent();
-                            object = array.getJSONObject(i);
-                            helpContent.setId(object.getString("id"));
-                            helpContent.setBuwei(object.getString("buwei"));
-                            helpContent.setName(object.getString("name"));
-                            helpContent.setReosurce_url(object.getString("reosurce_url"));
-                            helpContent.setTotal_time(object.getString("total_time"));
-                            helpContent.setFee_cridits(object.getString("fee_cridits"));
-                            helpContent.setHeat(object.getString("heat"));
-                            helpContent.setGet_degree(object.getString("get_degree"));
-                            helpContent.setDiffculty(object.getString("diffculty"));
-                            helpContent.setWebUrl(object.getString("webUrl"));
-                            helpContent.setHasBuy(object.getString("hasBuy"));
-                            contentList.add(helpContent);
-
-                        }
-                        if (contentList == null||contentList.size()==0) {
-                            contentList.clear();
-                            for (int i = 0; i < 5; i++) {
-                                HelpContent helpContent=new HelpContent();
-                                helpContent.setId(i+"");
-                                helpContent.setBuwei("手臂");
-                                helpContent.setName("燃烧吧，手臂");
-                                helpContent.setReosurce_url("http://baobab.wdjcdn.com/14564977406580.mp4");
-                                helpContent.setTotal_time("5分钟");
-                                helpContent.setFee_cridits("0");
-                                helpContent.setHeat("100卡");
-                                helpContent.setGet_degree("3");
-                                helpContent.setDiffculty("3");
-                                helpContent.setWebUrl("");
-                                helpContent.setHasBuy("1");
-                                contentList.add(helpContent);
-                            }
-                        }
-                        helpContentAdapter.notifyDataSetChanged();
-
-//                        recyclerVie
-                    } catch (JSONException e) {
-                        Log.e("mmm", e.getMessage());
-                    }
-                }
-
-                break;
-
-                case -1: {
-
-                    break;
-                }
-                default:
-                    break;
-            }
-
-            super.handleMessage(msg);
-        }
-    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help_content);
+        SharedPreferences sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
+        userID = sp.getString("userid", "1");
+
+
         Intent intent = getIntent();
-        buwei=intent.getStringExtra("buwei");
+        buwei = intent.getStringExtra("buwei");
+        type = intent.getStringExtra("type");
         contentList = new ArrayList<HelpContent>();
-        getHelpContent();
+
         initView();
+        Request();
 
     }
 
     private void initView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-
         setSupportActionBar(toolbar);
-
 
         helpContentAdapter = new HelpContentAdapter(contentList);
         recyclerView = (RecyclerView) findViewById(R.id.help_content_recyclerview);
@@ -148,13 +75,22 @@ public class HelpContentActivity extends AppCompatActivity {
 
     class HelpContentAdapter extends RecyclerView.Adapter<HelpContentAdapter.MyViewHolder> {
         List<HelpContent> helpContents;
-        HelpContentAdapter(List<HelpContent> helpContents){
-            this.helpContents= helpContents;
+
+        HelpContentAdapter(List<HelpContent> helpContents) {
+            this.helpContents = helpContents;
         }
+
+        public void update(List<HelpContent> helpContents) {
+            this.helpContents = helpContents;
+            this.notifyDataSetChanged();
+        }
+
+
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View inflate = LayoutInflater.from(HelpContentActivity.this).inflate(R.layout.item_help_content, parent, false);
             MyViewHolder viewHolder = new MyViewHolder(inflate);
+
             return viewHolder;
         }
 
@@ -162,15 +98,17 @@ public class HelpContentActivity extends AppCompatActivity {
         public void onBindViewHolder(MyViewHolder holder, int position) {
 //            Glide.with(HelpContentActivity.this).
 //                    load("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488273623&di=ea34c54ab63f18a6ae02b94d99d70b25&imgtype=jpg&er=1&src=http%3A%2F%2Fwww.bz55.com%2Fuploads%2Fallimg%2F150318%2F140-15031PUR6.jpg").into(holder.imageView);
-            HelpContent helpContent=helpContents.get(position);
+            HelpContent helpContent = helpContents.get(position);
             holder.textView.setText(helpContent.getName());
             holder.standardGSYVideoPlayer.setUp(helpContent.getReosurce_url(), true, "");
             holder.totalTime.setText(helpContent.getTotal_time());
             holder.calorie.setText(helpContent.getHeat());
-            float numStars= Float.parseFloat(helpContent.getDiffculty());
+            float numStars = Float.parseFloat(helpContent.getDiffculty());
             holder.difficult.setRating(numStars);
-            //holder.standardGSYVideoPlayer.setUp("http://baobab.wdjcdn.com/14564977406580.mp4", true, "");
-
+            holder.standardGSYVideoPlayer.setUp(helpContent.getWebUrl(), true, "");
+            ImageView imageview = new ImageView(HelpContentActivity.this);
+            Glide.with(HelpContentActivity.this).load(helpContent.getReosurce_url()).into(imageview);
+            holder.standardGSYVideoPlayer.setThumbImageView(imageview);
         }
 
 
@@ -186,57 +124,60 @@ public class HelpContentActivity extends AppCompatActivity {
             TextView totalTime;
             TextView calorie;
             RatingBar difficult;
+
             public MyViewHolder(View itemView) {
                 super(itemView);
                 standardGSYVideoPlayer = (StandardGSYVideoPlayer) itemView.findViewById(R.id.item_imageview);
 //                imageView = (ImageView) itemView.findViewById(R.id.item_imageview);
                 textView = (TextView) itemView.findViewById(R.id.item_textview_time);
-                totalTime =(TextView) itemView.findViewById(R.id.item_textview_time);
-                calorie =(TextView) itemView.findViewById(R.id.item_textview_calorie);
-                difficult=(RatingBar)itemView.findViewById(R.id.item_ratingbar_difficult);
+                totalTime = (TextView) itemView.findViewById(R.id.item_textview_time);
+                calorie = (TextView) itemView.findViewById(R.id.item_textview_calorie);
+                difficult = (RatingBar) itemView.findViewById(R.id.item_ratingbar_difficult);
             }
         }
     }
-    public void getHelpContent() {
 
-
-        new Thread() {
+    public void Request() {
+        OkHttp.get(AppUtil.GetExerciseItem + "buwei=" + buwei + "&userID=" + userID + "&type=" + type, new OkHttp.ResultCallBack() {
             @Override
-            public void run() {
-                final Message message = new Message();
-                String urlget = AppUtil.GetExerciseItem + "?type=1&buwei=" + buwei;
+            public void onError(String str, Exception e) {
 
-                HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
-                    @Override
-                    public void onSuccess(byte[] response) {
-                        String jsonStr = new String(response);
-                        try {
-                            JSONObject result = new JSONObject(jsonStr);
-                            String status = result.getString("reCode");
-                            if (status.equalsIgnoreCase("success")) {
-                                message.obj = jsonStr;
-                                message.what = 1;
-                                handler.sendMessage(message);
-                            } else {
-                                message.what = -1;//失败
-                                message.obj = "获取失败";
-                                handler.sendMessage(message);
-                            }
-                        } catch (JSONException e) {
-                            Log.e("mmm", e.getMessage());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Throwable e) {
-                        message.what = -1;
-                        message.obj = "获取数据失败";
-                        handler.sendMessage(message);
-                    }
-                });
             }
-        }.start();
+
+            @Override
+            public void onResponse(String str) {
+                ParseResponse(str);
+                helpContentAdapter.update(contentList);
+            }
+        });
+
     }
+
+    private void ParseResponse(String str) {
+        try {
+            JSONObject js = new JSONObject(str);
+            JSONArray ja = js.getJSONArray("exercisees");
+            for (int i = 0; i < ja.length(); i++) {
+                JSONObject jb = ja.getJSONObject(i);
+                HelpContent content = new HelpContent();
+                content.setId(jb.getString("id"));
+                content.setBuwei(jb.getString("buwei"));
+                content.setName(jb.getString("title"));
+                content.setReosurce_url(jb.getString("reosurce_url"));
+                content.setTotal_time(jb.getString("total_time"));
+                content.setFee_cridits(jb.getString("fee_cridits"));
+                content.setHeat(jb.getString("heat"));
+                content.setGet_degree(jb.getString("get_degree"));
+                content.setDiffculty(jb.getString("diffculty"));
+                content.setWebUrl(jb.getString("webUrl"));
+                content.setHasBuy(jb.getString("hasBuy"));
+                contentList.add(content);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
@@ -244,5 +185,11 @@ public class HelpContentActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause() {
+        GSYVideoPlayer.releaseAllVideos();
+        super.onPause();
     }
 }

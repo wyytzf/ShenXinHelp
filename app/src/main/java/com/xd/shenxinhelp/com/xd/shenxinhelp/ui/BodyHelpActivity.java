@@ -42,6 +42,11 @@ import java.util.Calendar;
 
 public class BodyHelpActivity extends AppCompatActivity {
 
+    private static final String TUIBU = "2";
+    private static final String FUBU = "1";
+    private static final String SHOUBI = "0";
+    private static final String QUANSHEN = "3";
+
     private ImageView func1_image;
     private ImageView func2_image;
     private ImageView func3_image;
@@ -65,6 +70,15 @@ public class BodyHelpActivity extends AppCompatActivity {
     private ArrayList<BodyItem> news_list;
     private String userID;
 
+    private View news1;
+    private ImageView news1_image;
+    private TextView news1_text;
+
+    private View news2;
+    private ImageView news2_image;
+    private TextView news2_text;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +89,6 @@ public class BodyHelpActivity extends AppCompatActivity {
 
 
         initView();
-
         RequestRecommendar();
         RequestLineChart();
 
@@ -123,7 +136,8 @@ public class BodyHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BodyHelpActivity.this, HelpContentActivity.class);
-                intent.putExtra("buwei", "3");
+                intent.putExtra("buwei", TUIBU);
+                intent.putExtra("type", TYPE);
                 startActivity(intent);
             }
         });
@@ -131,7 +145,8 @@ public class BodyHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BodyHelpActivity.this, HelpContentActivity.class);
-                intent.putExtra("buwei", "2");
+                intent.putExtra("buwei", FUBU);
+                intent.putExtra("type", TYPE);
                 startActivity(intent);
             }
         });
@@ -139,7 +154,8 @@ public class BodyHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BodyHelpActivity.this, HelpContentActivity.class);
-                intent.putExtra("buwei", "1");
+                intent.putExtra("buwei", SHOUBI);
+                intent.putExtra("type", TYPE);
                 startActivity(intent);
             }
         });
@@ -147,7 +163,8 @@ public class BodyHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BodyHelpActivity.this, HelpContentActivity.class);
-                intent.putExtra("buwei", "4");
+                intent.putExtra("buwei", QUANSHEN);
+                intent.putExtra("type", TYPE);
                 startActivity(intent);
             }
         });
@@ -185,6 +202,16 @@ public class BodyHelpActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        news1 = findViewById(R.id.body_news_1);
+        news1_image = (ImageView) findViewById(R.id.body_news1_image);
+        news1_text = (TextView) findViewById(R.id.body_news1_text);
+
+        news2 = findViewById(R.id.body_news_2);
+        news2_image = (ImageView) findViewById(R.id.body_news2_image);
+        news2_text = (TextView) findViewById(R.id.body_news2_text);
+
+
     }
 
     private void setData(int count, float range) {
@@ -242,6 +269,7 @@ public class BodyHelpActivity extends AppCompatActivity {
         }
     }
 
+    ///  首页新闻
     private void RequestRecommendar() {
         OkHttp.get(AppUtil.GETEXERCISETOFOUR + "type=" + TYPE, new OkHttp.ResultCallBack() {
             @Override
@@ -254,12 +282,17 @@ public class BodyHelpActivity extends AppCompatActivity {
             public void onResponse(String str) {
                 // 已经是主线程了，直接操作
                 parseRecommendar(str);
+                fillViews();
             }
         });
 
     }
 
+    private void fillViews() {
+    }
 
+
+    // 统计图表
     private void RequestLineChart() {
         OkHttp.get(AppUtil.GETDOEXERCISEINFO + "userID=" + userID, new OkHttp.ResultCallBack() {
             @Override

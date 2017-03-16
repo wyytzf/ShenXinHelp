@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.View.MyGridDivider;
@@ -56,8 +57,8 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
                         for (int i = 0; i < array.length(); i++) {
                             User user=new User();
                             object = array.getJSONObject(i);
-
-                            user.setName(object.getString("userid"));
+                            user.setName(object.getString("account"));
+                            user.setUid(object.getString("userid"));
                             user.setSex(object.getString("sex"));
                             user.setAge(object.getString("age"));
                             user.setHeight(object.getString("height"));
@@ -110,14 +111,14 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
         recyclerView.setPadding(0,0,0, (int) getResources().getDimension(R.dimen.BottomBarHeight));
         listview=(SwipeRefreshLayout)findViewById(R.id.listview_group_member);
         adapter = new GroupMemberAdapter(datas,GroupMemberActivity.this, GroupMemberActivity.this);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 5);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 4);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
                 if (adapter.getItemViewType(position) == 0) {
-                    return 1;
+                    return 4;
                 } else {
-                    return 5;
+                    return 1;
                 }
             }
         });
@@ -186,7 +187,9 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
     }
     public void onListItemClick(View v, int position) {
         //openApi = datas.get(position);
-
+        if (position==datas.size()){
+            Toast.makeText(this,"tianjia",Toast.LENGTH_SHORT).show();
+        }
 
     }
     private void testData() {

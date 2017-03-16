@@ -7,7 +7,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,7 +33,6 @@ public class Feedback extends AppCompatActivity {
     private Dialog mDialog=null;
     private SharedPreferences sp;
     private String userID;
-    private String content;
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -67,10 +68,13 @@ public class Feedback extends AppCompatActivity {
     void initData(){
         sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
         userID=sp.getString("account", "");
-        content=et_feedback_content.getText().toString();
     }
 
     void initViews(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_feedback);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        setSupportActionBar(toolbar);
+
         et_feedback_content = (EditText)findViewById(R.id.feefback_content);
         bt_submit = (Button) findViewById(R.id.feedback_submit);
         bt_submit.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +103,7 @@ public class Feedback extends AppCompatActivity {
             public void run() {
                 super.run();
                 final Message message= new Message();
-                String url= AppUtil.Feedback + "?userID="+userID+"&content="+content;
+                String url= AppUtil.Feedback + "?userID="+userID+"&content="+et_feedback_content.getText().toString();
                 HttpUtil.get(getApplicationContext(), url, new ResponseHandler() {
                     @Override
                     public void onSuccess(byte[] response) {
@@ -108,11 +112,11 @@ public class Feedback extends AppCompatActivity {
                             JSONObject result = new JSONObject(jsonStr);
                             String status = result.getString("reCode");
                             if (status.equalsIgnoreCase("SUCCESS")) {
-                                message.what = 1;//提交成功
+                                message.what = 1;
                                 message.obj = "提交成功";
                                 handler.sendMessage(message);
                             } else {
-                                message.what = -1;//失败
+                                message.what = -1;
                                 message.obj = "提交失败";
                                 handler.sendMessage(message);
                             }
@@ -133,22 +137,14 @@ public class Feedback extends AppCompatActivity {
 
     }
 
-    /*public void showRequestDialog() {
-        if (mDialog != null) {
-            mDialog.dismiss();
-            mDialog = null;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            finish();
         }
-        mDialog = DialogFactory.creatRequestDialog(Feedback.this, "正在提交...");
-        mDialog.show();
+        return super.onOptionsItemSelected(item);
     }
-
-    public void dismissRequestDialog() {
-        if (mDialog != null) {
-            mDialog.dismiss();
-            mDialog = null;
-        }
-    }*/
-
 
 
 }

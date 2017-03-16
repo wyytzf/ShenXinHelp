@@ -7,7 +7,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -29,11 +33,17 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.xd.shenxinhelp.GlideImageLoader;
 import com.xd.shenxinhelp.R;
+import com.xd.shenxinhelp.View.MyGridDivider;
+import com.xd.shenxinhelp.adapter.GridViewAdapter;
 import com.xd.shenxinhelp.adapter.GroupLittleGoalListAdapter;
+import com.xd.shenxinhelp.adapter.GroupMemberAdapter;
+import com.xd.shenxinhelp.adapter.MyBaseAdapter;
+import com.xd.shenxinhelp.adapter.RankAdapterMy;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ConnectUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.HttpUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ResponseHandler;
+import com.xd.shenxinhelp.listener.ListItemClickListener;
 import com.xd.shenxinhelp.model.HelpContent;
 import com.xd.shenxinhelp.model.LittleGoal;
 import com.xd.shenxinhelp.model.Plan;
@@ -52,7 +62,7 @@ import java.util.List;
  * Created by MMY on 2017/2/14.
  */
 
-public class GroupDetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class GroupDetailActivity extends AppCompatActivity implements View.OnClickListener,ListItemClickListener {
     private GridView gridView;
     private List<User> userList;
     private Button btnBack, btnMore;
@@ -66,10 +76,11 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
     private String userID;
     private String groupID;
     private String type;
+    private SwipeRefreshLayout memberlistview;
     private GridViewAdapter gridAdapter;
-    private ImageView image1, image2, image3, image4, image5;
-    private LinearLayout addView;
-    private ImageLoaderInterface imageLoader;
+//    private ImageView image1, image2, image3, image4, image5;
+//    private LinearLayout addView;
+//    private ImageLoaderInterface imageLoader;
     private List<Post> postList = new ArrayList<Post>();
     private TextView noPosts;
     private Handler handler = new Handler() {
@@ -89,7 +100,8 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                             User user = new User();
                             object = array.getJSONObject(i);
 
-                            user.setName(object.getString("userid"));
+                            user.setUid(object.getString("userid"));
+                            user.setName(object.getString("account"));
                             user.setSex(object.getString("sex"));
                             user.setAge(object.getString("age"));
                             user.setHeight(object.getString("height"));
@@ -102,60 +114,60 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                             userList.add(user);
 
                         }
-                        imageLoader = new GlideImageLoader();
-
-                        if (userList == null || userList.size() == 0) {
-                            image1.setVisibility(View.INVISIBLE);
-                            image2.setVisibility(View.INVISIBLE);
-                            image3.setVisibility(View.INVISIBLE);
-                            image4.setVisibility(View.INVISIBLE);
-                            image5.setVisibility(View.INVISIBLE);
-                        } else if (userList.size() == 1) {
-                            image1.setVisibility(View.VISIBLE);
-                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
-                            image2.setVisibility(View.INVISIBLE);
-                            image3.setVisibility(View.INVISIBLE);
-                            image4.setVisibility(View.INVISIBLE);
-                            image5.setVisibility(View.INVISIBLE);
-                        } else if (userList.size() == 2) {
-                            image1.setVisibility(View.VISIBLE);
-                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
-                            image2.setVisibility(View.VISIBLE);
-                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image2);
-                            image3.setVisibility(View.INVISIBLE);
-                            image4.setVisibility(View.INVISIBLE);
-                            image5.setVisibility(View.INVISIBLE);
-                        } else if (userList.size() == 3) {
-                            image1.setVisibility(View.VISIBLE);
-                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
-                            image2.setVisibility(View.VISIBLE);
-                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image2);
-                            image3.setVisibility(View.VISIBLE);
-                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image3);
-                            image4.setVisibility(View.INVISIBLE);
-                            image5.setVisibility(View.INVISIBLE);
-                        } else if (userList.size() == 4) {
-                            image1.setVisibility(View.VISIBLE);
-                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
-                            image2.setVisibility(View.VISIBLE);
-                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image2);
-                            image3.setVisibility(View.VISIBLE);
-                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image3);
-                            image4.setVisibility(View.VISIBLE);
-                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image4);
-                            image5.setVisibility(View.INVISIBLE);
-                        } else if (userList.size() == 5) {
-                            image1.setVisibility(View.VISIBLE);
-                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
-                            image2.setVisibility(View.VISIBLE);
-                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image2);
-                            image3.setVisibility(View.VISIBLE);
-                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image3);
-                            image4.setVisibility(View.VISIBLE);
-                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image4);
-                            image5.setVisibility(View.VISIBLE);
-                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image5);
-                        }
+//                        imageLoader = new GlideImageLoader();
+                        gridAdapter.notifyDataSetChanged();
+//                        if (userList == null || userList.size() == 0) {
+//                            image1.setVisibility(View.INVISIBLE);
+//                            image2.setVisibility(View.INVISIBLE);
+//                            image3.setVisibility(View.INVISIBLE);
+//                            image4.setVisibility(View.INVISIBLE);
+//                            image5.setVisibility(View.INVISIBLE);
+//                        } else if (userList.size() == 1) {
+//                            image1.setVisibility(View.VISIBLE);
+//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
+//                            image2.setVisibility(View.INVISIBLE);
+//                            image3.setVisibility(View.INVISIBLE);
+//                            image4.setVisibility(View.INVISIBLE);
+//                            image5.setVisibility(View.INVISIBLE);
+//                        } else if (userList.size() == 2) {
+//                            image1.setVisibility(View.VISIBLE);
+//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
+//                            image2.setVisibility(View.VISIBLE);
+//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image2);
+//                            image3.setVisibility(View.INVISIBLE);
+//                            image4.setVisibility(View.INVISIBLE);
+//                            image5.setVisibility(View.INVISIBLE);
+//                        } else if (userList.size() == 3) {
+//                            image1.setVisibility(View.VISIBLE);
+//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
+//                            image2.setVisibility(View.VISIBLE);
+//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image2);
+//                            image3.setVisibility(View.VISIBLE);
+//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image3);
+//                            image4.setVisibility(View.INVISIBLE);
+//                            image5.setVisibility(View.INVISIBLE);
+//                        } else if (userList.size() == 4) {
+//                            image1.setVisibility(View.VISIBLE);
+//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
+//                            image2.setVisibility(View.VISIBLE);
+//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image2);
+//                            image3.setVisibility(View.VISIBLE);
+//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image3);
+//                            image4.setVisibility(View.VISIBLE);
+//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image4);
+//                            image5.setVisibility(View.INVISIBLE);
+//                        } else if (userList.size() == 5) {
+//                            image1.setVisibility(View.VISIBLE);
+//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
+//                            image2.setVisibility(View.VISIBLE);
+//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image2);
+//                            image3.setVisibility(View.VISIBLE);
+//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image3);
+//                            image4.setVisibility(View.VISIBLE);
+//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image4);
+//                            image5.setVisibility(View.VISIBLE);
+//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image5);
+//                        }
 
 
 //                        recyclerVie
@@ -204,7 +216,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
 
         listView = (ListView) findViewById(R.id.lv_comment_list);
         headerView = (View) LayoutInflater.from(GroupDetailActivity.this).inflate(R.layout.activity_group_detail_header, null);
-        gridView = (GridView) headerView.findViewById(R.id.grid);
+//        gridView = (GridView) headerView.findViewById(R.id.grid);
 //        btnBack = (Button) findViewById(R.id.btn_back);
 //        btnBack.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -213,50 +225,20 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
 //            }
 //        });
 //        btnMore = (Button) findViewById(R.id.btn_more);
-        image1 = (ImageView) headerView.findViewById(R.id.ItemImage1);
-        image2 = (ImageView) headerView.findViewById(R.id.ItemImage2);
-        image3 = (ImageView) headerView.findViewById(R.id.ItemImage3);
-        image4 = (ImageView) headerView.findViewById(R.id.ItemImage4);
-        image5 = (ImageView) headerView.findViewById(R.id.ItemImage5);
-        addView = (LinearLayout) headerView.findViewById(R.id.addImage);
-        addView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(GroupDetailActivity.this, GroupMemberActivity.class);
-                startActivity(intent);
-            }
-        });
-//        LayoutInflater inflater = LayoutInflater.from(this);
-//        // 引入窗口配置文件
-//        View view = inflater.inflate(R.layout.popmenu, null);
-//        Button myPlan = (Button) view.findViewById(R.id.my_plan);
-//        Button makePlan = (Button) view.findViewById(R.id.make_plan);
-//        Button makePk = (Button) view.findViewById(R.id.make_pk);
-//        myPlan.setOnClickListener(this);
-//        makePlan.setOnClickListener(this);
-//        makePk.setOnClickListener(this);
-//
-//        // 创建PopupWindow对象
-//        pop = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, false);
-//        pop.setBackgroundDrawable(new BitmapDrawable());
-//        //设置点击窗口外边窗口消失
-//        pop.setOutsideTouchable(true);
-//        // 设置此参数获得焦点，否则无法点击
-//        pop.setFocusable(true);
-//        btnMore.setOnClickListener(new View.OnClickListener() {
-//
+//        image1 = (ImageView) headerView.findViewById(R.id.ItemImage1);
+//        image2 = (ImageView) headerView.findViewById(R.id.ItemImage2);
+//        image3 = (ImageView) headerView.findViewById(R.id.ItemImage3);
+//        image4 = (ImageView) headerView.findViewById(R.id.ItemImage4);
+//        image5 = (ImageView) headerView.findViewById(R.id.ItemImage5);
+//        addView = (LinearLayout) headerView.findViewById(R.id.addImage);
+//        addView.setOnClickListener(new View.OnClickListener() {
 //            @Override
-//            public void onClick(View v) {
-//                if (pop.isShowing()) {
-//                    // 隐藏窗口，如果设置了点击窗口外小时即不需要此方式隐藏
-//                    pop.dismiss();
-//                } else {
-//                    // 显示窗口
-//                    pop.showAsDropDown(v);
-//                }
-//
+//            public void onClick(View view) {
+//                Intent intent = new Intent(GroupDetailActivity.this, GroupMemberActivity.class);
+//                startActivity(intent);
 //            }
 //        });
+
 
         llRank = (LinearLayout) headerView.findViewById(R.id.ll_rank);
         llRank.setOnClickListener(new View.OnClickListener() {
@@ -266,14 +248,48 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                 startActivity(intent);
             }
         });
-        listView.addHeaderView(headerView);
-
         userList = new ArrayList<User>();
         goalList = new ArrayList<LittleGoal>();
-        //setData();
-        getGroupMember();
+
+
+        setData();
+        //getGroupMember();
         //setGridView();
-        initData();
+        RecyclerView recyclerView = (RecyclerView) headerView.findViewById(R.id.recycler_view_member);
+        //设置可以滑出底栏
+        recyclerView.setClipToPadding(false);
+        recyclerView.setPadding(0,0,0, (int) getResources().getDimension(R.dimen.BottomBarHeight));
+        memberlistview=(SwipeRefreshLayout)headerView.findViewById(R.id.listview_member);
+        gridAdapter = new GridViewAdapter(userList,this, this);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 6);
+        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if (gridAdapter.getItemViewType(position) == 0) {
+                    return 6;
+                } else {
+                    return 1;
+                }
+            }
+        });
+        memberlistview.setColorSchemeResources(R.color.red_light, R.color.green_light, R.color.blue_light, R.color.orange_light);
+//        recyclerView.addItemDecoration(new MyGridDivider(1,ContextCompat.getColor(this,R.color.colorDivider)));
+        recyclerView.setLayoutManager(layoutManager);
+
+        recyclerView.setAdapter(gridAdapter);
+
+        memberlistview.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                memberlistview.setRefreshing(false);
+            }
+        });
+
+        listView.addHeaderView(headerView);
+        getGroupMember();
+
+
+        //initData();
 //        adapter = new GroupLittleGoalListAdapter(getApplicationContext(),
 //                goalList);
 //        listView.setAdapter(adapter);
@@ -369,7 +385,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                 final Message message = new Message();
 
                 //String urlget = ConnectUtil.GetRingMember + "?ringID="+groupID+"&type="+type+"&top=5&userID=" + userID;
-                String urlget =  AppUtil.GetRingMember  + "?ringID=7&type=2&top=5";
+                String urlget =  AppUtil.GetRingMember  + "?ringID=7&type=2&top=6";
                 HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
                     @Override
                     public void onSuccess(byte[] response) {
@@ -430,95 +446,34 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
      * 设置GirdView参数，绑定数据
      */
     private void setGridView() {
-        int size = userList.size();
-        int length = 55;
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        float density = dm.density;
-        int gridviewWidth = (int) (size * (length + 4) * density);
-        int itemWidth = (int) (length * density);
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                gridviewWidth, LinearLayout.LayoutParams.MATCH_PARENT);
-        gridView.setLayoutParams(params); // 设置GirdView布局参数,横向布局的关键
-        gridView.setColumnWidth(itemWidth); // 设置列表项宽
-        gridView.setHorizontalSpacing(5); // 设置列表项水平间距
-        gridView.setStretchMode(GridView.NO_STRETCH);
-        gridView.setNumColumns(size); // 设置列数量=列表集合数
+//        int size = userList.size();
+//        Log.i("mmm","---------"+size);
+//        int length = 55;
+//        DisplayMetrics dm = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getMetrics(dm);
+//        float density = dm.density;
+//        int gridviewWidth = (int) (size * (length + 4) * density);
+//        int itemWidth = (int) (length * density);
+//
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+//                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+//        gridView.setLayoutParams(params); // 设置GirdView布局参数,横向布局的关键
+//        gridView.setColumnWidth(itemWidth); // 设置列表项宽
+//        gridView.setHorizontalSpacing(5); // 设置列表项水平间距
+//        gridView.setStretchMode(GridView.NO_STRETCH);
+//        gridView.setNumColumns(size); // 设置列数量=列表集合数
 //        gridView.add
-        gridAdapter = new GridViewAdapter(getApplicationContext(),
-                userList);
-        gridView.setAdapter(adapter);
+//        gridAdapter = new GridViewAdapter(this,userList);
+//        gridView.setAdapter(gridAdapter);
     }
 
     @Override
     public void onClick(View view) {
-//        Intent intent;
-//        switch (view.getId()) {
-//            case R.id.my_plan:
 //
-//                if (pop.isShowing()) {
-//                    // 隐藏窗口，如果设置了点击窗口外小时即不需要此方式隐藏
-//                    pop.dismiss();
-//                }
-//                intent = new Intent(GroupDetailActivity.this, MyPlanActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.make_plan:
-//
-//                if (pop.isShowing()) {
-//                    // 隐藏窗口，如果设置了点击窗口外小时即不需要此方式隐藏
-//                    pop.dismiss();
-//                }
-//                intent = new Intent(GroupDetailActivity.this, MakePlanActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.make_pk:
-//                Toast.makeText(getApplicationContext(), "3333", Toast.LENGTH_SHORT).show();
-//                if (pop.isShowing()) {
-//                    // 隐藏窗口，如果设置了点击窗口外小时即不需要此方式隐藏
-//                    pop.dismiss();
-//                }
-//                break;
-//        }
 
     }
 
-    /**
-     * GirdView 数据适配器
-     */
-    public class GridViewAdapter extends BaseAdapter {
-        Context context;
-        List<User> list;
 
-        public GridViewAdapter(Context _context, List<User> _list) {
-            this.list = _list;
-            this.context = _context;
-        }
-
-        @Override
-        public int getCount() {
-            return list.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return list.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater layoutInflater = LayoutInflater.from(context);
-            convertView = layoutInflater.inflate(R.layout.item_grid_view, null);
-            User city = list.get(position);
-            return convertView;
-        }
-    }
 
 
     @Override
@@ -543,5 +498,11 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
+    }
+    public void onListItemClick(View v, int position) {
+        //openApi = datas.get(position);
+
+        Intent intent = new Intent(GroupDetailActivity.this, GroupMemberActivity.class);
+        startActivity(intent);
     }
 }

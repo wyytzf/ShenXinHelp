@@ -39,7 +39,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
     compile 'com.github.CarGuo:GSYVideoPlayer:v1.6.0'
     compile 'com.github.wseemann:FFmpegMediaMetadataRetriever:1.0.14'
-    compile 'com.android.support.constraint:constraint-layout:+'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 }
 repositories {

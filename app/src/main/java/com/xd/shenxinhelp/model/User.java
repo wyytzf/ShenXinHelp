@@ -6,6 +6,7 @@ package com.xd.shenxinhelp.model;
 
 public class User {
     private String name;
+    private String uid;
     private String photoUrl;
     private String age;
     private String sex;
@@ -16,6 +17,14 @@ public class User {
     private String level;
     private String class_id;
     private String school_id;
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getUid() {
+        return uid;
+    }
 
     public void setAge(String age) {
         this.age = age;
