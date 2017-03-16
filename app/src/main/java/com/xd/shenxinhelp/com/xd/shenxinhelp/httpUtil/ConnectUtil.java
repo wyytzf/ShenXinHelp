@@ -69,7 +69,18 @@ public class ConnectUtil {
 		}
 		return false;
 	}
+	public static String encodeParameters(String str) {
+		StringBuffer buf = new StringBuffer();
+		try {
+			if (null != str) {
 
+				buf.append(URLEncoder.encode(str,
+						"utf-8"));
+			}
+		} catch (java.io.UnsupportedEncodingException neverHappen) {
+		}
+		return buf.toString();
+	}
 
 
 

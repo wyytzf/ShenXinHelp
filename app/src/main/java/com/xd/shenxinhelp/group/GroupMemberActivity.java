@@ -1,11 +1,15 @@
 package com.xd.shenxinhelp.group;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +18,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.xd.shenxinhelp.R;
@@ -24,6 +29,7 @@ import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ConnectUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.HttpUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ResponseHandler;
 import com.xd.shenxinhelp.listener.ListItemClickListener;
+import com.xd.shenxinhelp.model.GroupDetail;
 import com.xd.shenxinhelp.model.User;
 
 import org.json.JSONArray;
@@ -41,6 +47,10 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
     private List<User> datas = null;
     private GroupMemberAdapter adapter = null;
     private SwipeRefreshLayout listview;
+    private GroupDetail groupDetail;
+    private EditText editText;
+    AlertDialog.Builder builder;
+    AlertDialog alertDialog;
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             // 要做的事情
@@ -71,9 +81,9 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
                             datas.add(user);
 
                         }
-                        if (datas==null||datas.size()==0){
-                            testData();
-                        }
+//                        if (datas==null||datas.size()==0){
+//                            testData();
+//                        }
                         //imageLoader = new GlideImageLoader();
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
@@ -82,9 +92,16 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
                 }
 
                 break;
-
+                case 2:
+                    getGroupMember();
+                    break;
                 case -1: {
 
+                    break;
+                }
+                case -2: {
+                    String msssg=(String)msg.obj;
+                    Toast.makeText(getApplicationContext(),msssg,Toast.LENGTH_SHORT).show();
                     break;
                 }
                 default:
@@ -103,6 +120,8 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         datas= new ArrayList<User>();
+        groupDetail= (GroupDetail) getIntent().getSerializableExtra("detail");
+
         getGroupMember();
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_group_member);
@@ -135,6 +154,7 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
                 listview.setRefreshing(false);
             }
         });
+        editText = new EditText(this);
     }
     public void getGroupMember() {
 
@@ -145,7 +165,7 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
                 final Message message = new Message();
 
                 //String urlget = ConnectUtil.GetRingMember + "?ringID="+groupID+"&type="+type+"&top=5&userID=" + userID;
-                String urlget =  AppUtil.GetRingMember  + "?ringID=7&type=2&top=15";
+                String urlget =  AppUtil.GetRingMember  + "?ringID="+groupDetail.getId()+"&type="+groupDetail.getType()+"&top=100";
                 HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
                     @Override
                     public void onSuccess(byte[] response) {
@@ -188,8 +208,43 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
     public void onListItemClick(View v, int position) {
         //openApi = datas.get(position);
         if (position==datas.size()){
-            Toast.makeText(this,"tianjia",Toast.LENGTH_SHORT).show();
+            creatDialog();
+           // Toast.makeText(this,"tianjia",Toast.LENGTH_SHORT).show();
         }
+
+    }
+    private void creatDialog(){
+        if (builder!=null || alertDialog!=null){
+
+            alertDialog.show();
+        }
+        else{
+            builder = new AlertDialog.Builder(this);
+            builder.setTitle("添加小伙伴进圈子");
+            builder.setMessage("输入小伙伴的账号");
+            builder.setView(editText,60,0,60,0);
+            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    if (!editText.getText().toString().trim().equals("")){
+                        save(editText.getText().toString());
+                        dialogInterface.dismiss();
+                    }
+
+                }
+            });
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                    dialogInterface.dismiss();
+                }
+            });
+
+            alertDialog = builder.create();
+            alertDialog.show();
+        }
+
 
     }
     private void testData() {
@@ -211,5 +266,49 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
         datas.add(item);
 
         //cityList.addAll(cityList);
+    }
+    public void save(final String otherID) {
+
+
+
+        new Thread() {
+            @Override
+            public void run() {
+                final Message message = new Message();
+                SharedPreferences sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
+                String userID = sp.getString("userid", "xiaoming");
+                //String urlget = ConnectUtil.GetRingMember + "?ringID="+groupID+"&type="+type+"&top=5&userID=" + userID;
+
+                String urlget =  AppUtil.AddPersonToRing  + "?ringID="+groupDetail.getId()+"&otherAccount="+ConnectUtil.encodeParameters(otherID);
+                HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
+                    @Override
+                    public void onSuccess(byte[] response) {
+                        String jsonStr = new String(response);
+                        try {
+                            JSONObject result = new JSONObject(jsonStr);
+                            String status = result.getString("reCode");
+                            if (status.equalsIgnoreCase("success")) {
+                                message.obj = jsonStr;
+                                message.what = 2;
+                                handler.sendMessage(message);
+                            } else {
+                                message.what = -2;//失败
+                                message.obj = result.getString("message");
+                                handler.sendMessage(message);
+                            }
+                        } catch (JSONException e) {
+                            Log.e("mmm", e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable e) {
+                        message.what = -1;
+                        message.obj = "获取数据失败";
+                        handler.sendMessage(message);
+                    }
+                });
+            }
+        }.start();
     }
 }

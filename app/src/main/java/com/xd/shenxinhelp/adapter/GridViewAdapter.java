@@ -41,7 +41,7 @@ public class GridViewAdapter extends MyBaseAdapter {
 
     @Override
     protected int getDataCount() {
-        return datas.size();
+        return datas.size()+1;
     }
 
     @Override
@@ -66,8 +66,13 @@ public class GridViewAdapter extends MyBaseAdapter {
 
         @Override
         void setData(final int position) {
-            final User single = datas.get(position);
-            imageLoader.displayImage(context, single.getPhotoUrl(), imageView);
+            if (position==datas.size()){
+                imageView.setImageResource(R.drawable.timg);;
+            }
+            else {
+                final User single = datas.get(position);
+                imageLoader.displayImage(context, single.getPhotoUrl(), imageView);
+            }
         }
     }
 

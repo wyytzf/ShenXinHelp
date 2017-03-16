@@ -40,7 +40,7 @@ public class MyPlanActivity extends AppCompatActivity {
     private List<Plan> planList;
     private MyLittlePlanAdapter planAdapter;
 
-
+    String urlget;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +48,10 @@ public class MyPlanActivity extends AppCompatActivity {
 
 
         listView= (ListView)findViewById(R.id.lv_my_plan_list);
-        initData();
+        urlget    = getIntent().getExtras().getString("url");
+        Log.i("mmm",urlget);
+//        getMyPlans();
+//        initData();
 //        adapter = new GroupLittleGoalListAdapter(getApplicationContext(),
 //                goalList);
 //        listView.setAdapter(adapter);
@@ -68,7 +71,7 @@ public class MyPlanActivity extends AppCompatActivity {
             public void run() {
                 final Message message = new Message();
 
-                String urlget =  AppUtil.GetPlanByDate;
+//                String urlget =  AppUtil.GetPlanByDate;
                 HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
                     @Override
                     public void onSuccess(byte[] response) {
