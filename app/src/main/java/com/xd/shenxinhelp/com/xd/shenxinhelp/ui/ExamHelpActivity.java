@@ -1,5 +1,6 @@
 package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.drawable.Drawable;
@@ -26,9 +27,17 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.Utils;
 import com.xd.shenxinhelp.R;
+import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
+import com.xd.shenxinhelp.model.News;
+import com.xd.shenxinhelp.netutils.OkHttp;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class ExamHelpActivity extends AppCompatActivity {
     private ImageView func1_image;
@@ -42,12 +51,30 @@ public class ExamHelpActivity extends AppCompatActivity {
 
     private LineChart lineChart;
 
+    private static final int TYPE = 3;
+
+    private ArrayList<News> news_list;
+    private String userID;
+
+    private View news1;
+    private ImageView news1_image;
+    private TextView news1_text;
+
+    private View news2;
+    private ImageView news2_image;
+    private TextView news2_text;
+
+
+    private List<ImageView> image_list;
+    private List<TextView> text_list;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam);
         initViews();
+        RequestRecommendar();
     }
 
     private void initViews() {
@@ -103,6 +130,23 @@ public class ExamHelpActivity extends AppCompatActivity {
         });
         lineChart.setNoDataText("暂无数据");
         setData(7, 100);
+
+        news1 = findViewById(R.id.body_news_1);
+        news1_image = (ImageView) findViewById(R.id.body_news1_image);
+        news1_text = (TextView) findViewById(R.id.body_news1_text);
+
+        news2 = findViewById(R.id.body_news_2);
+        news2_image = (ImageView) findViewById(R.id.body_news2_image);
+        news2_text = (TextView) findViewById(R.id.body_news2_text);
+
+        text_list = new ArrayList<>();
+        image_list = new ArrayList<>();
+
+        text_list.add(news1_text);
+        text_list.add(news2_text);
+        image_list.add(news1_image);
+        image_list.add(news2_image);
+
     }
 
     private void setData(int count, float range) {
@@ -159,4 +203,75 @@ public class ExamHelpActivity extends AppCompatActivity {
             lineChart.setData(data);
         }
     }
+
+    private void RequestRecommendar() {
+        OkHttp.get(AppUtil.GETEXERCISETOFOUR + "type=" + TYPE, new OkHttp.ResultCallBack() {
+            @Override
+            public void onError(String str, Exception e) {
+                // 已经是主线程了，直接操作
+
+            }
+
+            @Override
+            public void onResponse(String str) {
+                // 已经是主线程了，直接操作
+                parseRecommendar(str);
+                fillViews();
+                initListener();
+            }
+        });
+
+    }
+
+    private void initListener() {
+        news1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ExamHelpActivity.this, WebViewActivity.class);
+                intent.putExtra("url", news_list.get(0).getWebUrl());
+                intent.putExtra("title", news_list.get(0).getTitle());
+                intent.putExtra("image_url", news_list.get(0).getImageUrl());
+                startActivity(intent);
+            }
+        });
+
+        news2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ExamHelpActivity.this, WebViewActivity.class);
+                intent.putExtra("url", news_list.get(1).getWebUrl());
+                intent.putExtra("title", news_list.get(1).getTitle());
+                intent.putExtra("image_url", news_list.get(1).getImageUrl());
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void fillViews() {
+
+        for (int i = 0; i < news_list.size(); i++) {
+            text_list.get(i).setText(news_list.get(i).getTitle());
+            Glide.with(this).load(news_list.get(i).getImageUrl()).into(image_list.get(i));
+        }
+
+    }
+
+    private void parseRecommendar(String str) {
+        news_list = new ArrayList<>();
+        try {
+            JSONObject js = new JSONObject(str);
+            JSONArray ja = js.getJSONArray("news");
+            for (int i = 0; i < ja.length(); i++) {
+                JSONObject jb = ja.getJSONObject(i);
+                News news = new News();
+                news.setTitle(jb.getString("title"));
+                news.setImageUrl(jb.getString("imageUrl"));
+                news.setWebUrl(jb.getString("webUrl"));
+                news_list.add(news);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

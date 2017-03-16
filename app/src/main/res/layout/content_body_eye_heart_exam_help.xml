@@ -156,7 +156,7 @@
                 <ImageView
                     android:id="@+id/body_news1_image"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="80dp"
                     android:layout_centerHorizontal="true"
                     android:src="@mipmap/heart" />
 
@@ -183,7 +183,7 @@
                 <ImageView
                     android:id="@+id/body_news2_image"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="80dp"
                     android:layout_centerHorizontal="true"
                     android:src="@mipmap/heart" />
 
@@ -198,7 +198,7 @@
             </RelativeLayout>
         </TableRow>
 
-        <TableRow>
+        <TableRow android:visibility="gone">
 
             <TextView
                 android:layout_width="match_parent"
