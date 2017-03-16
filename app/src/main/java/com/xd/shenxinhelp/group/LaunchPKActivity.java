@@ -1,5 +1,6 @@
 package com.xd.shenxinhelp.group;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +43,8 @@ public class LaunchPKActivity extends AppCompatActivity {
     private TeamAdapter winerAdapter,loserAdapter;
     private String otherRingTitle="";
     private LinearLayout headers;
+    private Intent previousIntent;
+    private List<List<Team>>  twoTeamList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +55,29 @@ public class LaunchPKActivity extends AppCompatActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         initViews();
-        getPKInformation();
+        initDatas();
 
+    }
+
+    private void initDatas() {
+        previousIntent = getIntent();
+        twoTeamList = (List<List<Team>>)previousIntent.getSerializableExtra("teams");
+        if(previousIntent.getType() !=null){
+            if(previousIntent.getType().equals("PKHistoryActivity")){
+                winerList = twoTeamList.get(0);
+                loserList = twoTeamList.get(1);
+                Log.i("kmj","----winerList---" + winerList.size());
+                Log.i("kmj","----loserList---" + loserList.size());
+                winerAdapter.setList(winerList);
+                loserAdapter.setList(loserList);
+                winerAdapter.notifyDataSetChanged();
+                loserAdapter.notifyDataSetChanged();
+                challengerHeader.setText(winerList.get(0).getSchoolName());
+                talkerHeader.setText(loserList.get(0).getSchoolName());
+            }else{
+                getPKInformation();
+            }
+        }
     }
 
     private void getPKInformation() {

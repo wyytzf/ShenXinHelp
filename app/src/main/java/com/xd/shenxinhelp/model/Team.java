@@ -1,10 +1,12 @@
 package com.xd.shenxinhelp.model;
 
+import java.io.Serializable;
+
 /**
  * Created by koumiaojuan on 2017/3/16.
  */
 
-public class Team {
+public class Team implements Serializable{
     private String account;
     private String headerUrl;
     private int healthDegree;
