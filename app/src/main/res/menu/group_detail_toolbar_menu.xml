@@ -13,4 +13,8 @@
         android:id="@+id/go_pk"
         android:title="发起PK"
         app:showAsAction="never"></item>
+    <item
+        android:id="@+id/pk_history"
+        android:title="PK历史记录"
+        app:showAsAction="never"></item>
 </menu>

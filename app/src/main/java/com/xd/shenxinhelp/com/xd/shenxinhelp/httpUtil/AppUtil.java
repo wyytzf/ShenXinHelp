@@ -46,17 +46,17 @@ public class AppUtil extends Application {
     public static final String GETDOEXERCISEINFO = getBaseUrl() + "GetDoExerciseInfo?";
     public static String GetHomePageImages = getBaseUrl() + "GetHomePageImages";
     public static String GetExerciseItem = getBaseUrl() + "GetExerciseItem?";
-    public static String GetAllMyRing = getBaseUrl() + "GetAllMyRing";
-    public static String GetRingMember = getBaseUrl() + "GetRingMember";
+    public static String GetAllMyRing= getBaseUrl() +"GetAllMyRing";
+    public static String GetRingMember= getBaseUrl() +"GetRingMember";
     public static String Feedback = getBaseUrl() + "Feedback";
     public static String GetAllPosts= getBaseUrl() +"GetAllPosts";
     public static String GetPlanByDate= getBaseUrl() +"GetPlanByDate";
     public static String CreatePK= getBaseUrl() +"CreatePK";
+    public static String GetAllPKRecords= getBaseUrl() +"GetAllPKRecords";
     public static String CreateRing=getBaseUrl() +"CreateRing";
     public static String AddPersonToRing=getBaseUrl() +"AddPersonToRing";
-
     public static String getBaseUrl() {
-        return BASE_URL;
+       return BASE_URL;
     }
 
     public static String getBaseAuthUrl() {
@@ -66,6 +66,7 @@ public class AppUtil extends Application {
     public static String getBaseRsUrl() {
         return BASE_RS_URL;
     }
+
 
 
 }
