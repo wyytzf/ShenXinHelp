@@ -1,5 +1,6 @@
 package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
@@ -8,11 +9,14 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.LineChart;
@@ -50,6 +54,10 @@ public class MentalityActivity extends AppCompatActivity {
     private TextView func1_text3;
     private TextView func1_text4;
 
+    private View Liner1;
+    private View Liner2;
+    private View Liner3;
+    private View Liner4;
 
     private LineChart lineChart;
 
@@ -92,6 +100,7 @@ public class MentalityActivity extends AppCompatActivity {
 
             }
         });
+        fab.setVisibility(View.GONE);
 
         findViewById(R.id.linechart_container).setVisibility(View.GONE);
         func1_image = (ImageView) findViewById(R.id.content_BEHE_image1);
@@ -112,6 +121,63 @@ public class MentalityActivity extends AppCompatActivity {
         func1_text2.setText("减压百科");
         func1_text3.setText("心理故事");
         func1_text4.setText("减压音乐");
+
+        Liner1 = findViewById(R.id.content_BEHE_liner1);
+        Liner2 = findViewById(R.id.content_BEHE_liner2);
+        Liner3 = findViewById(R.id.content_BEHE_liner3);
+        Liner4 = findViewById(R.id.content_BEHE_liner4);
+
+        Liner1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MentalityActivity.this, HelpContentTwoActivity.class);
+                startActivity(intent);
+            }
+        });
+        Liner2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MentalityActivity.this, WebViewActivity.class);
+                intent.putExtra("url", "file:///android_asset/jianya.html");
+                intent.putExtra("title", "减压百科");
+                intent.putExtra("image_url", "");
+                startActivity(intent);
+            }
+        });
+        Liner3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MentalityActivity.this, WebViewActivity.class);
+                intent.putExtra("url", "file:///android_asset/gushi.html");
+                intent.putExtra("title", "心理故事");
+                intent.putExtra("image_url", "");
+                startActivity(intent);
+            }
+        });
+        Liner4.setVisibility(View.GONE);
+        Liner4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(MentalityActivity.this);
+//                builder.setTitle("标题");
+//                builder.setMessage("message");
+//                builder.setView(new EditText(MentalityActivity.this), 20, 20, 20, 20);
+//                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Toast.makeText(MentalityActivity.this, "1", Toast.LENGTH_LONG).show();
+//                    }
+//                });
+//                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Toast.makeText(MentalityActivity.this, "2", Toast.LENGTH_LONG).show();
+//                    }
+//                });
+//                builder.show();
+            }
+        });
+
 
         lineChart = (LineChart) findViewById(R.id.linechart);
         Description description = new Description();

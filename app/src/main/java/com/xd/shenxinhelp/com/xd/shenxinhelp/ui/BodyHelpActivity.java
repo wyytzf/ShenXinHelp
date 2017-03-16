@@ -232,6 +232,11 @@ public class BodyHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BodyHelpActivity.this, LineChartActivity.class);
+                intent.putExtra("xiaohao","本周累计消耗热量");
+                intent.putExtra("shuliang","428卡路里");
+                intent.putExtra("tishi","根据您的年级情况，我们建议您每天保持50卡路里的消耗");
+                intent.putExtra("lineTishi","消耗热量");
+                intent.putExtra("shangxian",100);
                 startActivity(intent);
             }
         });
@@ -358,7 +363,7 @@ public class BodyHelpActivity extends AppCompatActivity {
 
         for (int i = 0; i < news_list.size(); i++) {
             text_list.get(i).setText(news_list.get(i).getTitle());
-            Glide.with(this).load(news_list.get(i).getImageUrl()).into(image_list.get(i));
+            Glide.with(getApplicationContext()).load(news_list.get(i).getImageUrl()).into(image_list.get(i));
         }
 
     }

@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.LineChart;
@@ -75,6 +76,8 @@ public class EyeHelpActivity extends AppCompatActivity {
     private List<TextView> text_list;
 
 
+    private TextView check_more;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +100,8 @@ public class EyeHelpActivity extends AppCompatActivity {
 
             }
         });
+
+        fab.setVisibility(View.GONE);
 
         func1_image = (ImageView) findViewById(R.id.content_BEHE_image1);
         func2_image = (ImageView) findViewById(R.id.content_BEHE_image2);
@@ -125,17 +130,17 @@ public class EyeHelpActivity extends AppCompatActivity {
         Liner1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EyeHelpActivity.this, WebViewActivity.class);
-                intent.putExtra("url", "file:///android_asset/love_eyes.html");
-                intent.putExtra("title", "眼保健操");
-                intent.putExtra("image_url", "");
-                startActivity(intent);
+                Toast.makeText(EyeHelpActivity.this, "功能开发中……", Toast.LENGTH_LONG).show();
             }
         });
         Liner2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(EyeHelpActivity.this, WebViewActivity.class);
+                intent.putExtra("url", "file:///android_asset/yanbaojiancao.html");
+                intent.putExtra("title", "眼保健操");
+                intent.putExtra("image_url", "");
+                startActivity(intent);
             }
         });
         Liner3.setOnClickListener(new View.OnClickListener() {
@@ -160,9 +165,24 @@ public class EyeHelpActivity extends AppCompatActivity {
         });
 
 
+        check_more = (TextView) findViewById(R.id.check_more);
+        check_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EyeHelpActivity.this, LineChartActivity.class);
+                intent.putExtra("xiaohao", "本周累计护眼次数");
+                intent.putExtra("shuliang", "15次");
+                intent.putExtra("tishi", "根据您的年级情况，我们建议您每天保持3次护眼");
+                intent.putExtra("lineTishi","护眼次数");
+                intent.putExtra("shangxian",5);
+                startActivity(intent);
+            }
+        });
+
+
         lineChart = (LineChart) findViewById(R.id.linechart);
         Description description = new Description();
-        description.setText("消耗热量");
+        description.setText("护眼次数");
         lineChart.setDescription(description);
         lineChart.getXAxis().setDrawGridLines(false);
         lineChart.getAxisLeft().setDrawGridLines(false);
@@ -180,7 +200,7 @@ public class EyeHelpActivity extends AppCompatActivity {
             }
         });
         lineChart.setNoDataText("暂无数据");
-        setData(7, 100);
+        setData(7, 5);
 
 
         news1 = findViewById(R.id.body_news_1);
@@ -206,7 +226,7 @@ public class EyeHelpActivity extends AppCompatActivity {
 
         ArrayList<Entry> values = new ArrayList<Entry>();
         for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range) + 3;
+            int val = (int) (Math.random() * range) + 1;
             values.add(new Entry(i + 1, val, null));
         }
 
@@ -220,7 +240,7 @@ public class EyeHelpActivity extends AppCompatActivity {
             lineChart.notifyDataSetChanged();
         } else {
             // create a dataset and give it a type
-            set1 = new LineDataSet(values, "消耗热量");
+            set1 = new LineDataSet(values, "护眼次数");
 
 //            set1.setDrawIcons(false);
 
