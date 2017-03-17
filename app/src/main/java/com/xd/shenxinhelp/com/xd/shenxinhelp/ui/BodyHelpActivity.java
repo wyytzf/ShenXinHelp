@@ -115,7 +115,7 @@ public class BodyHelpActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 启动制定计划activity
+                startActivity(new Intent().setClass(BodyHelpActivity.this, DrawUpPlanActivity.class));
             }
         });
 
