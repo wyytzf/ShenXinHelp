@@ -102,6 +102,28 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+        findViewById(R.id.weibo_login).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(LoginActivity.this, "功能开发中……", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        findViewById(R.id.weixin_login).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(LoginActivity.this, "功能开发中……", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        findViewById(R.id.qq_login).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(LoginActivity.this, "功能开发中……", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 

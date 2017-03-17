@@ -42,6 +42,9 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void initView() {
+
+        getSupportActionBar().setTitle("注册");
+
         mProgressView = findViewById(R.id.register_progress);
         mRegisterFormView = findViewById(R.id.register_form);
         mRegisterButton = (Button) findViewById(R.id.email_register_button);
