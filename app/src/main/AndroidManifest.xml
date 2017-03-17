@@ -71,8 +71,7 @@
             android:name=".group.PKHistoryActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-            android:label="@string/title_activity_body_help"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+
         <activity
         android:name=".group.MakePlanActivity"
         android:theme="@style/AppTheme.NoActionBar" />
