@@ -1,5 +1,7 @@
 package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.drawable.Drawable;
@@ -7,11 +9,14 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.LineChart;
@@ -25,9 +30,17 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.Utils;
 import com.xd.shenxinhelp.R;
+import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
+import com.xd.shenxinhelp.model.News;
+import com.xd.shenxinhelp.netutils.OkHttp;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class MentalityActivity extends AppCompatActivity {
 
@@ -41,8 +54,29 @@ public class MentalityActivity extends AppCompatActivity {
     private TextView func1_text3;
     private TextView func1_text4;
 
+    private View Liner1;
+    private View Liner2;
+    private View Liner3;
+    private View Liner4;
 
     private LineChart lineChart;
+
+    private static final int TYPE = 2;
+
+    private ArrayList<News> news_list;
+
+    private View news1;
+    private ImageView news1_image;
+    private TextView news1_text;
+
+    private View news2;
+    private ImageView news2_image;
+    private TextView news2_text;
+
+
+    private List<ImageView> image_list;
+    private List<TextView> text_list;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +85,7 @@ public class MentalityActivity extends AppCompatActivity {
 
 
         initViews();
+        RequestRecommendar();
     }
 
     private void initViews() {
@@ -65,7 +100,9 @@ public class MentalityActivity extends AppCompatActivity {
 
             }
         });
+        fab.setVisibility(View.GONE);
 
+        findViewById(R.id.linechart_container).setVisibility(View.GONE);
         func1_image = (ImageView) findViewById(R.id.content_BEHE_image1);
         func2_image = (ImageView) findViewById(R.id.content_BEHE_image2);
         func3_image = (ImageView) findViewById(R.id.content_BEHE_image3);
@@ -84,6 +121,63 @@ public class MentalityActivity extends AppCompatActivity {
         func1_text2.setText("减压百科");
         func1_text3.setText("心理故事");
         func1_text4.setText("减压音乐");
+
+        Liner1 = findViewById(R.id.content_BEHE_liner1);
+        Liner2 = findViewById(R.id.content_BEHE_liner2);
+        Liner3 = findViewById(R.id.content_BEHE_liner3);
+        Liner4 = findViewById(R.id.content_BEHE_liner4);
+
+        Liner1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MentalityActivity.this, HelpContentTwoActivity.class);
+                startActivity(intent);
+            }
+        });
+        Liner2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MentalityActivity.this, WebViewActivity.class);
+                intent.putExtra("url", "file:///android_asset/jianya.html");
+                intent.putExtra("title", "减压百科");
+                intent.putExtra("image_url", "");
+                startActivity(intent);
+            }
+        });
+        Liner3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MentalityActivity.this, WebViewActivity.class);
+                intent.putExtra("url", "file:///android_asset/gushi.html");
+                intent.putExtra("title", "心理故事");
+                intent.putExtra("image_url", "");
+                startActivity(intent);
+            }
+        });
+        Liner4.setVisibility(View.GONE);
+        Liner4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(MentalityActivity.this);
+//                builder.setTitle("标题");
+//                builder.setMessage("message");
+//                builder.setView(new EditText(MentalityActivity.this), 20, 20, 20, 20);
+//                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Toast.makeText(MentalityActivity.this, "1", Toast.LENGTH_LONG).show();
+//                    }
+//                });
+//                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Toast.makeText(MentalityActivity.this, "2", Toast.LENGTH_LONG).show();
+//                    }
+//                });
+//                builder.show();
+            }
+        });
+
 
         lineChart = (LineChart) findViewById(R.id.linechart);
         Description description = new Description();
@@ -106,6 +200,24 @@ public class MentalityActivity extends AppCompatActivity {
         });
         lineChart.setNoDataText("暂无数据");
         setData(7, 100);
+
+
+        news1 = findViewById(R.id.body_news_1);
+        news1_image = (ImageView) findViewById(R.id.body_news1_image);
+        news1_text = (TextView) findViewById(R.id.body_news1_text);
+
+        news2 = findViewById(R.id.body_news_2);
+        news2_image = (ImageView) findViewById(R.id.body_news2_image);
+        news2_text = (TextView) findViewById(R.id.body_news2_text);
+
+        text_list = new ArrayList<>();
+        image_list = new ArrayList<>();
+
+        text_list.add(news1_text);
+        text_list.add(news2_text);
+        image_list.add(news1_image);
+        image_list.add(news2_image);
+
     }
 
     private void setData(int count, float range) {
@@ -161,5 +273,74 @@ public class MentalityActivity extends AppCompatActivity {
             // set data
             lineChart.setData(data);
         }
+    }
+
+    private void RequestRecommendar() {
+        OkHttp.get(AppUtil.GETEXERCISETOFOUR + "type=" + TYPE, new OkHttp.ResultCallBack() {
+            @Override
+            public void onError(String str, Exception e) {
+                // 已经是主线程了，直接操作
+
+            }
+
+            @Override
+            public void onResponse(String str) {
+                // 已经是主线程了，直接操作
+                parseRecommendar(str);
+                fillViews();
+                initListener();
+            }
+        });
+
+    }
+
+    private void fillViews() {
+        for (int i = 0; i < news_list.size(); i++) {
+            text_list.get(i).setText(news_list.get(i).getTitle());
+            Glide.with(this).load(news_list.get(i).getImageUrl()).into(image_list.get(i));
+        }
+    }
+
+    private void parseRecommendar(String str) {
+        news_list = new ArrayList<>();
+        try {
+            JSONObject js = new JSONObject(str);
+            JSONArray ja = js.getJSONArray("news");
+            for (int i = 0; i < ja.length(); i++) {
+                JSONObject jb = ja.getJSONObject(i);
+                News news = new News();
+                news.setTitle(jb.getString("title"));
+                news.setImageUrl(jb.getString("imageUrl"));
+                news.setWebUrl(jb.getString("webUrl"));
+                news_list.add(news);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void initListener() {
+        news1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MentalityActivity.this, WebViewActivity.class);
+                intent.putExtra("url", news_list.get(0).getWebUrl());
+                intent.putExtra("title", news_list.get(0).getTitle());
+                intent.putExtra("image_url", news_list.get(0).getImageUrl());
+                startActivity(intent);
+            }
+        });
+
+        news2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MentalityActivity.this, WebViewActivity.class);
+                intent.putExtra("url", news_list.get(1).getWebUrl());
+                intent.putExtra("title", news_list.get(1).getTitle());
+                intent.putExtra("image_url", news_list.get(1).getImageUrl());
+                startActivity(intent);
+            }
+        });
     }
 }

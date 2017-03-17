@@ -44,6 +44,7 @@ public class HelpContentActivity extends AppCompatActivity {
     private List<HelpContent> contentList;
     private String userID;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

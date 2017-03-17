@@ -64,8 +64,15 @@
             android:name=".group.MyPlanActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".group.MakePlanActivity"
+            android:name=".group.LaunchPKActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".group.PKHistoryActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+        android:name=".group.MakePlanActivity"
+        android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".group.GroupMemberActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -86,15 +93,14 @@
             android:name=".mySetting.AboutActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".mySetting.AboutShenxinbangActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".com.xd.shenxinhelp.ui.WebViewActivity"
             android:label="@string/title_activity_web_view"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".com.xd.shenxinhelp.ui.DrawUpPlanActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".com.xd.shenxinhelp.ui.HelpContentTwoActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+
     </application>
 
 </manifest>

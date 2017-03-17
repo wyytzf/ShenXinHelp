@@ -51,26 +51,20 @@
                         android:gravity="center"
                         android:src="@mipmap/default_head_image" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="小明" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="左眼：1.5" />
+                        android:text="" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="右眼：1.5" />
+                        android:text="眼睛是心灵的窗户" />
                 </LinearLayout>
 
 

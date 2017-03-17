@@ -56,9 +56,9 @@ public class MyPlanActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        planAdapter = new MyLittlePlanAdapter(planList,MyPlanActivity.this);
-        listView.setAdapter(planAdapter);
-        getMyPlans();
+//        planAdapter = new MyLittlePlanAdapter(planList,MyPlanActivity.this);
+//        listView.setAdapter(planAdapter);
+//        getMyPlans();
 
     }
 

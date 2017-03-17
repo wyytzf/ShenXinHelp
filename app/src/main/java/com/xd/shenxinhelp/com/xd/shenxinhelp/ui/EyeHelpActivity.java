@@ -1,5 +1,6 @@
 package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.drawable.Drawable;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.LineChart;
@@ -25,9 +27,17 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.Utils;
 import com.xd.shenxinhelp.R;
+import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
+import com.xd.shenxinhelp.model.News;
+import com.xd.shenxinhelp.netutils.OkHttp;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class EyeHelpActivity extends AppCompatActivity {
     private ImageView func1_image;
@@ -39,7 +49,34 @@ public class EyeHelpActivity extends AppCompatActivity {
     private TextView func1_text3;
     private TextView func1_text4;
 
+    private View Liner1;
+    private View Liner2;
+    private View Liner3;
+    private View Liner4;
+
+
     private LineChart lineChart;
+
+    private static final int TYPE = 1;
+
+
+    private ArrayList<News> news_list;
+    private String userID;
+
+    private View news1;
+    private ImageView news1_image;
+    private TextView news1_text;
+
+    private View news2;
+    private ImageView news2_image;
+    private TextView news2_text;
+
+
+    private List<ImageView> image_list;
+    private List<TextView> text_list;
+
+
+    private TextView check_more;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +84,7 @@ public class EyeHelpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_eye_help);
 
         initViews();
-
+        RequestRecommendar();
 
     }
 
@@ -63,6 +100,8 @@ public class EyeHelpActivity extends AppCompatActivity {
 
             }
         });
+
+        fab.setVisibility(View.GONE);
 
         func1_image = (ImageView) findViewById(R.id.content_BEHE_image1);
         func2_image = (ImageView) findViewById(R.id.content_BEHE_image2);
@@ -81,12 +120,69 @@ public class EyeHelpActivity extends AppCompatActivity {
         func1_text1.setText("视力检查");
         func1_text2.setText("眼保健操");
         func1_text3.setText("眨眼护眼");
-        func1_text4.setText("视力保健");
+        func1_text4.setText("缓解疲劳");
+
+        Liner1 = findViewById(R.id.content_BEHE_liner1);
+        Liner2 = findViewById(R.id.content_BEHE_liner2);
+        Liner3 = findViewById(R.id.content_BEHE_liner3);
+        Liner4 = findViewById(R.id.content_BEHE_liner4);
+
+        Liner1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(EyeHelpActivity.this, "功能开发中……", Toast.LENGTH_LONG).show();
+            }
+        });
+        Liner2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EyeHelpActivity.this, WebViewActivity.class);
+                intent.putExtra("url", "file:///android_asset/yanbaojiancao.html");
+                intent.putExtra("title", "眼保健操");
+                intent.putExtra("image_url", "");
+                startActivity(intent);
+            }
+        });
+        Liner3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EyeHelpActivity.this, WebViewActivity.class);
+                intent.putExtra("url", "file:///android_asset/love_eyes.html");
+                intent.putExtra("title", "视力远眺图，观看可保护眼睛");
+                intent.putExtra("image_url", "");
+                startActivity(intent);
+            }
+        });
+        Liner4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EyeHelpActivity.this, WebViewActivity.class);
+                intent.putExtra("url", "file:///android_asset/eyes_dong.html");
+                intent.putExtra("title", "观看动图，可有效缓解疲劳");
+                intent.putExtra("image_url", "");
+                startActivity(intent);
+            }
+        });
+
+
+        check_more = (TextView) findViewById(R.id.check_more);
+        check_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EyeHelpActivity.this, LineChartActivity.class);
+                intent.putExtra("xiaohao", "本周累计护眼次数");
+                intent.putExtra("shuliang", "15次");
+                intent.putExtra("tishi", "根据您的年级情况，我们建议您每天保持3次护眼");
+                intent.putExtra("lineTishi","护眼次数");
+                intent.putExtra("shangxian",5);
+                startActivity(intent);
+            }
+        });
 
 
         lineChart = (LineChart) findViewById(R.id.linechart);
         Description description = new Description();
-        description.setText("消耗热量");
+        description.setText("护眼次数");
         lineChart.setDescription(description);
         lineChart.getXAxis().setDrawGridLines(false);
         lineChart.getAxisLeft().setDrawGridLines(false);
@@ -104,14 +200,33 @@ public class EyeHelpActivity extends AppCompatActivity {
             }
         });
         lineChart.setNoDataText("暂无数据");
-        setData(7, 100);
+        setData(7, 5);
+
+
+        news1 = findViewById(R.id.body_news_1);
+        news1_image = (ImageView) findViewById(R.id.body_news1_image);
+        news1_text = (TextView) findViewById(R.id.body_news1_text);
+
+        news2 = findViewById(R.id.body_news_2);
+        news2_image = (ImageView) findViewById(R.id.body_news2_image);
+        news2_text = (TextView) findViewById(R.id.body_news2_text);
+
+        text_list = new ArrayList<>();
+        image_list = new ArrayList<>();
+
+        text_list.add(news1_text);
+        text_list.add(news2_text);
+        image_list.add(news1_image);
+        image_list.add(news2_image);
+
+
     }
 
     private void setData(int count, float range) {
 
         ArrayList<Entry> values = new ArrayList<Entry>();
         for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range) + 3;
+            int val = (int) (Math.random() * range) + 1;
             values.add(new Entry(i + 1, val, null));
         }
 
@@ -125,7 +240,7 @@ public class EyeHelpActivity extends AppCompatActivity {
             lineChart.notifyDataSetChanged();
         } else {
             // create a dataset and give it a type
-            set1 = new LineDataSet(values, "消耗热量");
+            set1 = new LineDataSet(values, "护眼次数");
 
 //            set1.setDrawIcons(false);
 
@@ -159,6 +274,74 @@ public class EyeHelpActivity extends AppCompatActivity {
 
             // set data
             lineChart.setData(data);
+        }
+    }
+
+    private void RequestRecommendar() {
+        OkHttp.get(AppUtil.GETEXERCISETOFOUR + "type=" + TYPE, new OkHttp.ResultCallBack() {
+            @Override
+            public void onError(String str, Exception e) {
+                // 已经是主线程了，直接操作
+
+            }
+
+            @Override
+            public void onResponse(String str) {
+                // 已经是主线程了，直接操作
+                parseRecommendar(str);
+                fillViews();
+                initListener();
+            }
+        });
+
+    }
+
+    private void initListener() {
+        news1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EyeHelpActivity.this, WebViewActivity.class);
+                intent.putExtra("url", news_list.get(0).getWebUrl());
+                intent.putExtra("title", news_list.get(0).getTitle());
+                intent.putExtra("image_url", news_list.get(0).getImageUrl());
+                startActivity(intent);
+            }
+        });
+
+        news2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EyeHelpActivity.this, WebViewActivity.class);
+                intent.putExtra("url", news_list.get(1).getWebUrl());
+                intent.putExtra("title", news_list.get(1).getTitle());
+                intent.putExtra("image_url", news_list.get(1).getImageUrl());
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void fillViews() {
+        for (int i = 0; i < news_list.size(); i++) {
+            text_list.get(i).setText(news_list.get(i).getTitle());
+            Glide.with(this).load(news_list.get(i).getImageUrl()).into(image_list.get(i));
+        }
+    }
+
+    private void parseRecommendar(String str) {
+        news_list = new ArrayList<>();
+        try {
+            JSONObject js = new JSONObject(str);
+            JSONArray ja = js.getJSONArray("news");
+            for (int i = 0; i < ja.length(); i++) {
+                JSONObject jb = ja.getJSONObject(i);
+                News news = new News();
+                news.setTitle(jb.getString("title"));
+                news.setImageUrl(jb.getString("imageUrl"));
+                news.setWebUrl(jb.getString("webUrl"));
+                news_list.add(news);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

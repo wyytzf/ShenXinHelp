@@ -50,14 +50,9 @@
                         android:gravity="center"
                         android:src="@mipmap/default_head_image" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="小明" />
 
                     <TextView
+                        android:id="@+id/body_weight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -65,6 +60,7 @@
                         android:text="体重：50kg" />
 
                     <TextView
+                        android:id="@+id/body_height"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -80,18 +76,14 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/bmi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="24dp"
+                        android:layout_marginRight="24dp"
                         android:text="BMI指数:25" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="24dp"
-                        android:src="@mipmap/arrow_red_up" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -106,8 +98,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_body_help" />
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -116,5 +106,7 @@
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
         app:srcCompat="@drawable/ic_assignment_black_24dp" />
+
+    <include layout="@layout/content_body_help" />
 
 </android.support.design.widget.CoordinatorLayout>
