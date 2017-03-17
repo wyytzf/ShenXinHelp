@@ -14,6 +14,7 @@
             android:layout_margin="10dp"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/group_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -22,8 +23,11 @@
                 />
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                >
                 <TextView
+                    android:id="@+id/group_owner"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
@@ -34,21 +38,34 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-
+                    android:visibility="gone"
                     android:text="xidian"
                     style="@style/text_14_sec"/>
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="right"
+
                     android:id="@+id/ll_rank">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="排行榜"
+                        android:text="   排行榜   "
                         style="@style/text_14_sec"/>
                 </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:layout_margin="5dp">
+                <TextView
+                    android:id="@+id/group_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="排行榜"
+                    style="@style/text_14_sec"/>
             </LinearLayout>
         </LinearLayout>
         <android.support.v4.widget.SwipeRefreshLayout

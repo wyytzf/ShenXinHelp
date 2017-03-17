@@ -44,6 +44,8 @@ import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ConnectUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.HttpUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ResponseHandler;
 import com.xd.shenxinhelp.listener.ListItemClickListener;
+import com.xd.shenxinhelp.model.Group;
+import com.xd.shenxinhelp.model.GroupDetail;
 import com.xd.shenxinhelp.model.HelpContent;
 import com.xd.shenxinhelp.model.LittleGoal;
 import com.xd.shenxinhelp.model.Plan;
@@ -83,6 +85,10 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
 //    private ImageLoaderInterface imageLoader;
     private List<Post> postList = new ArrayList<Post>();
     private TextView noPosts;
+    private GroupDetail groupDetail;
+    private TextView des,name,owner;
+
+
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             // 要做的事情
@@ -116,61 +122,6 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                         }
 //                        imageLoader = new GlideImageLoader();
                         gridAdapter.notifyDataSetChanged();
-//                        if (userList == null || userList.size() == 0) {
-//                            image1.setVisibility(View.INVISIBLE);
-//                            image2.setVisibility(View.INVISIBLE);
-//                            image3.setVisibility(View.INVISIBLE);
-//                            image4.setVisibility(View.INVISIBLE);
-//                            image5.setVisibility(View.INVISIBLE);
-//                        } else if (userList.size() == 1) {
-//                            image1.setVisibility(View.VISIBLE);
-//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
-//                            image2.setVisibility(View.INVISIBLE);
-//                            image3.setVisibility(View.INVISIBLE);
-//                            image4.setVisibility(View.INVISIBLE);
-//                            image5.setVisibility(View.INVISIBLE);
-//                        } else if (userList.size() == 2) {
-//                            image1.setVisibility(View.VISIBLE);
-//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
-//                            image2.setVisibility(View.VISIBLE);
-//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image2);
-//                            image3.setVisibility(View.INVISIBLE);
-//                            image4.setVisibility(View.INVISIBLE);
-//                            image5.setVisibility(View.INVISIBLE);
-//                        } else if (userList.size() == 3) {
-//                            image1.setVisibility(View.VISIBLE);
-//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
-//                            image2.setVisibility(View.VISIBLE);
-//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image2);
-//                            image3.setVisibility(View.VISIBLE);
-//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image3);
-//                            image4.setVisibility(View.INVISIBLE);
-//                            image5.setVisibility(View.INVISIBLE);
-//                        } else if (userList.size() == 4) {
-//                            image1.setVisibility(View.VISIBLE);
-//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
-//                            image2.setVisibility(View.VISIBLE);
-//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image2);
-//                            image3.setVisibility(View.VISIBLE);
-//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image3);
-//                            image4.setVisibility(View.VISIBLE);
-//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image4);
-//                            image5.setVisibility(View.INVISIBLE);
-//                        } else if (userList.size() == 5) {
-//                            image1.setVisibility(View.VISIBLE);
-//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image1);
-//                            image2.setVisibility(View.VISIBLE);
-//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image2);
-//                            image3.setVisibility(View.VISIBLE);
-//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image3);
-//                            image4.setVisibility(View.VISIBLE);
-//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image4);
-//                            image5.setVisibility(View.VISIBLE);
-//                            imageLoader.displayImage(getApplicationContext(), userList.get(0).getPhotoUrl(), image5);
-//                        }
-
-
-//                        recyclerVie
                     } catch (JSONException e) {
                         Log.e("mmm", e.getMessage());
                     }
@@ -197,55 +148,43 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_group_detail_list);
 
 
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbar.setTitle("");
         toolbar.inflateMenu(R.menu.group_detail_toolbar_menu);
         setSupportActionBar(toolbar);
         sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
-        userID = sp.getString("account", "");
+        userID = sp.getString("userid", "xiaoming");
+        groupDetail= (GroupDetail) getIntent().getSerializableExtra("detail");
 
-
-//        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//
-//                return true;
-//            }
-//        });
 
         listView = (ListView) findViewById(R.id.lv_comment_list);
         headerView = (View) LayoutInflater.from(GroupDetailActivity.this).inflate(R.layout.activity_group_detail_header, null);
-//        gridView = (GridView) headerView.findViewById(R.id.grid);
-//        btnBack = (Button) findViewById(R.id.btn_back);
-//        btnBack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                finish();
-//            }
-//        });
-//        btnMore = (Button) findViewById(R.id.btn_more);
-//        image1 = (ImageView) headerView.findViewById(R.id.ItemImage1);
-//        image2 = (ImageView) headerView.findViewById(R.id.ItemImage2);
-//        image3 = (ImageView) headerView.findViewById(R.id.ItemImage3);
-//        image4 = (ImageView) headerView.findViewById(R.id.ItemImage4);
-//        image5 = (ImageView) headerView.findViewById(R.id.ItemImage5);
-//        addView = (LinearLayout) headerView.findViewById(R.id.addImage);
-//        addView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(GroupDetailActivity.this, GroupMemberActivity.class);
-//                startActivity(intent);
-//            }
-//        });
 
+        des=(TextView)headerView.findViewById(R.id.group_des);
+        name=(TextView)headerView.findViewById(R.id.group_name);
+        owner=(TextView)headerView.findViewById(R.id.group_owner);
+
+        des.setText("简介："+groupDetail.getDes());
+        name.setText("圈子名："+groupDetail.getName());
+        owner.setText("  ");
 
         llRank = (LinearLayout) headerView.findViewById(R.id.ll_rank);
         llRank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(GroupDetailActivity.this, RankActivity.class);
-                startActivity(intent);
+
+                if (userList==null||userList.size()==0){
+                    Toast.makeText(getApplicationContext(),"圈子没有圈子成员",Toast.LENGTH_SHORT).show();
+
+
+                }else {
+                    Intent intent = new Intent(GroupDetailActivity.this, RankActivity.class);
+                    intent.putExtra("detail",groupDetail);
+                    startActivity(intent);
+                }
             }
         });
         userList = new ArrayList<User>();
@@ -253,8 +192,6 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
 
 
         setData();
-        //getGroupMember();
-        //setGridView();
         RecyclerView recyclerView = (RecyclerView) headerView.findViewById(R.id.recycler_view_member);
         //设置可以滑出底栏
         recyclerView.setClipToPadding(false);
@@ -306,8 +243,8 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void run() {
                 final Message message = new Message();
-
-                String urlget =  AppUtil.GetAllPosts  + "?type=3&id=7&userID="+userID;
+                int type=Integer.parseInt(groupDetail.getType())+1;
+                String urlget =  AppUtil.GetAllPosts  + "?type="+type+"&id="+groupDetail.getId()+"&userID="+userID;
                 HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
                     @Override
                     public void onSuccess(byte[] response) {
@@ -385,7 +322,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                 final Message message = new Message();
 
                 //String urlget = ConnectUtil.GetRingMember + "?ringID="+groupID+"&type="+type+"&top=5&userID=" + userID;
-                String urlget =  AppUtil.GetRingMember  + "?ringID=7&type=2&top=6";
+                String urlget =  AppUtil.GetRingMember+ "?ringID="+groupDetail.getId()+"&type="+groupDetail.getType()+"&top=5";
                 HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
                     @Override
                     public void onSuccess(byte[] response) {
@@ -489,16 +426,16 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
             finish();
         } else if (itemId == R.id.my_little_plan) {
             Intent intent = new Intent(GroupDetailActivity.this, MyPlanActivity.class);
+            String urlget =  AppUtil.GetAllPosts  + "?type=0&id="+groupDetail.getId()+"&userID="+userID;
+            Bundle bundle = new Bundle();
+            bundle.putString("url",urlget);
+            intent.putExtras(bundle);
             startActivity(intent);
         } else if (itemId == R.id.go_little_plan) {
             Intent intent = new Intent(GroupDetailActivity.this, MakePlanActivity.class);
             startActivity(intent);
         } else if (itemId == R.id.go_pk) {
             Intent intent = new Intent(GroupDetailActivity.this,LaunchPKActivity.class );
-            intent.setType("GroupDetailActivity");
-            startActivity(intent);
-        }else if (itemId == R.id.pk_history){
-            Intent intent = new Intent(GroupDetailActivity.this,PKHistoryActivity.class );
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -507,6 +444,19 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         //openApi = datas.get(position);
 
         Intent intent = new Intent(GroupDetailActivity.this, GroupMemberActivity.class);
-        startActivity(intent);
+        intent.putExtra("detail",groupDetail);
+        startActivityForResult(intent,0);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(resultCode){
+            case 100:
+                getGroupMember();
+                break;
+            //来自按钮1的请求，作相应业务处理
+            case 2:
+                //来自按钮2的请求，作相应业务处理
+        }
     }
 }
