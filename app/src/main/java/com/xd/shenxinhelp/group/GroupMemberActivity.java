@@ -51,6 +51,7 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
     private EditText editText;
     AlertDialog.Builder builder;
     AlertDialog alertDialog;
+    private String tag="";
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             // 要做的事情
@@ -94,6 +95,7 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
                 break;
                 case 2:
                     getGroupMember();
+                    tag="1";
                     break;
                 case -1: {
 
@@ -201,6 +203,9 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == android.R.id.home) {
+            if (tag.equals("1")){
+                setResult(100);
+            }
             finish();
         }
         return super.onOptionsItemSelected(item);
@@ -269,7 +274,7 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
     }
     public void save(final String otherID) {
 
-
+        tag="";
 
         new Thread() {
             @Override

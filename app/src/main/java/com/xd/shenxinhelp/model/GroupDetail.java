@@ -13,6 +13,15 @@ public class GroupDetail implements Serializable{
     private String id;
     private String ownerid;
     private String type;
+    private String imagUrl;
+
+    public String getImagUrl() {
+        return imagUrl;
+    }
+
+    public void setImagUrl(String imagUrl) {
+        this.imagUrl = imagUrl;
+    }
 
     public void setOwnerid(String ownerid) {
         this.ownerid = ownerid;

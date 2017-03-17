@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -228,6 +229,7 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 // 解析拿到的String字符串，判断是否登录成功
                 String synchronous = OkHttp.getSynchronous(AppUtil.LOGIN + "account=" + mEmail + "&" + "psw=" + mPassword);
+                //Log.i("mmm",AppUtil.LOGIN + "account=" + mEmail + "&" + "psw=" + mPassword);
                 result = parseResponse(synchronous);
             } catch (IOException e) {
                 e.printStackTrace();

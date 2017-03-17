@@ -93,10 +93,7 @@ public class GroupFragment extends Fragment {
                             user.setDes(object.getString("desc"));
 
                             mydetailList.add(user);
-
-
                         }
-
                         if (mydetailList!=null&&mydetailList.size()!=0){
                             Group data3 = new Group();
                             data3.setName("圈子");
@@ -166,12 +163,18 @@ public class GroupFragment extends Fragment {
         activity = getActivity();
         sp = getActivity().getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
         userID = sp.getString("userid", "xiaoming");
-        initData();
+        datas = new ArrayList<Group>();
         initView();
 
         return root;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        datas.clear();
+        initData();
+    }
 
     public void initView() {
 
@@ -182,15 +185,12 @@ public class GroupFragment extends Fragment {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.add_group) {
-                    Toast.makeText(activity, "1", Toast.LENGTH_LONG).show();
-                }
+//                if (item.getItemId() == R.id.add_group) {
+//                    Toast.makeText(activity, "1", Toast.LENGTH_LONG).show();
+//                }
                 if (item.getItemId() == R.id.creat_group) {
-                    //Toast.makeText(activity, "2", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(activity, NewMyGroupActivity.class);
                     startActivityForResult(intent,0);
-                    //startActivityForResult(intent);
-                    //startActivity(intent);
                 }
                 return true;
             }
@@ -214,16 +214,13 @@ public class GroupFragment extends Fragment {
 
     public void initData() {
 
-
-
-        datas = new ArrayList<Group>();
-
         Group data1 = new Group();
         data1.setName("学校");
         GroupDetail datadetail1 = new GroupDetail();
         datadetail1.setName(sp.getString("schoolName", "学校"));
         datadetail1.setId(sp.getString("school_id", ""));
         datadetail1.setDes("一个很good的学校");
+        //datadetail1.setImagUrl("");
         List<GroupDetail> list1 = new ArrayList<GroupDetail>();
         list1.add(datadetail1);
         data1.setGroupList(list1);
@@ -232,7 +229,7 @@ public class GroupFragment extends Fragment {
         data2.setName("班级");
         GroupDetail datadetail2 = new GroupDetail();
         datadetail2.setName(sp.getString("className", "班级"));
-        datadetail1.setId(sp.getString("class_id", ""));
+        datadetail2.setId(sp.getString("class_id", ""));
         datadetail2.setDes("一个很good的班级一个很good的班级一个很good的班级一个的班级");
         List<GroupDetail> list2 = new ArrayList<GroupDetail>();
         list2.add(datadetail2);
@@ -312,6 +309,7 @@ public class GroupFragment extends Fragment {
                 detail.setType("0");
             }
             intent.putExtra("detail",detail);
+
             startActivity(intent);
             return true;
         }
@@ -368,7 +366,7 @@ public class GroupFragment extends Fragment {
         Log.i("mmm","1111");
         switch(resultCode){
             case 100:
-                initData();
+                //initData();
                 break;
                 //来自按钮1的请求，作相应业务处理
             case 2:

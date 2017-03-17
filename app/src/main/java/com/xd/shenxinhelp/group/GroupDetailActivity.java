@@ -445,6 +445,18 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
 
         Intent intent = new Intent(GroupDetailActivity.this, GroupMemberActivity.class);
         intent.putExtra("detail",groupDetail);
-        startActivity(intent);
+        startActivityForResult(intent,0);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(resultCode){
+            case 100:
+                getGroupMember();
+                break;
+            //来自按钮1的请求，作相应业务处理
+            case 2:
+                //来自按钮2的请求，作相应业务处理
+        }
     }
 }
