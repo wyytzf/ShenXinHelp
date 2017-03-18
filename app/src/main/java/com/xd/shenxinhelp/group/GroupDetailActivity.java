@@ -48,6 +48,7 @@ import com.xd.shenxinhelp.model.Group;
 import com.xd.shenxinhelp.model.GroupDetail;
 import com.xd.shenxinhelp.model.HelpContent;
 import com.xd.shenxinhelp.model.LittleGoal;
+import com.xd.shenxinhelp.model.PKHistory;
 import com.xd.shenxinhelp.model.Plan;
 import com.xd.shenxinhelp.model.Post;
 import com.xd.shenxinhelp.model.User;
@@ -245,6 +246,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                 final Message message = new Message();
                 int type=Integer.parseInt(groupDetail.getType())+1;
                 String urlget =  AppUtil.GetAllPosts  + "?type="+type+"&id="+groupDetail.getId()+"&userID="+userID;
+                Log.i("kmj","---url----" + urlget);
                 HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
                     @Override
                     public void onSuccess(byte[] response) {
@@ -436,6 +438,16 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
             startActivity(intent);
         } else if (itemId == R.id.go_pk) {
             Intent intent = new Intent(GroupDetailActivity.this,LaunchPKActivity.class );
+            intent.putExtra("groupDetail",groupDetail);
+            intent.setType("GroupDetailActivity");
+            if(userList.size() < 3){
+                Toast.makeText(GroupDetailActivity.this, "对不起，您暂时无权PK", Toast.LENGTH_LONG).show();
+            }else{
+                startActivity(intent);
+            }
+        }else if(itemId == R.id.pk_history){
+            Intent intent = new Intent(GroupDetailActivity.this, PKHistoryActivity.class);
+            intent.putExtra("groupDetail",groupDetail);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

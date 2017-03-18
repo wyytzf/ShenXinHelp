@@ -25,11 +25,13 @@ public class TeamAdapter extends BaseAdapter{
     private Context mContext;
     private List<Team> list;
     private LayoutInflater mInflater;
+    private String type="";
 
 
-    public TeamAdapter(Context mContext, List<Team> list) {
+    public TeamAdapter(Context mContext, List<Team> list,String type) {
         this.mContext = mContext;
         this.list = list;
+        this.type = type;
         this.mInflater = LayoutInflater.from(mContext);
     }
 
@@ -66,17 +68,21 @@ public class TeamAdapter extends BaseAdapter{
             convertView = mInflater.inflate(R.layout.team_list_iteam, parent, false);
             holder.image = (ImageView) convertView.findViewById(R.id.pk_headerUrl);
             holder.account = (TextView)convertView.findViewById(R.id.pk_account);
+            holder.healthDegree = (TextView)convertView.findViewById(R.id.pk_health_degree);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder)convertView.getTag();
         }
         new GlideImageLoader().displayImage(mContext,list.get(position).getHeaderUrl(),holder.image);
         holder.account.setText(list.get(position).getAccount());
+        holder.healthDegree.setText("健康度:"+list.get(position).getHealthDegree());
+
         return convertView;
     }
 
     class ViewHolder {
         private ImageView image;
         private TextView account;
+        private TextView healthDegree;
     }
 }

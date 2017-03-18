@@ -1,25 +1,26 @@
 package com.xd.shenxinhelp.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by koumiaojuan on 2017/3/16.
  */
 
-public class PKHistory {
+public class PKHistory implements Serializable{
     private int winTeamID;
     private int pkringID;
     private int cridits;
     private String date;
     private int type;
-    private List<List<Team>> teams;
+    private List<ParticipateTeam> participateTeam;
 
-    public List<List<Team>> getTeams() {
-        return teams;
+    public List<ParticipateTeam> getParticipateTeam() {
+        return participateTeam;
     }
 
-    public void setTeams(List<List<Team>> teams) {
-        this.teams = teams;
+    public void setParticipateTeam(List<ParticipateTeam> participateTeam) {
+        this.participateTeam = participateTeam;
     }
 
     public int getWinTeamID() {

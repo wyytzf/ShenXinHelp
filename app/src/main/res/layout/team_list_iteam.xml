@@ -12,7 +12,6 @@
         android:orientation="vertical"
         android:paddingBottom="12dp"
         android:paddingTop="12dp">
-
         <ImageView
             android:id="@+id/pk_headerUrl"
             android:layout_width="80dp"
@@ -24,6 +23,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="12345678" />
-    </LinearLayout>
+        <TextView
+            android:id="@+id/pk_health_degree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="123" />
+     </LinearLayout>
 
 </LinearLayout>
