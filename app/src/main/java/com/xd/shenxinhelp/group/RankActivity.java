@@ -23,6 +23,7 @@ import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ConnectUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.HttpUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ResponseHandler;
 import com.xd.shenxinhelp.listener.ListItemClickListener;
+import com.xd.shenxinhelp.model.GroupDetail;
 import com.xd.shenxinhelp.model.Rank;
 import com.xd.shenxinhelp.model.User;
 import com.youth.banner.loader.ImageLoaderInterface;
@@ -42,6 +43,7 @@ public class RankActivity  extends AppCompatActivity implements ListItemClickLis
     private List<User> datas = null;
     private RankAdapterMy adapter = null;
     private SwipeRefreshLayout listview;
+    private GroupDetail groupDetail;
     //private ImageLoaderInterface imageLoader;
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -103,6 +105,7 @@ public class RankActivity  extends AppCompatActivity implements ListItemClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rank);
         datas= new ArrayList<User>();
+        groupDetail= (GroupDetail) getIntent().getSerializableExtra("detail");
         getGroupMember();
         //initData();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -169,7 +172,7 @@ public class RankActivity  extends AppCompatActivity implements ListItemClickLis
                 final Message message = new Message();
 
                 //String urlget = ConnectUtil.GetRingMember + "?ringID="+groupID+"&type="+type+"&top=5&userID=" + userID;
-                String urlget = AppUtil.GetRingMember + "?ringID=7&type=2&top=15";
+                String urlget = AppUtil.GetRingMember +"?ringID="+groupDetail.getId()+"&type="+groupDetail.getType()+"&top=15";
                 HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
                     @Override
                     public void onSuccess(byte[] response) {

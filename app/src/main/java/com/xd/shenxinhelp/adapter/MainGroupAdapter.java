@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.model.Group;
 import com.xd.shenxinhelp.model.GroupDetail;
+import com.youth.banner.loader.ImageLoaderInterface;
 
 import java.util.List;
 
@@ -24,10 +25,14 @@ public class MainGroupAdapter extends BaseExpandableListAdapter {
     private LayoutInflater inflater;
     private Context context;
     private List<Group> datas;
+
+
+
     public MainGroupAdapter(Context context,List<Group> datas) {
         this.context = context;
         this.datas = datas;
         inflater = LayoutInflater.from(context);
+
     }
 
     public int getGroupCount() {
@@ -93,6 +98,13 @@ public class MainGroupAdapter extends BaseExpandableListAdapter {
         GroupDetail recordVo = datas.get(groupPosition).getGroupList().get(childPosition);
         holder.title.setText(recordVo.getName());
         holder.des.setText(recordVo.getDes());
+        if (groupPosition==0){
+            holder.img.setImageResource(R.drawable.school);
+        }else if (groupPosition==1){
+            holder.img.setImageResource(R.drawable.myclass);
+        }if (groupPosition==2){
+            holder.img.setImageResource(R.drawable.qunliao);
+        }
         return convertView;
     }
 

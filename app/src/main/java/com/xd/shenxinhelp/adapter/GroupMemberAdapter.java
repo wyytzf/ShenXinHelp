@@ -71,14 +71,9 @@ public class GroupMemberAdapter extends MyBaseAdapter{
             }
             final User single = datas.get(position);
             title.setText(single.getName());
+            des.setVisibility(View.VISIBLE);
             des.setText("健康度："+single.getHealth_degree());
             imageLoader.displayImage(context, single.getPhotoUrl(), imageView);
-//            des.setVisibility(View.GONE);
-            //des.setText(single.getDescription());
-
-
-//            Drawable dra = ImageUtils.getForunlogo(context, fid);
-//            img.setImageDrawable(dra);
         }
     }
 }

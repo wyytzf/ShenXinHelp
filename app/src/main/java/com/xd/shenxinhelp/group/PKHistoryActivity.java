@@ -1,6 +1,8 @@
 package com.xd.shenxinhelp.group;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +19,9 @@ import com.xd.shenxinhelp.adapter.PKHistoryAdapter;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.HttpUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ResponseHandler;
+import com.xd.shenxinhelp.model.GroupDetail;
 import com.xd.shenxinhelp.model.PKHistory;
+import com.xd.shenxinhelp.model.ParticipateTeam;
 import com.xd.shenxinhelp.model.Team;
 
 import org.json.JSONArray;
@@ -37,7 +41,10 @@ public class PKHistoryActivity extends AppCompatActivity {
     private ListView pkHistoryListView;
     private List<PKHistory> pkHistoryList = new ArrayList<>();
     private PKHistoryAdapter adapter;
-
+    private GroupDetail detail;
+    private SharedPreferences sp;
+    private String userID;
+    private String account;
 
 
 
@@ -49,10 +56,18 @@ public class PKHistoryActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
+        initDatas();
         initViews();
         getAllPKRecords();
         initEvents();
 
+    }
+
+    private void initDatas() {
+        sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
+        userID = sp.getString("userid","");
+        account = sp.getString("account","");
+        detail = (GroupDetail) getIntent().getSerializableExtra("groupDetail");
     }
 
     private void initEvents() {
@@ -60,7 +75,8 @@ public class PKHistoryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(PKHistoryActivity.this,LaunchPKActivity.class);
-                intent.putExtra("teams",(Serializable) pkHistoryList.get(position).getTeams());
+                intent.putExtra("history",(Serializable) pkHistoryList.get(position));
+                intent.putExtra("groupDetail",detail);
                 intent.setType("PKHistoryActivity");
                 startActivity(intent);
             }
@@ -72,8 +88,14 @@ public class PKHistoryActivity extends AppCompatActivity {
             @Override
             public void run() {
                 final Message message = new Message();
-
-                String urlget =  AppUtil.GetAllPKRecords+"?id=1&type=0";
+                String id="";
+                if(detail.getType().equals("0")){
+                    id = userID;
+                }else{
+                    id = detail.getId();
+                }
+                String urlget =  AppUtil.GetAllPKRecords+"?id="+id+"&type="+detail.getType();
+                Log.i("kmj","---urlget----" + urlget);
                 HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
                     @Override
                     public void onSuccess(byte[] response) {
@@ -98,7 +120,6 @@ public class PKHistoryActivity extends AppCompatActivity {
             String status = result.getString("reCode");
             if (status.equalsIgnoreCase("success")) {
                 JSONArray pkRingsArray = result.getJSONArray("PKRings");
-                Log.i("kmj","---length----" + pkRingsArray.length());
                 for(int i=0; i < pkRingsArray.length();i++) {
                     PKHistory history = new PKHistory();
                     JSONObject jo = pkRingsArray.getJSONObject(i);
@@ -108,10 +129,15 @@ public class PKHistoryActivity extends AppCompatActivity {
                     history.setDate(jo.getString("date"));
                     history.setType(jo.getInt("type"));
 
-                    List<List<Team>> twoTeams = new ArrayList<List<Team>>();
+                    List<ParticipateTeam> twoTeams = new ArrayList<ParticipateTeam>();
                     JSONArray teamsArray = jo.getJSONArray("teams");
                     for(int j=0; j < teamsArray.length();j++){
-                        JSONArray array = teamsArray.getJSONArray(j);
+                        ParticipateTeam participateTeam = new ParticipateTeam();
+                        JSONObject jop= teamsArray.getJSONObject(j);
+                        participateTeam.setTeamId(jop.getString("teamID"));
+                        participateTeam.setTitle(jop.getString("title"));
+
+                        JSONArray array = jop.getJSONArray("students");
                         List<Team> teams = new ArrayList<>();
                         for(int k=0;k < array.length();k++) {
                             JSONObject jot = array.getJSONObject(k);
@@ -123,13 +149,16 @@ public class PKHistoryActivity extends AppCompatActivity {
                             team.setClassName(jot.getString("className"));
                             teams.add(team);
                         }
-                        twoTeams.add(teams);
+                        participateTeam.setStudents(teams);
+                        twoTeams.add(participateTeam);
                     }
-                    history.setTeams(twoTeams);
+                    history.setParticipateTeam(twoTeams);
                     pkHistoryList.add(history);
                 }
-                Log.i("kmj","-------" + pkHistoryList.size());
                 adapter.notifyDataSetChanged();
+                if(pkHistoryList.size()==0){
+                    Toast.makeText(PKHistoryActivity.this, "您暂无PK历史记录", Toast.LENGTH_LONG).show();
+                }
 
             }else{
                 Toast.makeText(PKHistoryActivity.this, "获取历史信息失败，请重试", Toast.LENGTH_LONG).show();
@@ -143,7 +172,7 @@ public class PKHistoryActivity extends AppCompatActivity {
 
     private void initViews() {
         pkHistoryListView = (ListView)findViewById(R.id.pk_history_listView);
-        adapter = new PKHistoryAdapter(PKHistoryActivity.this,pkHistoryList);
+        adapter = new PKHistoryAdapter(PKHistoryActivity.this,pkHistoryList,detail);
         pkHistoryListView.setAdapter(adapter);
     }
 

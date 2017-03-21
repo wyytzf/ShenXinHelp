@@ -4,7 +4,8 @@
     <item
         android:id="@+id/add_group"
         android:title="加入圈子"
-        app:showAsAction="never"></item>
+        app:showAsAction="never"
+        android:visible="false"></item>
 
     <item
         android:id="@+id/creat_group"

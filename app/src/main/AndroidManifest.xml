@@ -63,6 +63,7 @@
             android:name=".group.GroupDetailActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".group.MyPlanActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -73,12 +74,17 @@
             android:name=".group.PKHistoryActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
+
         <activity
         android:name=".group.MakePlanActivity"
         android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".group.GroupMemberActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".group.NewMyGroupActivity"
+             />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
