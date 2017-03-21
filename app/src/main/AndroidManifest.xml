@@ -46,6 +46,9 @@
             android:name=".com.xd.shenxinhelp.ui.HelpContentActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".com.xd.shenxinhelp.ui.DrawUpPlanActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".com.xd.shenxinhelp.ui.RegisterActivity"
             android:label="@string/title_activity_register"
             android:theme="@style/AppTheme" />
