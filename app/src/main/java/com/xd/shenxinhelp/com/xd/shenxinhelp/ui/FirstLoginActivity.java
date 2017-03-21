@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -158,8 +159,10 @@ public class FirstLoginActivity extends AppCompatActivity {
                 public void onResponse(String str) {
                     boolean result = parseAddInfo(str);
                     if (result) {
-                        Intent intent = new Intent(FirstLoginActivity.this, ContainerActivity.class);
+                        Toast.makeText(FirstLoginActivity.this, "注册成功", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(FirstLoginActivity.this, LoginActivity.class);
                         startActivity(intent);
+                        finish();
                     } else {
                         Toast.makeText(FirstLoginActivity.this, "网络出错", Toast.LENGTH_LONG).show();
                     }
@@ -242,7 +245,20 @@ public class FirstLoginActivity extends AppCompatActivity {
     private void completeSchoolSpinner() {
         SchoolSpinnerAdapter spinnerAdapter = new SchoolSpinnerAdapter();
         mSchool.setAdapter(spinnerAdapter);
+        schoolId = schools.get(mSchool.getSelectedItemPosition()).getId();
+        mSchool.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                schoolId = schools.get(mSchool.getSelectedItemPosition()).getId();
+                mClass.setAdapter(null);
+                requestClass();
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void parseSchool(String str) {
