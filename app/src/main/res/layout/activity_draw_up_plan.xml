@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/activity_draw_up_plan"
     tools:context="com.xd.shenxinhelp.com.xd.shenxinhelp.ui.DrawUpPlanActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -52,152 +53,61 @@
         android:textColor="#333"
         android:text="我们为你制定了相应的计划"/>
 
+    <RelativeLayout
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#AAA"/>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal">
+        android:layout_height="40dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/today"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
+            android:layout_weight="1.0"
             android:gravity="center"
-            android:textSize="14dp"
-            android:textColor="#333"
-            android:text="计划一" />
+            android:textSize="16dp"
+            android:text="今天"/>
 
-        <RelativeLayout
-            android:layout_width="150dp"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/fubu1"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:layout_width="100dp"
-                android:layout_height="70dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/fubu1_cover" />
-
-            <TextView
-                android:layout_below="@id/fubu1"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="14dp"
-                android:textColor="#333"
-                android:text="30天甩掉小肚腩" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="150dp"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/fubu2"
-                android:layout_centerHorizontal="true"
-                android:layout_width="100dp"
-                android:layout_height="70dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="5dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/fubu2_cover" />
-
-            <TextView
-                android:layout_below="@id/fubu2"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="14dp"
-                android:textColor="#333"
-                android:text="维密天使的腿部训练教程" />
-
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/tomorrow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:text="明天" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_marginTop="10dp"
+    <ImageView
+        android:id="@+id/cursor"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="3dp"
+        android:scaleType="matrix"
+        android:src="@drawable/cursor" />
 
-        <TextView
-            android:layout_marginLeft="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textSize="14dp"
-            android:textColor="#333"
-            android:text="计划二"/>
-
-        <RelativeLayout
-            android:layout_width="150dp"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/quanshen1"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:layout_width="100dp"
-                android:layout_height="70dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/quanshen1_cover" />
-
-            <TextView
-                android:layout_below="@id/quanshen1"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="14dp"
-                android:textColor="#333"
-                android:text="HIIT，最近国外很流行的一种健身" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="150dp"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/quanshen2"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:layout_width="100dp"
-                android:layout_height="70dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/quanshen2_cover" />
-
-            <TextView
-                android:layout_below="@id/quanshen2"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="14dp"
-                android:textColor="#333"
-                android:text="30分钟暴汗燃脂 月减15KG不是梦" />
-
-        </RelativeLayout>
-
-    </LinearLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:flipInterval="30"
+        android:persistentDrawingCache="animation" />
 
     <RelativeLayout
+        android:id="@+id/add_plan_layout"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="30dp">
+        android:layout_height="40dp"
+        android:visibility="gone">
 
         <Button
-            android:id="@+id/plan_more"
+            android:id="@+id/add_plan"
             android:layout_centerInParent="true"
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -206,9 +116,10 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/start_plan_layout"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="40dp">
 
         <Button
             android:id="@+id/start_plan"

@@ -53,6 +53,9 @@ public class AppUtil extends Application {
     public static String GetPlanByDate= getBaseUrl() +"GetPlanByDate";
     public static String CreatePK= getBaseUrl() +"CreatePK";
     public static String GetAllPKRecords= getBaseUrl() +"GetAllPKRecords";
+    public static String GetAllExercise= getBaseUrl() +"GetAllExercise";
+    public static String CustomPlan= getBaseUrl() +"CustomPlan";
+    public static String ShareToRing= getBaseUrl() +"ShareToRing";
 
     public static String getBaseUrl() {
         return BASE_URL;
