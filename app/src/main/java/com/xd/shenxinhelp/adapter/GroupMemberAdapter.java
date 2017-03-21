@@ -66,7 +66,7 @@ public class GroupMemberAdapter extends MyBaseAdapter{
             if(position==datas.size()){
                 title.setText("添加");
                 des.setVisibility(View.GONE);
-                imageView.setImageResource(R.drawable.timg);
+                imageView.setImageResource(R.drawable.ic_add_circle_outline_black_24dp);
                 return;
             }
             final User single = datas.get(position);

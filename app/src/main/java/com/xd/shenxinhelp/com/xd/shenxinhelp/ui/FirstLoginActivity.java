@@ -33,6 +33,7 @@ import java.util.List;
 public class FirstLoginActivity extends AppCompatActivity {
 
 
+    private EditText mName;
     private RadioGroup mSex;
     private RadioButton mMale;
     private RadioButton mFemale;
@@ -65,6 +66,7 @@ public class FirstLoginActivity extends AppCompatActivity {
 
     private void initViews() {
 
+        mName = (EditText) findViewById(R.id.register_name);
         mSex = (RadioGroup) findViewById(R.id.register_sex_group);
         mMale = (RadioButton) findViewById(R.id.register_radio_male);
         mFemale = (RadioButton) findViewById(R.id.register_radio_female);
@@ -110,12 +112,16 @@ public class FirstLoginActivity extends AppCompatActivity {
         String age = mAge.getText().toString();
         String height = mHeight.getText().toString();
         String weight = mWeight.getText().toString();
-
+        String name = mName.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-
+        if (TextUtils.isEmpty(name)) {
+            mName.setError(getString(R.string.error_field_required));
+            focusView = mName;
+            cancel = true;
+        }
         if (TextUtils.isEmpty(age)) {
             mAge.setError(getString(R.string.error_field_required));
             focusView = mAge;
@@ -141,7 +147,7 @@ public class FirstLoginActivity extends AppCompatActivity {
             // perform the user login attempt.
             schoolId = schools.get(mSchool.getSelectedItemPosition()).getId();
             classId = classes.get(mClass.getSelectedItemPosition()).getClassId();
-            OkHttp.get(AppUtil.ADDPERSONINFO + "userID=" + userId + "&sex=" + check_age + "&age=" + age +
+            OkHttp.get(AppUtil.ADDPERSONINFO + "userID=" + userId + "&name=" + name + "&sex=" + check_age + "&age=" + age +
                     "&height=" + height + "&weight=" + weight + "&schoolID=" + schoolId + "&classID=" + classId, new OkHttp.ResultCallBack() {
                 @Override
                 public void onError(String str, Exception e) {

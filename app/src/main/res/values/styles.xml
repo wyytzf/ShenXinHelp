@@ -17,6 +17,11 @@
 
     </style>
 
+    <style name="mySplash" parent="AppTheme.NoActionBar">
+        <item name="colorPrimary">@color/red_light</item>
+
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

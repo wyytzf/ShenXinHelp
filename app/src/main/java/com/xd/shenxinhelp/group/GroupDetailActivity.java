@@ -65,7 +65,7 @@ import java.util.List;
  * Created by MMY on 2017/2/14.
  */
 
-public class GroupDetailActivity extends AppCompatActivity implements View.OnClickListener,ListItemClickListener {
+public class GroupDetailActivity extends AppCompatActivity implements View.OnClickListener, ListItemClickListener {
     private GridView gridView;
     private List<User> userList;
     private Button btnBack, btnMore;
@@ -81,13 +81,13 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
     private String type;
     private SwipeRefreshLayout memberlistview;
     private GridViewAdapter gridAdapter;
-//    private ImageView image1, image2, image3, image4, image5;
+    //    private ImageView image1, image2, image3, image4, image5;
 //    private LinearLayout addView;
 //    private ImageLoaderInterface imageLoader;
     private List<Post> postList = new ArrayList<Post>();
     private TextView noPosts;
     private GroupDetail groupDetail;
-    private TextView des,name,owner;
+    private TextView des, name, owner;
 
 
     private Handler handler = new Handler() {
@@ -149,8 +149,6 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_group_detail_list);
 
 
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbar.setTitle("");
@@ -158,18 +156,18 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         setSupportActionBar(toolbar);
         sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
         userID = sp.getString("userid", "xiaoming");
-        groupDetail= (GroupDetail) getIntent().getSerializableExtra("detail");
+        groupDetail = (GroupDetail) getIntent().getSerializableExtra("detail");
 
 
         listView = (ListView) findViewById(R.id.lv_comment_list);
         headerView = (View) LayoutInflater.from(GroupDetailActivity.this).inflate(R.layout.activity_group_detail_header, null);
 
-        des=(TextView)headerView.findViewById(R.id.group_des);
-        name=(TextView)headerView.findViewById(R.id.group_name);
-        owner=(TextView)headerView.findViewById(R.id.group_owner);
+        des = (TextView) headerView.findViewById(R.id.group_des);
+        name = (TextView) headerView.findViewById(R.id.group_name);
+        owner = (TextView) headerView.findViewById(R.id.group_owner);
 
-        des.setText("简介："+groupDetail.getDes());
-        name.setText("圈子名："+groupDetail.getName());
+        des.setText("简介：" + groupDetail.getDes());
+        name.setText("圈子名：" + groupDetail.getName());
         owner.setText("  ");
 
         llRank = (LinearLayout) headerView.findViewById(R.id.ll_rank);
@@ -177,13 +175,13 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onClick(View view) {
 
-                if (userList==null||userList.size()==0){
-                    Toast.makeText(getApplicationContext(),"圈子没有圈子成员",Toast.LENGTH_SHORT).show();
+                if (userList == null || userList.size() == 0) {
+                    Toast.makeText(getApplicationContext(), "圈子没有圈子成员", Toast.LENGTH_SHORT).show();
 
 
-                }else {
+                } else {
                     Intent intent = new Intent(GroupDetailActivity.this, RankActivity.class);
-                    intent.putExtra("detail",groupDetail);
+                    intent.putExtra("detail", groupDetail);
                     startActivity(intent);
                 }
             }
@@ -196,9 +194,9 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         RecyclerView recyclerView = (RecyclerView) headerView.findViewById(R.id.recycler_view_member);
         //设置可以滑出底栏
         recyclerView.setClipToPadding(false);
-        recyclerView.setPadding(0,0,0, (int) getResources().getDimension(R.dimen.BottomBarHeight));
-        memberlistview=(SwipeRefreshLayout)headerView.findViewById(R.id.listview_member);
-        gridAdapter = new GridViewAdapter(userList,this, this);
+        recyclerView.setPadding(0, 0, 0, (int) getResources().getDimension(R.dimen.BottomBarHeight));
+        memberlistview = (SwipeRefreshLayout) headerView.findViewById(R.id.listview_member);
+        gridAdapter = new GridViewAdapter(userList, this, this);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 6);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -231,7 +229,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
 //        adapter = new GroupLittleGoalListAdapter(getApplicationContext(),
 //                goalList);
 //        listView.setAdapter(adapter);
-        noPosts = (TextView)findViewById(R.id.no_posts);
+        noPosts = (TextView) findViewById(R.id.no_posts);
         adapter = new GroupLittleGoalListAdapter(getApplicationContext(),
                 postList);
         listView.setAdapter(adapter);
@@ -244,14 +242,14 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void run() {
                 final Message message = new Message();
-                int type=Integer.parseInt(groupDetail.getType())+1;
-                String urlget =  AppUtil.GetAllPosts  + "?type="+type+"&id="+groupDetail.getId()+"&userID="+userID;
-                Log.i("kmj","---url----" + urlget);
+                int type = Integer.parseInt(groupDetail.getType()) + 1;
+                String urlget = AppUtil.GetAllPosts + "?type=" + type + "&id=" + groupDetail.getId() + "&userID=" + userID;
+                Log.i("kmj", "---url----" + urlget);
                 HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
                     @Override
                     public void onSuccess(byte[] response) {
                         String jsonStr = new String(response);
-                        Log.i("kmj","-------" + jsonStr);
+                        Log.i("kmj", "-------" + jsonStr);
                         parseResponse(jsonStr);
                     }
 
@@ -271,7 +269,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
             if (status.equalsIgnoreCase("success")) {
                 postList.clear();
                 JSONArray postArray = result.getJSONArray("posts");
-                for(int i=0; i < postArray.length();i++){
+                for (int i = 0; i < postArray.length(); i++) {
                     Post post = new Post();
                     JSONObject jo = postArray.getJSONObject(i);
                     post.setPostId(jo.getInt("postid"));
@@ -283,7 +281,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                     post.setPraiseCount(jo.getInt("praiseCount"));
                     JSONArray planArray = jo.getJSONArray("plans");
                     List<Plan> plans = new ArrayList<Plan>();
-                    for(int j=0;j<planArray.length();j++){
+                    for (int j = 0; j < planArray.length(); j++) {
                         JSONObject jop = planArray.getJSONObject(j);
                         Plan plan = new Plan();
                         plan.setTitle(jop.getString("title"));
@@ -294,7 +292,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                     postList.add(post);
                 }
                 adapter.notifyDataSetChanged();
-            }else{
+            } else {
                 Toast.makeText(GroupDetailActivity.this, "获取圈子动态失败，请重试", Toast.LENGTH_LONG).show();
             }
 
@@ -324,7 +322,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                 final Message message = new Message();
 
                 //String urlget = ConnectUtil.GetRingMember + "?ringID="+groupID+"&type="+type+"&top=5&userID=" + userID;
-                String urlget =  AppUtil.GetRingMember+ "?ringID="+groupDetail.getId()+"&type="+groupDetail.getType()+"&top=5";
+                String urlget = AppUtil.GetRingMember + "?ringID=" + groupDetail.getId() + "&type=" + groupDetail.getType() + "&top=5";
                 HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
                     @Override
                     public void onSuccess(byte[] response) {
@@ -413,8 +411,6 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-
-
     @Override
     public boolean onCreatePanelMenu(int featureId, Menu menu) {
         getMenuInflater().inflate(R.menu.group_detail_toolbar_menu, menu);
@@ -426,43 +422,47 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         int itemId = item.getItemId();
         if (itemId == android.R.id.home) {
             finish();
-        } else if (itemId == R.id.my_little_plan) {
-            Intent intent = new Intent(GroupDetailActivity.this, MyPlanActivity.class);
-            String urlget =  AppUtil.GetAllPosts  + "?type=0&id="+groupDetail.getId()+"&userID="+userID;
-            Bundle bundle = new Bundle();
-            bundle.putString("url",urlget);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        } else if (itemId == R.id.go_little_plan) {
-            Intent intent = new Intent(GroupDetailActivity.this, MakePlanActivity.class);
-            startActivity(intent);
-        } else if (itemId == R.id.go_pk) {
-            Intent intent = new Intent(GroupDetailActivity.this,LaunchPKActivity.class );
-            intent.putExtra("groupDetail",groupDetail);
+        }
+//        else if (itemId == R.id.my_little_plan) {
+//            Intent intent = new Intent(GroupDetailActivity.this, MyPlanActivity.class);
+//            String urlget =  AppUtil.GetAllPosts  + "?type=0&id="+groupDetail.getId()+"&userID="+userID;
+//            Bundle bundle = new Bundle();
+//            bundle.putString("url",urlget);
+//            intent.putExtras(bundle);
+//            startActivity(intent);
+//        } else if (itemId == R.id.go_little_plan) {
+//            Intent intent = new Intent(GroupDetailActivity.this, MakePlanActivity.class);
+//            startActivity(intent);
+//        }
+        else if (itemId == R.id.go_pk) {
+            Intent intent = new Intent(GroupDetailActivity.this, LaunchPKActivity.class);
+            intent.putExtra("groupDetail", groupDetail);
             intent.setType("GroupDetailActivity");
-            if(userList.size() < 3){
+            if (userList.size() < 3) {
                 Toast.makeText(GroupDetailActivity.this, "对不起，您暂时无权PK", Toast.LENGTH_LONG).show();
-            }else{
+            } else {
                 startActivity(intent);
             }
-        }else if(itemId == R.id.pk_history){
+        } else if (itemId == R.id.pk_history) {
             Intent intent = new Intent(GroupDetailActivity.this, PKHistoryActivity.class);
-            intent.putExtra("groupDetail",groupDetail);
+            intent.putExtra("groupDetail", groupDetail);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
+
     public void onListItemClick(View v, int position) {
         //openApi = datas.get(position);
 
         Intent intent = new Intent(GroupDetailActivity.this, GroupMemberActivity.class);
-        intent.putExtra("detail",groupDetail);
-        startActivityForResult(intent,0);
+        intent.putExtra("detail", groupDetail);
+        startActivityForResult(intent, 0);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch(resultCode){
+        switch (resultCode) {
             case 100:
                 getGroupMember();
                 break;

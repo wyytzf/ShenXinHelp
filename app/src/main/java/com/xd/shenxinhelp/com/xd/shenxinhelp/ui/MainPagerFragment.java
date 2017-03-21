@@ -1,6 +1,7 @@
 package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -338,6 +339,7 @@ public class MainPagerFragment extends Fragment {
                 intent.putExtra("url", weburls2.get(0));
                 intent.putExtra("title", titles2.get(0));
                 intent.putExtra("image_url", images2.get(0));
+//                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(activity, news1_image, "tans");
                 startActivity(intent);
             }
         });
