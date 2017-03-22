@@ -1,6 +1,7 @@
 package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
@@ -42,9 +43,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class DrawUpPlanActivity extends AppCompatActivity {
@@ -59,7 +65,8 @@ public class DrawUpPlanActivity extends AppCompatActivity {
     private JSONArray optional_plan_list;
     private JSONArray today_plan_list;
     private JSONArray tomo_plan_list;
-    private Set<JSONObject> my_choice;
+    //private Set<JSONObject> my_choice;
+    private Map<Integer, Boolean> state_map;
 
     private ViewPager mPager;//页卡内容
     private List<ListView> listview_list;// Tab页面列表
@@ -72,13 +79,27 @@ public class DrawUpPlanActivity extends AppCompatActivity {
     private ImageLoaderInterface imageLoader;
     private PopupWindow popupWindow;
 
+    private String userID;
+    private String today;
+    private String tomo;
+    private Calendar calendar;
     private int count;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw_up_plan);
 
-        my_choice = new HashSet<>();
+        SharedPreferences sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
+
+        userID = sp.getString("userid", "1");
+        today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 1);
+        tomo = new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime());
+
+        //my_choice = new HashSet<>();
+        state_map = new HashMap<>();
 
         optional_plan_list = new JSONArray();
         today_plan_list = new JSONArray();
@@ -131,17 +152,18 @@ public class DrawUpPlanActivity extends AppCompatActivity {
                         @Override
                         public void onDismiss() {
                             findViewById(R.id.activity_draw_up_plan).setBackground(new BitmapDrawable());
-                            my_choice.clear();
+                            state_map.clear();
+                            //my_choice.clear();
                         }
                     });
                     Button add = (Button) root.findViewById(R.id.add);
                     add.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            String params = "?userID=1&date=2017-03-22&exerciseIDs=";
+                            String params = "?userID="+userID+"&date="+tomo+"&exerciseIDs=";
                             try {
-                                for (JSONObject temp : my_choice){
-                                        params += ( temp.getString("id") + "-" );
+                                for (int i : state_map.keySet()){
+                                        params += ( optional_plan_list.getJSONObject(i).getString("id") + "-" );
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -182,7 +204,7 @@ public class DrawUpPlanActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    OkHttp.get(AppUtil.ShareToRing + "?planID="+plan_id+"&userID=1&content=test", new OkHttp.ResultCallBack() {
+                    OkHttp.get(AppUtil.ShareToRing + "?planID="+plan_id+"&userID="+userID+"&content=今天要开始计划了哦！", new OkHttp.ResultCallBack() {
                         @Override
                         public void onError(String str, Exception e) {
                             Log.e("getTomoPlanList", str);
@@ -214,7 +236,7 @@ public class DrawUpPlanActivity extends AppCompatActivity {
     }
 
     private void getTodayPlanList(){
-        OkHttp.get(AppUtil.GetPlanByDate + "?userID=1&date=2017-03-21", new OkHttp.ResultCallBack() {
+        OkHttp.get(AppUtil.GetPlanByDate + "?userID="+userID+"&date="+today, new OkHttp.ResultCallBack() {
             @Override
             public void onError(String str, Exception e) {
                 Log.e("getTodayPlanList", str);
@@ -229,7 +251,7 @@ public class DrawUpPlanActivity extends AppCompatActivity {
     }
 
     private void getTomoPlanList(){
-        OkHttp.get(AppUtil.GetPlanByDate + "?userID=1&date=2017-03-22", new OkHttp.ResultCallBack() {
+        OkHttp.get(AppUtil.GetPlanByDate + "?userID="+userID+"&date="+tomo, new OkHttp.ResultCallBack() {
             @Override
             public void onError(String str, Exception e) {
                 Log.e("getTomoPlanList", str);
@@ -382,10 +404,12 @@ public class DrawUpPlanActivity extends AppCompatActivity {
             switch (arg0) { //arg0是跳转的目标页卡
                 case 0:
                     if (currIndex == 1) { //从页卡1跳到页卡0
-                        animation = new TranslateAnimation(one, 0, 0, 0); //第二个参数的确不是offset，但是原因存在疑问
+                        animation = new TranslateAnimation(one, 0, 0, 0);
                     } else if (currIndex == 2) {
                         animation = new TranslateAnimation(two, 0, 0, 0);
                     }
+                    add_plan_layout.setVisibility(View.GONE);
+                    start_plan_layout.setVisibility(View.VISIBLE);
                     break;
                 case 1:
                     if (currIndex == 0) {
@@ -393,6 +417,8 @@ public class DrawUpPlanActivity extends AppCompatActivity {
                     } else if (currIndex == 2) {
                         animation = new TranslateAnimation(two, one, 0, 0);
                     }
+                    add_plan_layout.setVisibility(View.VISIBLE);
+                    start_plan_layout.setVisibility(View.GONE);
                     break;
                 case 2:
                     if (currIndex == 0) {
@@ -560,7 +586,7 @@ public class DrawUpPlanActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder = null;
             if (convertView==null){
                 convertView = LayoutInflater.from(context).inflate(R.layout.list_view_exercise, null);
@@ -576,19 +602,28 @@ public class DrawUpPlanActivity extends AppCompatActivity {
                 final JSONObject jsonObject = optional_plan_list.getJSONObject(position);
                 viewHolder.name.setText(jsonObject.getString("title"));
                 imageLoader.displayImage(DrawUpPlanActivity.this, jsonObject.getString("reosurce_url"), viewHolder.picture);
+                viewHolder.checkBox.setChecked(state_map.get(position)==null? false : true);
+                for (int i : state_map.keySet()){
+                    Log.e("state_map["+i+"]",""+state_map.get(i));
+                }
                 viewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked){
-                            my_choice.add(jsonObject);
-                            if (my_choice.size()==3){
-                                my_choice.remove(jsonObject);
+                            //my_choice.add(jsonObject);
+                            state_map.put(position, isChecked);
+                            Log.e("position",""+position);
+                            if (state_map.size()==3){
+                                state_map.remove(position);
                                 buttonView.setChecked(false);
                                 Toast.makeText(DrawUpPlanActivity.this, "一次最多添加2个项目哦！", Toast.LENGTH_SHORT).show();
+                                //Log.e("my_choice",""+my_choice.size());
                             }
                         }
                         else {
-                            my_choice.remove(jsonObject);
+                            //my_choice.remove(jsonObject);
+                            Log.e("else","进来了");
+                            state_map.remove(position);
                         }
                     }
                 });
