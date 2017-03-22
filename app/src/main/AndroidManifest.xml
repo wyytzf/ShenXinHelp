@@ -18,8 +18,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".com.xd.shenxinhelp.ui.LoginActivity"
-            android:screenOrientation="nosensor"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="nosensor">
 
         </activity>
         <activity
@@ -29,7 +29,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".com.xd.shenxinhelp.ui.FirstLoginActivity"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".com.xd.shenxinhelp.ui.BodyHelpActivity"
             android:label="@string/title_activity_body_help"
@@ -38,67 +38,67 @@
         <activity
             android:name=".com.xd.shenxinhelp.ui.EyeHelpActivity"
             android:label="@string/title_activity_eye_help"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".com.xd.shenxinhelp.ui.MentalityActivity"
             android:label="@string/title_activity_mentality"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".com.xd.shenxinhelp.ui.ExamHelpActivity"
             android:label="@string/title_activity_exam"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".com.xd.shenxinhelp.ui.HelpContentActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".com.xd.shenxinhelp.ui.DrawUpPlanActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".com.xd.shenxinhelp.ui.RegisterActivity"
             android:label="@string/title_activity_register"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".group.RankActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".group.GroupDetailActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".group.MyPlanActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".group.LaunchPKActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".group.PKHistoryActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar" />
 
 
         <activity
             android:name=".group.MakePlanActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".group.GroupMemberActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".group.NewMyGroupActivity"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -109,40 +109,36 @@
 
         <activity
             android:name=".com.xd.shenxinhelp.ui.VideoPlayerActivity"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".com.xd.shenxinhelp.ui.LineChartActivity"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".mySetting.Feedback"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mySetting.AboutActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".com.xd.shenxinhelp.ui.WebViewActivity"
             android:label="@string/title_activity_web_view"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".com.xd.shenxinhelp.ui.HelpContentTwoActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="nosensor"></activity>
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".com.xd.shenxinhelp.ui.SplashActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="nosensor">
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".com.xd.shenxinhelp.ui.DrawUpPlanActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="nosensor"/>
 
     </application>
 

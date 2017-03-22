@@ -38,7 +38,7 @@ public class LineChartActivity extends AppCompatActivity {
     private TextView mXiaohao;
     private TextView mShuliang;
     private TextView mTishi;
-
+    private Double mShu = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,8 +95,10 @@ public class LineChartActivity extends AppCompatActivity {
         for (int i = 0; i < count; i++) {
             int val = (int) (Math.random() * range) + 3;
             values.add(new Entry(i + 1, val, null));
+            mShu += val;
         }
 
+        mShuliang.setText(mShu + "");
         LineDataSet set1;
 
         if (lineChart.getData() != null &&
