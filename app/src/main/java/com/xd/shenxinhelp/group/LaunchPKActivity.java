@@ -192,7 +192,7 @@ public class LaunchPKActivity extends AppCompatActivity {
                 for(int i=0; i < teamArray.length();i++) {
                     Team team = new Team();
                     JSONObject jo = teamArray.getJSONObject(i);
-                    team.setAccount(jo.getString("account"));
+                    team.setAccount(jo.getString("name"));
                     team.setHeaderUrl(jo.getString("head_url"));
                     team.setHealthDegree(jo.getInt("health_degree"));
                     team.setSchoolName(jo.getString("schoolName"));
@@ -242,10 +242,11 @@ public class LaunchPKActivity extends AppCompatActivity {
 
 
             }else{
+                String message = result.getString("message");
                 headers.setVisibility(View.GONE);
                 challengerListView.setVisibility(View.GONE);
                 talkerListView.setVisibility(View.GONE);
-                Toast.makeText(LaunchPKActivity.this, "今天已经PK次数已经用完，期待明天继续PK", Toast.LENGTH_LONG).show();
+                Toast.makeText(LaunchPKActivity.this, message, Toast.LENGTH_LONG).show();
             }
 
         } catch (JSONException e) {
