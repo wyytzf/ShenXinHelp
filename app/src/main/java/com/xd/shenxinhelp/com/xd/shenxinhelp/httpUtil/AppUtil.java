@@ -58,7 +58,7 @@ public class AppUtil extends Application {
     public static String GetAllExercise= getBaseUrl() +"GetAllExercise";
     public static String CustomPlan= getBaseUrl() +"CustomPlan";
     public static String ShareToRing= getBaseUrl() +"ShareToRing";
-
+    public static String DOEXERCISE = getBaseUrl() + "DoExercise?";
     public static String getBaseUrl() {
        return BASE_URL;
     }
@@ -70,6 +70,7 @@ public class AppUtil extends Application {
     public static String getBaseRsUrl() {
         return BASE_RS_URL;
     }
+
 
 
 }

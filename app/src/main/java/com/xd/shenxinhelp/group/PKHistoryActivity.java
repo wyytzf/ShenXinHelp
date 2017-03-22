@@ -142,7 +142,7 @@ public class PKHistoryActivity extends AppCompatActivity {
                         for(int k=0;k < array.length();k++) {
                             JSONObject jot = array.getJSONObject(k);
                             Team team = new Team();
-                            team.setAccount(jot.getString("account"));
+                            team.setAccount(jot.getString("name"));
                             team.setHeaderUrl(jot.getString("head_url"));
                             team.setHealthDegree(jot.getInt("health_degree"));
                             team.setSchoolName(jot.getString("schoolName"));

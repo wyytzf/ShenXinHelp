@@ -27,6 +27,7 @@ public class MySettingFragment extends Fragment {
     private View view;
     private SharedPreferences sp;
     private ImageView iv_headphoto;
+    private TextView tv_userAccount;
     private TextView tv_userName;
     private TextView tv_userSchool;
     private TextView tv_userClass;
@@ -91,6 +92,7 @@ public class MySettingFragment extends Fragment {
 
     void initView(){
         iv_headphoto = (ImageView) view.findViewById(R.id.user_image);
+        tv_userAccount = (TextView) view.findViewById(R.id.my_user_account);
         tv_userName = (TextView) view.findViewById(R.id.user_name);
         tv_userSchool = (TextView) view.findViewById(R.id.user_school);
         tv_userClass = (TextView) view.findViewById(R.id.user_class);
@@ -101,10 +103,12 @@ public class MySettingFragment extends Fragment {
 
     void initData(){
         sp=getActivity().getSharedPreferences("ShenXinBang",Context.MODE_PRIVATE);
-        tv_userName.setText(sp.getString("userid","xiaoming"));
+        tv_userAccount.setText(sp.getString("account","account"));
+        tv_userName.setText(sp.getString("name","name"));
         tv_userSchool.setText(sp.getString("schoolName","西电附中"));
         tv_userClass.setText(sp.getString("className","高二一班"));
-        tv_level.setText(sp.getString("level","10"));
+        int level=Integer.parseInt(sp.getString("health_degree","100"))/500+1;
+        tv_level.setText(""+level);
         tv_healthDegree.setText(sp.getString("health_degree","100"));
         tv_credit.setText(sp.getString("credits","500"));
         if(!sp.getString("head_url","").equals("")){

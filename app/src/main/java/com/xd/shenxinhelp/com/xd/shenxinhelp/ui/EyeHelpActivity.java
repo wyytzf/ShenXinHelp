@@ -133,13 +133,12 @@ public class EyeHelpActivity extends AppCompatActivity {
                 Toast.makeText(EyeHelpActivity.this, "功能开发中……", Toast.LENGTH_LONG).show();
             }
         });
+        Liner1.setVisibility(View.GONE);
         Liner2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EyeHelpActivity.this, WebViewActivity.class);
-                intent.putExtra("url", "file:///android_asset/yanbaojiancao.html");
-                intent.putExtra("title", "眼保健操");
-                intent.putExtra("image_url", "");
+                Intent intent = new Intent(EyeHelpActivity.this, HelpContentActivity.class);
+                intent.putExtra("type", "yan");
                 startActivity(intent);
             }
         });
@@ -147,8 +146,8 @@ public class EyeHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EyeHelpActivity.this, WebViewActivity.class);
-                intent.putExtra("url", "file:///android_asset/love_eyes.html");
-                intent.putExtra("title", "视力远眺图，观看可保护眼睛");
+                intent.putExtra("url", "file:///android_asset/yanbaojiancao.html");
+                intent.putExtra("title", "护眼动作");
                 intent.putExtra("image_url", "");
                 startActivity(intent);
             }
@@ -173,8 +172,8 @@ public class EyeHelpActivity extends AppCompatActivity {
                 intent.putExtra("xiaohao", "本周累计护眼次数");
                 intent.putExtra("shuliang", "15次");
                 intent.putExtra("tishi", "根据您的年级情况，我们建议您每天保持3次护眼");
-                intent.putExtra("lineTishi","护眼次数");
-                intent.putExtra("shangxian",5);
+                intent.putExtra("lineTishi", "护眼次数");
+                intent.putExtra("shangxian", 5);
                 startActivity(intent);
             }
         });

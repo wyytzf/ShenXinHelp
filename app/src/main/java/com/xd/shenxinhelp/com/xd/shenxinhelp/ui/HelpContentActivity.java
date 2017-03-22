@@ -16,9 +16,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.shuyu.gsyvideoplayer.GSYVideoPlayer;
+import com.shuyu.gsyvideoplayer.listener.StandardVideoAllCallBack;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.xd.shenxinhelp.R;
@@ -45,21 +47,41 @@ public class HelpContentActivity extends AppCompatActivity {
     private String userID;
 
 
+    private String local;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help_content);
         SharedPreferences sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
         userID = sp.getString("userid", "1");
-
-
         Intent intent = getIntent();
         buwei = intent.getStringExtra("buwei");
         type = intent.getStringExtra("type");
         contentList = new ArrayList<HelpContent>();
-
         initView();
-        Request();
+        if (type.equals("yan")) {
+            HelpContent content1 = new HelpContent();
+            content1.setWebUrl("http://192.168.0.21:8080/BodyMindHelper/webview/yan1.FLV");
+            content1.setName("最新版眼保健操教学视频");
+            content1.setReosurce_url("http://192.168.0.21:8080/BodyMindHelper/images/yan1_cover.png");
+            content1.setDiffculty("1");
+            content1.setHeat("");
+            content1.setTotal_time("");
+            HelpContent content2 = new HelpContent();
+            content2.setWebUrl("http://192.168.0.21:8080/BodyMindHelper/webview/yan2.FLV");
+            content2.setName("如何找准穴位 正确做眼保健操");
+            content2.setReosurce_url("http://192.168.0.21:8080/BodyMindHelper/images/yan2_cover.png");
+            content2.setDiffculty("1");
+            content2.setHeat("");
+            content2.setTotal_time("");
+            contentList.add(content1);
+            contentList.add(content2);
+            helpContentAdapter.update(contentList);
+        } else {
+            Request();
+        }
+
 
     }
 
@@ -101,15 +123,124 @@ public class HelpContentActivity extends AppCompatActivity {
 //                    load("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488273623&di=ea34c54ab63f18a6ae02b94d99d70b25&imgtype=jpg&er=1&src=http%3A%2F%2Fwww.bz55.com%2Fuploads%2Fallimg%2F150318%2F140-15031PUR6.jpg").into(holder.imageView);
             HelpContent helpContent = helpContents.get(position);
             holder.textView.setText(helpContent.getName());
-            holder.standardGSYVideoPlayer.setUp(helpContent.getReosurce_url(), true, "");
+//            holder.standardGSYVideoPlayer.setUp(helpContent.getReosurce_url(), true, "");
             holder.totalTime.setText(helpContent.getTotal_time());
             holder.calorie.setText(helpContent.getHeat());
             float numStars = Float.parseFloat(helpContent.getDiffculty());
             holder.difficult.setRating(numStars);
             holder.standardGSYVideoPlayer.setUp(helpContent.getWebUrl(), true, "");
+            holder.standardGSYVideoPlayer.setStandardVideoAllCallBack(new StandardVideoAllCallBack() {
+                @Override
+                public void onClickStartThumb(String s, Object... objects) {
+                    Toast.makeText(HelpContentActivity.this, "1", Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onClickBlank(String s, Object... objects) {
+
+                }
+
+                @Override
+                public void onClickBlankFullscreen(String s, Object... objects) {
+
+                }
+
+                @Override
+                public void onPrepared(String s, Object... objects) {
+
+                }
+
+                @Override
+                public void onClickStartIcon(String s, Object... objects) {
+                    Toast.makeText(HelpContentActivity.this, "开始锻炼", Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onClickStartError(String s, Object... objects) {
+
+                }
+
+                @Override
+                public void onClickStop(String s, Object... objects) {
+
+                }
+
+                @Override
+                public void onClickStopFullscreen(String s, Object... objects) {
+
+                }
+
+                @Override
+                public void onClickResume(String s, Object... objects) {
+
+                }
+
+                @Override
+                public void onClickResumeFullscreen(String s, Object... objects) {
+
+                }
+
+                @Override
+                public void onClickSeekbar(String s, Object... objects) {
+
+                }
+
+                @Override
+                public void onClickSeekbarFullscreen(String s, Object... objects) {
+
+                }
+
+                @Override
+                public void onAutoComplete(String s, Object... objects) {
+
+                }
+
+                @Override
+                public void onEnterFullscreen(String s, Object... objects) {
+
+                }
+
+                @Override
+                public void onQuitFullscreen(String s, Object... objects) {
+
+                }
+
+                @Override
+                public void onQuitSmallWidget(String s, Object... objects) {
+
+                }
+
+                @Override
+                public void onEnterSmallWidget(String s, Object... objects) {
+
+                }
+
+                @Override
+                public void onTouchScreenSeekVolume(String s, Object... objects) {
+
+                }
+
+                @Override
+                public void onTouchScreenSeekPosition(String s, Object... objects) {
+
+                }
+
+                @Override
+                public void onTouchScreenSeekLight(String s, Object... objects) {
+
+                }
+
+                @Override
+                public void onPlayError(String s, Object... objects) {
+
+                }
+            });
             ImageView imageview = new ImageView(HelpContentActivity.this);
             Glide.with(HelpContentActivity.this).load(helpContent.getReosurce_url()).into(imageview);
             holder.standardGSYVideoPlayer.setThumbImageView(imageview);
+            if (type.equals("yan")) {
+                holder.useless.setVisibility(View.GONE);
+            }
         }
 
 
@@ -125,6 +256,7 @@ public class HelpContentActivity extends AppCompatActivity {
             TextView totalTime;
             TextView calorie;
             RatingBar difficult;
+            View useless;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
@@ -134,11 +266,18 @@ public class HelpContentActivity extends AppCompatActivity {
                 totalTime = (TextView) itemView.findViewById(R.id.item_textview_time);
                 calorie = (TextView) itemView.findViewById(R.id.item_textview_calorie);
                 difficult = (RatingBar) itemView.findViewById(R.id.item_ratingbar_difficult);
+                useless = itemView.findViewById(R.id.useless_container);
             }
         }
     }
 
-    public void Request() {
+
+//    private void submit() {
+//        OkHttp.get(AppUtil.DOEXERCISE+"");
+//    }
+
+
+    private void Request() {
         OkHttp.get(AppUtil.GetExerciseItem + "buwei=" + buwei + "&userID=" + userID + "&type=" + type, new OkHttp.ResultCallBack() {
             @Override
             public void onError(String str, Exception e) {

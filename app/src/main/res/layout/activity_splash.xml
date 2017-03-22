@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_splash"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#a72fae"
+    android:fitsSystemWindows="true"
+    tools:context="com.xd.shenxinhelp.com.xd.shenxinhelp.ui.SplashActivity">
+
+    <ImageView
+        android:id="@+id/guide_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/default_head_image" />
+
+    <TextView
+        android:id="@+id/summary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/guide_image"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="24dp"
+        android:text="青少年   好帮手"
+        android:textColor="@android:color/white"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/guide_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="24dp"
+        android:ems="1"
+        android:text="青少年身心帮"
+        android:textColor="@android:color/white"
+        android:textSize="48sp" />
+
+</RelativeLayout>

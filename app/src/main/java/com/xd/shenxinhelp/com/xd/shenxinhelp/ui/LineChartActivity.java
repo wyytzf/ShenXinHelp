@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -53,6 +54,8 @@ public class LineChartActivity extends AppCompatActivity {
 
     private void initViews() {
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mXiaohao = (TextView) findViewById(R.id.xiaohao);
         mShuliang = (TextView) findViewById(R.id.shuliang);
         mTishi = (TextView) findViewById(R.id.tishi);
@@ -79,7 +82,7 @@ public class LineChartActivity extends AppCompatActivity {
                 Calendar calendar = Calendar.getInstance();
                 int i = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
-                return (i + 1) + "月" + (int) value + "日";
+                return (i + 1) + "月" + (day - 7 + (int) value) + "日";
             }
         });
         lineChart.setNoDataText("暂无数据");
@@ -91,7 +94,7 @@ public class LineChartActivity extends AppCompatActivity {
         ArrayList<Entry> values = new ArrayList<Entry>();
         for (int i = 0; i < count; i++) {
             int val = (int) (Math.random() * range) + 3;
-            values.add(new Entry(i + 1, val, getResources().getDrawable(R.drawable.ic_assignment_black_24dp)));
+            values.add(new Entry(i + 1, val, null));
         }
 
         LineDataSet set1;
@@ -139,5 +142,14 @@ public class LineChartActivity extends AppCompatActivity {
             // set data
             lineChart.setData(data);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

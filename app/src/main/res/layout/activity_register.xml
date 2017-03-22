@@ -38,8 +38,8 @@
                     android:id="@+id/register_account"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="请输入手机号"
-                    android:inputType="number"
+                    android:hint="请输入帐号"
+                    android:inputType="text"
                     android:maxLines="1"
                     android:singleLine="true" />
 

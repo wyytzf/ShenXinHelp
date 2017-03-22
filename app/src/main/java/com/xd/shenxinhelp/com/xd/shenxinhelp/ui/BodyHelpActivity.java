@@ -90,6 +90,7 @@ public class BodyHelpActivity extends AppCompatActivity {
 
     private String mHeight;
     private String mWeight;
+    private String mHeatLiang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +102,7 @@ public class BodyHelpActivity extends AppCompatActivity {
         userID = sp.getString("userid", "1");
         mHeight = sp.getString("height", "0");
         mWeight = sp.getString("weight", "0");
+        mHeatLiang = sp.getString("heatLiang", "1000");
         initView();
         RequestRecommendar();
         RequestLineChart();
@@ -127,6 +129,7 @@ public class BodyHelpActivity extends AppCompatActivity {
         body_height.setText("身高：" + mHeight + " cm");
         body_weight.setText("体重：" + mWeight + " kg");
         DecimalFormat df = new DecimalFormat("#.00");
+        mHeatLiang = df.format(Double.valueOf(mHeatLiang));
         double v = Double.valueOf(mWeight) / Math.pow(Double.valueOf(mHeight) / 100, 2);
         BMI.setText("BMI指数：" + df.format(v));
         BMI.setOnClickListener(new View.OnClickListener() {
@@ -220,7 +223,7 @@ public class BodyHelpActivity extends AppCompatActivity {
                 Calendar calendar = Calendar.getInstance();
                 int i = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
-                return (i + 1) + "月" + (int) value + "日";
+                return (i + 1) + "月" + (day - 7 + (int) value) + "日";
             }
         });
         lineChart.setNoDataText("暂无数据");
@@ -232,11 +235,11 @@ public class BodyHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BodyHelpActivity.this, LineChartActivity.class);
-                intent.putExtra("xiaohao","本周累计消耗热量");
-                intent.putExtra("shuliang","428卡路里");
-                intent.putExtra("tishi","根据您的年级情况，我们建议您每天保持50卡路里的消耗");
-                intent.putExtra("lineTishi","消耗热量");
-                intent.putExtra("shangxian",100);
+                intent.putExtra("xiaohao", "本周累计消耗热量");
+                intent.putExtra("shuliang", "347卡路里");
+                intent.putExtra("tishi", "根据您的年级情况，我们建议您每天保持" + mHeatLiang + "卡路里的消耗");
+                intent.putExtra("lineTishi", "消耗热量");
+                intent.putExtra("shangxian", 100);
                 startActivity(intent);
             }
         });
