@@ -27,6 +27,7 @@ public class MySettingFragment extends Fragment {
     private View view;
     private SharedPreferences sp;
     private ImageView iv_headphoto;
+    private TextView tv_userAccount;
     private TextView tv_userName;
     private TextView tv_userSchool;
     private TextView tv_userClass;
@@ -53,7 +54,7 @@ public class MySettingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_my_setting, container, false);
+        view=inflater.inflate(R.layout.fragment_my_setting, container, false);
         initView();
         initData();
 
@@ -61,7 +62,7 @@ public class MySettingFragment extends Fragment {
         rl_feedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), Feedback.class);
+                Intent intent=new Intent(getContext(), Feedback.class);
                 startActivity(intent);
             }
         });
@@ -70,7 +71,7 @@ public class MySettingFragment extends Fragment {
         rl_about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), AboutActivity.class);
+                Intent intent  = new Intent(getContext(),AboutActivity.class);
                 startActivity(intent);
             }
         });
@@ -79,7 +80,7 @@ public class MySettingFragment extends Fragment {
         rl_exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), LoginActivity.class);
+                Intent intent  = new Intent(getContext(),LoginActivity.class);
                 startActivity(intent);
                 getActivity().onBackPressed();
             }
@@ -89,26 +90,29 @@ public class MySettingFragment extends Fragment {
         return view;
     }
 
-    void initView() {
+    void initView(){
         iv_headphoto = (ImageView) view.findViewById(R.id.user_image);
+        tv_userAccount = (TextView) view.findViewById(R.id.my_user_account);
         tv_userName = (TextView) view.findViewById(R.id.user_name);
         tv_userSchool = (TextView) view.findViewById(R.id.user_school);
         tv_userClass = (TextView) view.findViewById(R.id.user_class);
-        tv_level = (TextView) view.findViewById(R.id.user_level);
+        tv_level = (TextView)view.findViewById(R.id.user_level);
         tv_healthDegree = (TextView) view.findViewById(R.id.user_health_degree);
-        tv_credit = (TextView) view.findViewById(R.id.user_credits);
+        tv_credit =(TextView) view.findViewById(R.id.user_credits);
     }
 
-    void initData() {
-        sp = getActivity().getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
-        tv_userName.setText(sp.getString("name", ""));
-        tv_userSchool.setText(sp.getString("schoolName", "西电附中"));
-        tv_userClass.setText(sp.getString("className", "高二一班"));
-        tv_level.setText(sp.getString("level", "10"));
-        tv_healthDegree.setText(sp.getString("health_degree", "100"));
-        tv_credit.setText(sp.getString("credits", "500"));
-        if (!sp.getString("head_url", "").equals("")) {
-            Glide.with(this).load(sp.getString("head_url", "")).centerCrop().placeholder(R.mipmap.default_head_image).into(iv_headphoto);
+    void initData(){
+        sp=getActivity().getSharedPreferences("ShenXinBang",Context.MODE_PRIVATE);
+        tv_userAccount.setText(sp.getString("account","account"));
+        tv_userName.setText(sp.getString("name","name"));
+        tv_userSchool.setText(sp.getString("schoolName","西电附中"));
+        tv_userClass.setText(sp.getString("className","高二一班"));
+        int level=Integer.parseInt(sp.getString("health_degree","100"))/500+1;
+        tv_level.setText(""+level);
+        tv_healthDegree.setText(sp.getString("health_degree","100"));
+        tv_credit.setText(sp.getString("credits","500"));
+        if(!sp.getString("head_url","").equals("")){
+            Glide.with(this).load(sp.getString("head_url","")).centerCrop().placeholder(R.mipmap.default_head_image).into(iv_headphoto);
         }
     }
 

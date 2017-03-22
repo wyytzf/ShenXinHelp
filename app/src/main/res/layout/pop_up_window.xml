@@ -23,7 +23,7 @@
             android:layout_height="40dp"
             android:textSize="14dp"
             android:textColor="#222"
-            android:text="添加"/>
+            android:text="制定计划"/>
 
     </RelativeLayout>
 
