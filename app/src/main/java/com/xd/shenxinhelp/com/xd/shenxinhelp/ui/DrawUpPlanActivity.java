@@ -18,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
@@ -50,10 +49,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class DrawUpPlanActivity extends AppCompatActivity {
 
@@ -204,46 +201,51 @@ public class DrawUpPlanActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 count=0;
-                if (!"".equals(share_content.getText().toString().trim())){
-                    for (int i=0; i<today_plan_list.length(); i++){
-                        String plan_id=null;
-                        try {
-                            JSONObject temp = today_plan_list.getJSONObject(i);
-                            plan_id = temp.getString("id");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        OkHttp.get(AppUtil.ShareToRing + "?planID="+plan_id+"&userID="+userID+"&content="+
-                                share_content.getText().toString().trim(), new OkHttp.ResultCallBack() {
-                            @Override
-                            public void onError(String str, Exception e) {
-                                Log.e("getTomoPlanList", str);
+                if (today_plan_list.length()>0){
+                    if (!"".equals(share_content.getText().toString().trim())){
+                        for (int i=0; i<today_plan_list.length(); i++){
+                            String plan_id=null;
+                            try {
+                                JSONObject temp = today_plan_list.getJSONObject(i);
+                                plan_id = temp.getString("id");
+                            } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
-                            @Override
-                            public void onResponse(String str) {
-                                try {
-                                    JSONObject jsonObject = new JSONObject(str);
-                                    String reCode = jsonObject.getString("reCode");
-                                    if ("SUCCESS".equals(reCode)){
-                                        count++;
-                                        if (count==today_plan_list.length())
-                                            Toast.makeText(DrawUpPlanActivity.this, "已成功开始计划！", Toast.LENGTH_SHORT).show();
-                                    }
-                                    else {
-                                        Log.e("Fail", jsonObject.getString("message"));
-                                    }
-                                }
-                                catch (Exception e){
+                            OkHttp.get(AppUtil.ShareToRing + "?planID="+plan_id+"&userID="+userID+"&content="+
+                                    share_content.getText().toString().trim(), new OkHttp.ResultCallBack() {
+                                @Override
+                                public void onError(String str, Exception e) {
+                                    Log.e("getTomoPlanList", str);
                                     e.printStackTrace();
                                 }
-                            }
-                        });
+
+                                @Override
+                                public void onResponse(String str) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(str);
+                                        String reCode = jsonObject.getString("reCode");
+                                        if ("SUCCESS".equals(reCode)){
+                                            count++;
+                                            if (count==today_plan_list.length())
+                                                Toast.makeText(DrawUpPlanActivity.this, "已成功开始计划！", Toast.LENGTH_SHORT).show();
+                                        }
+                                        else {
+                                            Log.e("Fail", jsonObject.getString("message"));
+                                        }
+                                    }
+                                    catch (Exception e){
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                    else {
+                        Toast.makeText(DrawUpPlanActivity.this, "分享时说点什么吧", Toast.LENGTH_SHORT).show();
                     }
                 }
                 else {
-                    Toast.makeText(DrawUpPlanActivity.this, "分享时说点什么吧", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DrawUpPlanActivity.this, "你昨天没制定计划哦！", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -397,7 +399,7 @@ public class DrawUpPlanActivity extends AppCompatActivity {
                     share_content.setVisibility(View.VISIBLE);
                     start_plan_layout.setVisibility(View.VISIBLE);
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                            DensityUtil.dip2px(DrawUpPlanActivity.this, 250));
+                            DensityUtil.dip2px(DrawUpPlanActivity.this, 240));
                     mPager.setLayoutParams(lp);
                     break;
                 case 1:
@@ -434,7 +436,7 @@ public class DrawUpPlanActivity extends AppCompatActivity {
                     share_content.setVisibility(View.VISIBLE);
                     start_plan_layout.setVisibility(View.VISIBLE);
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                            DensityUtil.dip2px(DrawUpPlanActivity.this, 250));
+                            DensityUtil.dip2px(DrawUpPlanActivity.this, 240));
                     mPager.setLayoutParams(lp);
                     break;
                 case 1:
