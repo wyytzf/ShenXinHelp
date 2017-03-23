@@ -30,25 +30,25 @@ public class Feedback extends AppCompatActivity {
 
     private EditText et_feedback_content;
     private Button bt_submit;
-    private Dialog mDialog=null;
+    private Dialog mDialog = null;
     private SharedPreferences sp;
     private String userID;
-    private Handler handler=new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
-                case 1:{
-                    Toast.makeText(getApplicationContext(),(String)msg.obj,Toast.LENGTH_LONG).show();
+            switch (msg.what) {
+                case 1: {
+                    Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_LONG).show();
                     Feedback.this.finish();
                     break;
                 }
-                case 0:{
-                    Toast.makeText(getApplicationContext(),(String)msg.obj,Toast.LENGTH_LONG).show();
+                case 0: {
+                    Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_LONG).show();
                     break;
                 }
-                case -1:{
-                    Toast.makeText(getApplicationContext(),(String)msg.obj,Toast.LENGTH_LONG).show();
+                case -1: {
+                    Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_LONG).show();
                     break;
                 }
 
@@ -65,22 +65,22 @@ public class Feedback extends AppCompatActivity {
         initData();
     }
 
-    void initData(){
+    void initData() {
         sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
-        userID=sp.getString("account", "");
+        userID = sp.getString("userid", "");
     }
 
-    void initViews(){
+    void initViews() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_feedback);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         setSupportActionBar(toolbar);
 
-        et_feedback_content = (EditText)findViewById(R.id.feefback_content);
+        et_feedback_content = (EditText) findViewById(R.id.feefback_content);
         bt_submit = (Button) findViewById(R.id.feedback_submit);
         bt_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!judge())
+                if (!judge())
                     return;
                 else
                     submit();
@@ -89,21 +89,21 @@ public class Feedback extends AppCompatActivity {
     }
 
 
-    boolean judge(){
-        if(et_feedback_content.getText().toString().equals("")){
-            Toast.makeText(this,"请输入您的反馈意见",Toast.LENGTH_LONG).show();
+    boolean judge() {
+        if (et_feedback_content.getText().toString().equals("")) {
+            Toast.makeText(this, "请输入您的反馈意见", Toast.LENGTH_LONG).show();
             return false;
-        }else
+        } else
             return true;
     }
 
-    void submit(){
-        new Thread(){
+    void submit() {
+        new Thread() {
             @Override
             public void run() {
                 super.run();
-                final Message message= new Message();
-                String url= AppUtil.Feedback + "?userID="+userID+"&content="+et_feedback_content.getText().toString();
+                final Message message = new Message();
+                String url = AppUtil.Feedback + "?userID=" + userID + "&content=" + et_feedback_content.getText().toString();
                 HttpUtil.get(getApplicationContext(), url, new ResponseHandler() {
                     @Override
                     public void onSuccess(byte[] response) {

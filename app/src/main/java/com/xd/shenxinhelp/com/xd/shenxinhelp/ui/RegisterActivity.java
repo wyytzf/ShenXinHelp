@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
@@ -34,6 +36,9 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mConfirmPassword;
     private String userID;
 
+    private Spinner mType;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +56,9 @@ public class RegisterActivity extends AppCompatActivity {
         mAccount = (EditText) findViewById(R.id.register_account);
         mPassword = (EditText) findViewById(R.id.register_password);
         mConfirmPassword = (EditText) findViewById(R.id.register_comfirm_password);
+        mType = (Spinner) findViewById(R.id.type_chose);
+        mType.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new String[]{"青少年", "家长", "教师"}));
+
 
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
