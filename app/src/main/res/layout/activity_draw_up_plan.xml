@@ -33,103 +33,134 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <TextView
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="20dp"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:textSize="14dp"
-        android:textColor="#333"
-        android:text="小明你好，根据你所处的年级，"/>
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:textSize="14dp"
-        android:textColor="#333"
-        android:text="我们为你制定了相应的计划"/>
-
-    <RelativeLayout
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#AAA"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
-
-        <TextView
-            android:id="@+id/today"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1.0"
-            android:gravity="center"
-            android:textSize="16dp"
-            android:text="今天"/>
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tomorrow"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1.0"
-            android:gravity="center"
-            android:textSize="16dp"
-            android:text="明天" />
+            <TextView
+                android:id="@+id/stu_name"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textSize="14dp"
+                android:textColor="#333"
+                android:text="你好，根据你所处的年级，"/>
 
-    </LinearLayout>
+            <TextView
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textSize="14dp"
+                android:textColor="#333"
+                android:text="我们为你制定了相应的计划"/>
 
-    <ImageView
-        android:id="@+id/cursor"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:scaleType="matrix"
-        android:src="@drawable/cursor" />
+            <RelativeLayout
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#AAA"/>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:flipInterval="30"
-        android:persistentDrawingCache="animation" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
 
-    <RelativeLayout
-        android:id="@+id/add_plan_layout"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:visibility="gone">
+                <TextView
+                    android:id="@+id/today"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.0"
+                    android:gravity="center"
+                    android:textColor="#333"
+                    android:textSize="16dp"
+                    android:text="今天"/>
 
-        <Button
-            android:id="@+id/add_plan"
-            android:layout_centerInParent="true"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/ic_add_circle_outline_black_24dp"/>
+                <TextView
+                    android:id="@+id/tomorrow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.0"
+                    android:gravity="center"
+                    android:textColor="#333"
+                    android:textSize="16dp"
+                    android:text="明天" />
 
-    </RelativeLayout>
+            </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/start_plan_layout"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
+            <ImageView
+                android:id="@+id/cursor"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:scaleType="matrix"
+                android:src="@drawable/cursor" />
 
-        <Button
-            android:id="@+id/start_plan"
-            android:layout_centerInParent="true"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:textSize="14dp"
-            android:textColor="#222"
-            android:text="开始计划"/>
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:flipInterval="30"
+                android:persistentDrawingCache="animation" />
 
-    </RelativeLayout>
+            <EditText
+                android:id="@+id/share_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:gravity="top"
+                android:maxLines="3"
+                android:background="@drawable/shape_textarea"
+                android:inputType="textMultiLine"
+                android:textColor="#333"
+                android:textSize="14dp"
+                android:hint="想说点什么"/>
+
+            <RelativeLayout
+                android:id="@+id/add_plan_layout"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/add_plan"
+                    android:layout_centerInParent="true"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_add_circle_outline_black_24dp"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/start_plan_layout"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <Button
+                    android:id="@+id/start_plan"
+                    android:layout_centerInParent="true"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:textSize="14dp"
+                    android:textColor="#222"
+                    android:text="分享计划"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
