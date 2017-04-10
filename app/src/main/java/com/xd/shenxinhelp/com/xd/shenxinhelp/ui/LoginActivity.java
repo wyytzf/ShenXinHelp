@@ -287,7 +287,7 @@ public class LoginActivity extends AppCompatActivity {
                         intent.setClass(LoginActivity.this, ContainerActivity.class);
                         break;
                     case "teacher":
-                        intent.setClass(LoginActivity.this, ContainerActivity.class);
+                        intent.setClass(LoginActivity.this, TeacherMainActivity.class);
                         break;
                     case "parents":
                         intent.setClass(LoginActivity.this, ParentMainActivity.class);

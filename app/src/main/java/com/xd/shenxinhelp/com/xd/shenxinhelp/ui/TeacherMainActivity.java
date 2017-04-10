@@ -1,35 +1,37 @@
 package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.xd.shenxinhelp.R;
 
-public class ParentMainActivity extends AppCompatActivity {
+public class TeacherMainActivity extends AppCompatActivity {
 
     private BottomNavigationView navigation;
     private FragmentManager manager;
     private FragmentTransaction transaction;
 
-    private ParentMainFragment parentMainFragment;
+    private TeacherMainFragment teacherMainFragment;
+    private TeacherRankFragment teacherRankFragment;
     private MySettingFragment mySettingFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_parent_main);
+        setContentView(R.layout.activity_teacher_main);
 
-        parentMainFragment = new ParentMainFragment();
+        teacherMainFragment = new TeacherMainFragment();
+        teacherRankFragment = new TeacherRankFragment();
         mySettingFragment = new MySettingFragment();
 
         manager = getSupportFragmentManager();
         transaction = manager.beginTransaction();
-        transaction.replace(R.id.content, parentMainFragment);
+        transaction.replace(R.id.content, teacherMainFragment);
         transaction.commit();
 
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -38,7 +40,10 @@ public class ParentMainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.bottom_navi_first:
-                        transaction.replace(R.id.fragment_container, parentMainFragment);
+                        transaction.replace(R.id.fragment_container, teacherMainFragment);
+                        break;
+                    case R.id.bottom_navi_second:
+                        transaction.replace(R.id.fragment_container, teacherRankFragment);
                         break;
                     case R.id.bottom_navi_third:
                         transaction.replace(R.id.fragment_container, mySettingFragment);
@@ -50,5 +55,4 @@ public class ParentMainActivity extends AppCompatActivity {
 
         });
     }
-
 }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.xd.shenxinhelp.com.xd.shenxinhelp.ui.ParentMainActivity">
+    tools:context="com.xd.shenxinhelp.com.xd.shenxinhelp.ui.TeacherMainActivity">
 
     <FrameLayout
         android:id="@+id/content"
@@ -19,6 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="?android:attr/windowBackground"
-        app:menu="@menu/menu_bottom_par" />
+        app:menu="@menu/menu_bottom_tea" />
 
 </LinearLayout>
