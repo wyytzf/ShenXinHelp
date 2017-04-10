@@ -309,6 +309,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean parseResponse(String synchronous) {
+        //Log.e("reCode", synchronous);
         boolean result = false;
         String recode = "";
         try {
@@ -334,7 +335,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("schoolName", js.getString("schoolName"));
                         editor.putString("heatLiang", js.getString("heatLiang"));
                         editor.putString("name", js.getString("name"));
-                        editor.putString("type", js.getString("student"));
+                        editor.putString("type", js.getString("type"));
                         type = "student";
                         break;
                     case "teacher":
@@ -343,9 +344,12 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("age", js.getString("age"));
                         editor.putString("head_url", js.getString("head_url"));
                         editor.putString("name", js.getString("name"));
-                        editor.putString("type", js.getString("teacher"));
+                        editor.putString("school_id", js.getString("schoolid"));
+                        editor.putString("schoolName", js.getString("schoolName"));
+                        editor.putString("class_id", js.getString("classid"));
+                        editor.putString("className", js.getString("className"));
+                        editor.putString("type", js.getString("type"));
                         type = "teacher";
-                        // TODO: 2017/4/6
                         break;
                     case "parents":
                         editor.putString("userid", js.getString("parentid"));
@@ -353,21 +357,24 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("age", js.getString("age"));
                         editor.putString("head_url", js.getString("head_url"));
                         editor.putString("name", js.getString("name"));
-                        editor.putString("type", js.getString("parents"));
+                        editor.putString("type", js.getString("type"));
                         type = "parents";
                         break;
                 }
                 editor.commit();
-            } else
+            } else{
                 return false;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        if (recode.equals("SUCCESS"))
+        if (recode.equals("SUCCESS")){
             result = true;
-        else
+        }
+        else{
             result = false;
+        }
         return result;
     }
 

@@ -145,7 +145,10 @@
             android:label="@string/title_activity_parent_main"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".com.xd.shenxinhelp.ui.TeacherMainActivity"></activity>
+        <activity
+            android:name=".com.xd.shenxinhelp.ui.TeacherMainActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

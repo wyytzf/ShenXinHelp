@@ -1,6 +1,7 @@
 package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,15 +14,13 @@ import com.xd.shenxinhelp.R;
 public class TeacherMainActivity extends AppCompatActivity {
 
     private BottomNavigationView navigation;
-    private FragmentManager manager;
-    private FragmentTransaction transaction;
 
     private TeacherMainFragment teacherMainFragment;
     private TeacherRankFragment teacherRankFragment;
     private MySettingFragment mySettingFragment;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_main);
 
@@ -29,8 +28,8 @@ public class TeacherMainActivity extends AppCompatActivity {
         teacherRankFragment = new TeacherRankFragment();
         mySettingFragment = new MySettingFragment();
 
-        manager = getSupportFragmentManager();
-        transaction = manager.beginTransaction();
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.content, teacherMainFragment);
         transaction.commit();
 
@@ -38,15 +37,17 @@ public class TeacherMainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
                 switch (item.getItemId()) {
                     case R.id.bottom_navi_first:
-                        transaction.replace(R.id.fragment_container, teacherMainFragment);
+                        transaction.replace(R.id.content, teacherMainFragment);
                         break;
                     case R.id.bottom_navi_second:
-                        transaction.replace(R.id.fragment_container, teacherRankFragment);
+                        transaction.replace(R.id.content, teacherRankFragment);
                         break;
                     case R.id.bottom_navi_third:
-                        transaction.replace(R.id.fragment_container, mySettingFragment);
+                        transaction.replace(R.id.content, mySettingFragment);
                         break;
                 }
                 transaction.commit();

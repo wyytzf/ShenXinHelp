@@ -13,8 +13,6 @@ import com.xd.shenxinhelp.R;
 public class ParentMainActivity extends AppCompatActivity {
 
     private BottomNavigationView navigation;
-    private FragmentManager manager;
-    private FragmentTransaction transaction;
 
     private ParentMainFragment parentMainFragment;
     private MySettingFragment mySettingFragment;
@@ -27,8 +25,8 @@ public class ParentMainActivity extends AppCompatActivity {
         parentMainFragment = new ParentMainFragment();
         mySettingFragment = new MySettingFragment();
 
-        manager = getSupportFragmentManager();
-        transaction = manager.beginTransaction();
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.content, parentMainFragment);
         transaction.commit();
 
@@ -36,12 +34,14 @@ public class ParentMainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                FragmentManager manager = getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
                 switch (item.getItemId()) {
                     case R.id.bottom_navi_first:
-                        transaction.replace(R.id.fragment_container, parentMainFragment);
+                        transaction.replace(R.id.content, parentMainFragment);
                         break;
                     case R.id.bottom_navi_third:
-                        transaction.replace(R.id.fragment_container, mySettingFragment);
+                        transaction.replace(R.id.content, mySettingFragment);
                         break;
                 }
                 transaction.commit();
