@@ -17,6 +17,18 @@
 
     </style>
 
+    <style name="dialog" parent="@android:style/Theme.Holo.Dialog">
+        <item name="android:windowIsFloating">true</item>
+        <!-- 设置未浮动窗口 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- 设置无边框 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 设置无标题 -->
+        <!-- 设置完全透明 ???-->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 设置屏幕变暗 -->
+    </style>
+
     <style name="mySplash" parent="AppTheme.NoActionBar">
         <item name="colorPrimary">@color/red_light</item>
 

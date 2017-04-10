@@ -62,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView register;
 
     private boolean isNetConnect = false;
+    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -280,7 +281,18 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("account", mEmail);
                 editor.putString("password", mPassword);
                 editor.commit();
-                Intent intent = new Intent(LoginActivity.this, ContainerActivity.class);
+                Intent intent = new Intent();
+                switch (type){
+                    case "student":
+                        intent.setClass(LoginActivity.this, ContainerActivity.class);
+                        break;
+                    case "teacher":
+                        intent.setClass(LoginActivity.this, ContainerActivity.class);
+                        break;
+                    case "parents":
+                        intent.setClass(LoginActivity.this, ParentMainActivity.class);
+                        break;
+                }
                 startActivity(intent);
                 finish();
             } else {
@@ -305,21 +317,46 @@ public class LoginActivity extends AppCompatActivity {
             if (recode.equals("SUCCESS")) {
                 SharedPreferences sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
-                editor.putString("userid", js.getString("userid"));
-                editor.putString("sex", js.getString("sex"));
-                editor.putString("age", js.getString("age"));
-                editor.putString("height", js.getString("height"));
-                editor.putString("weight", js.getString("weight"));
-                editor.putString("credits", js.getString("credits"));
-                editor.putString("health_degree", js.getString("health_degree"));
-                editor.putString("level", js.getString("level"));
-                editor.putString("head_url", js.getString("head_url"));
-                editor.putString("class_id", js.getString("class_id"));
-                editor.putString("school_id", js.getString("school_id"));
-                editor.putString("className", js.getString("className"));
-                editor.putString("schoolName", js.getString("schoolName"));
-                editor.putString("heatLiang", js.getString("heatLiang"));
-                editor.putString("name", js.getString("name"));
+                switch (js.getString("type")){
+                    case "student":
+                        editor.putString("userid", js.getString("userid"));
+                        editor.putString("sex", js.getString("sex"));
+                        editor.putString("age", js.getString("age"));
+                        editor.putString("height", js.getString("height"));
+                        editor.putString("weight", js.getString("weight"));
+                        editor.putString("credits", js.getString("credits"));
+                        editor.putString("health_degree", js.getString("health_degree"));
+                        editor.putString("level", js.getString("level"));
+                        editor.putString("head_url", js.getString("head_url"));
+                        editor.putString("class_id", js.getString("class_id"));
+                        editor.putString("school_id", js.getString("school_id"));
+                        editor.putString("className", js.getString("className"));
+                        editor.putString("schoolName", js.getString("schoolName"));
+                        editor.putString("heatLiang", js.getString("heatLiang"));
+                        editor.putString("name", js.getString("name"));
+                        editor.putString("type", js.getString("student"));
+                        type = "student";
+                        break;
+                    case "teacher":
+                        editor.putString("userid", js.getString("teacherid"));
+                        editor.putString("sex", js.getString("sex"));
+                        editor.putString("age", js.getString("age"));
+                        editor.putString("head_url", js.getString("head_url"));
+                        editor.putString("name", js.getString("name"));
+                        editor.putString("type", js.getString("teacher"));
+                        type = "teacher";
+                        // TODO: 2017/4/6
+                        break;
+                    case "parents":
+                        editor.putString("userid", js.getString("parentid"));
+                        editor.putString("sex", js.getString("sex"));
+                        editor.putString("age", js.getString("age"));
+                        editor.putString("head_url", js.getString("head_url"));
+                        editor.putString("name", js.getString("name"));
+                        editor.putString("type", js.getString("parents"));
+                        type = "parents";
+                        break;
+                }
                 editor.commit();
             } else
                 return false;

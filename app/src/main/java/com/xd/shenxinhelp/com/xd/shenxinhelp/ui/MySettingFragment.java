@@ -34,6 +34,7 @@ public class MySettingFragment extends Fragment {
     private TextView tv_level;
     private TextView tv_healthDegree;
     private TextView tv_credit;
+    private RelativeLayout rl_relationship;
     private RelativeLayout rl_feedback;
     private RelativeLayout rl_exit;
     private RelativeLayout rl_about;
@@ -57,6 +58,15 @@ public class MySettingFragment extends Fragment {
         view=inflater.inflate(R.layout.fragment_my_setting, container, false);
         initView();
         initData();
+
+        rl_relationship = (RelativeLayout) view.findViewById(R.id.mysetting_relationship);
+        rl_relationship.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getContext(), RelationshipActivity.class);
+                startActivity(intent);
+            }
+        });
 
         rl_feedback = (RelativeLayout) view.findViewById(R.id.mysetting_feefback);
         rl_feedback.setOnClickListener(new View.OnClickListener() {
