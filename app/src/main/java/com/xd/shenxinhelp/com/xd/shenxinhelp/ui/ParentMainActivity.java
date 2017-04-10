@@ -45,7 +45,7 @@ public class ParentMainActivity extends AppCompatActivity {
                         break;
                 }
                 transaction.commit();
-                return false;
+                return true;
             }
 
         });

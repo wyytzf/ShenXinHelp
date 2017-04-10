@@ -51,7 +51,7 @@ public class TeacherMainActivity extends AppCompatActivity {
                         break;
                 }
                 transaction.commit();
-                return false;
+                return true;
             }
 
         });
