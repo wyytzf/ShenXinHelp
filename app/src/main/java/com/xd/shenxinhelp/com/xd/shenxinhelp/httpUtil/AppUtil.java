@@ -66,6 +66,9 @@ public class AppUtil extends Application {
     public static String GetAllRelationshipType = getBaseUrl() + "GetAllRelationshipType";
     public static String GetMyAllRelationship = getBaseUrl() + "GetMyAllRelationship";
 
+    public static String GetTopThreeStudent = getBaseUrl() + "GetTopThreeStudent";
+    public static String GetLastThreeStudent = getBaseUrl() + "GetLastThreeStudent";
+
     public static String getBaseUrl() {
        return BASE_URL;
     }
