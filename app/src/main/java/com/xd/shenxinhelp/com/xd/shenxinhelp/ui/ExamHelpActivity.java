@@ -113,8 +113,8 @@ public class ExamHelpActivity extends AppCompatActivity {
         func1_text1 = (TextView) findViewById(R.id.content_BEHE_text1);
         func1_text2 = (TextView) findViewById(R.id.content_BEHE_text2);
 
-        func1_text1.setText("会考");
-        func1_text2.setText("考试");
+        func1_text1.setText("会考项目");
+        func1_text2.setText("注意事项");
 
         Liner1 = findViewById(R.id.content_BEHE_liner1);
         Liner2 = findViewById(R.id.content_BEHE_liner2);

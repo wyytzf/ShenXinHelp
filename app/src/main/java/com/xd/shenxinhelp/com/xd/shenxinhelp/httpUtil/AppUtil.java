@@ -30,7 +30,7 @@ public class AppUtil extends Application {
     }
 
     //    private static final String BASE_URL= "http://10.170.67.107:8080/";
-    private static final String BASE_URL = "http://192.168.0.21:8080/BodyMindHelper/";
+    private static final String BASE_URL = "http://192.168.0.75:8080/BodyMindHelper/";
     private static final String BASE_AUTH_URL = getBaseUrl() + "authz/oauth/token";
     private static final String BASE_RS_URL = getBaseUrl() + "rs/rs/";
 
