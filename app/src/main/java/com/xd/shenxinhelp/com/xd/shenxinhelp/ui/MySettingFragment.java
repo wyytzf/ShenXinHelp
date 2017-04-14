@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,9 +35,12 @@ public class MySettingFragment extends Fragment {
     private TextView tv_level;
     private TextView tv_healthDegree;
     private TextView tv_credit;
+    private LinearLayout ly_student_item;
+    private RelativeLayout rl_relationship;
     private RelativeLayout rl_feedback;
     private RelativeLayout rl_exit;
     private RelativeLayout rl_about;
+    private String type;
 
     private OnFragmentInteractionListener mListener;
 
@@ -54,15 +58,27 @@ public class MySettingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_my_setting, container, false);
+        view=inflater.inflate(R.layout.fragment_my_setting, container, false);
         initView();
         initData();
+
+        rl_relationship = (RelativeLayout) view.findViewById(R.id.mysetting_relationship);
+        rl_relationship.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getContext(), RelationshipActivity.class);
+                startActivity(intent);
+            }
+        });
+        if(type.equals("teacher")){
+            rl_relationship.setVisibility(View.GONE);
+        }
 
         rl_feedback = (RelativeLayout) view.findViewById(R.id.mysetting_feefback);
         rl_feedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), Feedback.class);
+                Intent intent=new Intent(getContext(), Feedback.class);
                 startActivity(intent);
             }
         });
@@ -71,7 +87,7 @@ public class MySettingFragment extends Fragment {
         rl_about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), AboutActivity.class);
+                Intent intent  = new Intent(getContext(),AboutActivity.class);
                 startActivity(intent);
             }
         });
@@ -80,7 +96,7 @@ public class MySettingFragment extends Fragment {
         rl_exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), LoginActivity.class);
+                Intent intent  = new Intent(getContext(),LoginActivity.class);
                 startActivity(intent);
                 getActivity().onBackPressed();
             }
@@ -90,31 +106,39 @@ public class MySettingFragment extends Fragment {
         return view;
     }
 
-    void initView() {
+    void initView(){
         iv_headphoto = (ImageView) view.findViewById(R.id.user_image);
         tv_userAccount = (TextView) view.findViewById(R.id.my_user_account);
-        tv_userAccount.setVisibility(View.GONE);
         tv_userName = (TextView) view.findViewById(R.id.user_name);
         tv_userSchool = (TextView) view.findViewById(R.id.user_school);
         tv_userClass = (TextView) view.findViewById(R.id.user_class);
-        tv_level = (TextView) view.findViewById(R.id.user_level);
+        tv_level = (TextView)view.findViewById(R.id.user_level);
         tv_healthDegree = (TextView) view.findViewById(R.id.user_health_degree);
-        tv_credit = (TextView) view.findViewById(R.id.user_credits);
+        tv_credit =(TextView) view.findViewById(R.id.user_credits);
+        ly_student_item = (LinearLayout) view.findViewById(R.id.setting_student_item);
     }
 
-    void initData() {
-        sp = getActivity().getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
-//        tv_userAccount.setText(sp.getString("account","account"));
-        tv_userName.setText(sp.getString("name", "name"));
-        tv_userSchool.setText(sp.getString("schoolName", "西电附中"));
-        tv_userClass.setText(sp.getString("className", "高二一班"));
-        int level = Integer.parseInt(sp.getString("health_degree", "100")) / 500 + 1;
-        tv_level.setText("" + level);
-        tv_healthDegree.setText(sp.getString("health_degree", "100"));
-        tv_credit.setText(sp.getString("credits", "500"));
-        if (!sp.getString("head_url", "").equals("")) {
-            Glide.with(this).load(sp.getString("head_url", "")).centerCrop().placeholder(R.mipmap.default_head_image).into(iv_headphoto);
+    void initData(){
+        sp=getActivity().getSharedPreferences("ShenXinBang",Context.MODE_PRIVATE);
+
+        tv_userAccount.setText(sp.getString("account","account"));
+        tv_userName.setText(sp.getString("name","name"));
+        tv_userSchool.setText(sp.getString("schoolName","西电附中"));
+        tv_userClass.setText(sp.getString("className","高二一班"));
+        if(!sp.getString("head_url","").equals("")){
+            Glide.with(this).load(sp.getString("head_url","")).centerCrop().placeholder(R.mipmap.default_head_image).into(iv_headphoto);
         }
+        type=sp.getString("type","");
+        if(type.equals("student")){
+            int level=Integer.parseInt(sp.getString("health_degree","100"))/100+1;
+            tv_level.setText(""+level);
+            tv_healthDegree.setText(sp.getString("health_degree","100"));
+            tv_credit.setText(sp.getString("credits","500"));
+        }else{
+            ly_student_item.setVisibility(View.GONE);
+        }
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

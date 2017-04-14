@@ -1,7 +1,5 @@
 package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -9,21 +7,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.xd.shenxinhelp.R;
-import com.xd.shenxinhelp.group.GroupDetailActivity;
-import com.xd.shenxinhelp.group.MakePlanActivity;
-import com.xd.shenxinhelp.group.MyPlanActivity;
 
 public class ContainerActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private MainPagerFragment mainPagerFragment;
     private GroupFragment groupFragment;
     private MySettingFragment mySettingFragment;
-
-    private static final int TYPE = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

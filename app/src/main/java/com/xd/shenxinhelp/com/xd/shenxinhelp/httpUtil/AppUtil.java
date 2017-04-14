@@ -29,7 +29,8 @@ public class AppUtil extends Application {
         return context;
     }
 
-    //    private static final String BASE_URL= "http://10.170.67.107:8080/";
+    //private static final String BASE_URL= "http://10.170.67.107:8080/";
+    //private static final String BASE_URL = "http://192.168.0.21:8080/BodyMindHelper/";
     private static final String BASE_URL = "http://192.168.0.75:8080/BodyMindHelper/";
     private static final String BASE_AUTH_URL = getBaseUrl() + "authz/oauth/token";
     private static final String BASE_RS_URL = getBaseUrl() + "rs/rs/";
@@ -40,6 +41,8 @@ public class AppUtil extends Application {
     public static final String GETSCHOOL = getBaseUrl() + "GetAllSchool";
     public static final String GETCLASS = getBaseUrl() + "GetClassBySchoolID?";
     public static final String ADDPERSONINFO = getBaseUrl() + "AddPersonInfo?";
+    public static final String AddTeacherInfo = getBaseUrl() + "AddTeacherInfo?";
+    public static final String AddParentInfo = getBaseUrl() + "AddParentInfo?";
 
 
     public static final String GETEXERCISETOFOUR = getBaseUrl() + "GetExerciseToFour?";
@@ -59,6 +62,13 @@ public class AppUtil extends Application {
     public static String CustomPlan= getBaseUrl() +"CustomPlan";
     public static String ShareToRing= getBaseUrl() +"ShareToRing";
     public static String DOEXERCISE = getBaseUrl() + "DoExercise?";
+    public static String AddCloseRelationship = getBaseUrl() + "AddCloseRelationship?";
+    public static String GetAllRelationshipType = getBaseUrl() + "GetAllRelationshipType";
+    public static String GetMyAllRelationship = getBaseUrl() + "GetMyAllRelationship";
+
+    public static String GetTopThreeStudent = getBaseUrl() + "GetTopThreeStudent";
+    public static String GetLastThreeStudent = getBaseUrl() + "GetLastThreeStudent";
+
     public static String getBaseUrl() {
        return BASE_URL;
     }

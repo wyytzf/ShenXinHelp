@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -85,6 +86,8 @@ public class RegisterActivity extends AppCompatActivity {
         String email = mAccount.getText().toString();
         String password = mPassword.getText().toString();
         String confimePassword = mConfirmPassword.getText().toString();
+        long type = mType.getSelectedItemId();
+        //Log.e("type", ""+type);
 
         boolean cancel = false;
         View focusView = null;
@@ -124,7 +127,7 @@ public class RegisterActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserRegisterTask(email, password);
+            mAuthTask = new UserRegisterTask(email, password, type);
             mAuthTask.execute((Void) null);
         }
     }
@@ -151,10 +154,12 @@ public class RegisterActivity extends AppCompatActivity {
 
         private final String mEmail;
         private final String mPassword;
+        private final long mtype;
 
-        UserRegisterTask(String email, String password) {
+        UserRegisterTask(String email, String password, long type) {
             mEmail = email;
             mPassword = password;
+            mtype = type;
         }
 
         @Override
@@ -165,7 +170,7 @@ public class RegisterActivity extends AppCompatActivity {
             // 返回true代表登录成功
             boolean result;
             try {
-                String synchronous = OkHttp.getSynchronous(AppUtil.REGISTER + "account=" + mEmail + "&" + "psw=" + mPassword);
+                String synchronous = OkHttp.getSynchronous(AppUtil.REGISTER + "account=" + mEmail + "&" + "psw=" + mPassword + "&role="+mtype);
                 result = parseRegister(synchronous);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -182,6 +187,7 @@ public class RegisterActivity extends AppCompatActivity {
             if (success) {
                 Intent intent = new Intent(RegisterActivity.this, FirstLoginActivity.class);
                 intent.putExtra("userID", userID);
+                intent.putExtra("mtype", mtype);
                 startActivity(intent);
                 finish();
             } else {

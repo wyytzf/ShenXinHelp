@@ -399,7 +399,7 @@ public class DrawUpPlanActivity extends AppCompatActivity {
                     share_content.setVisibility(View.VISIBLE);
                     start_plan_layout.setVisibility(View.VISIBLE);
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                            DensityUtil.dip2px(DrawUpPlanActivity.this, 240));
+                            DensityUtil.dip2px(DrawUpPlanActivity.this, 220));
                     mPager.setLayoutParams(lp);
                     break;
                 case 1:
@@ -407,7 +407,7 @@ public class DrawUpPlanActivity extends AppCompatActivity {
                     share_content.setVisibility(View.GONE);
                     start_plan_layout.setVisibility(View.GONE);
                     lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                            DensityUtil.dip2px(DrawUpPlanActivity.this, 330));
+                            DensityUtil.dip2px(DrawUpPlanActivity.this, 310));
                     mPager.setLayoutParams(lp);
                     break;
             }
@@ -436,7 +436,7 @@ public class DrawUpPlanActivity extends AppCompatActivity {
                     share_content.setVisibility(View.VISIBLE);
                     start_plan_layout.setVisibility(View.VISIBLE);
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                            DensityUtil.dip2px(DrawUpPlanActivity.this, 240));
+                            DensityUtil.dip2px(DrawUpPlanActivity.this, 220));
                     mPager.setLayoutParams(lp);
                     break;
                 case 1:
@@ -449,7 +449,7 @@ public class DrawUpPlanActivity extends AppCompatActivity {
                     share_content.setVisibility(View.GONE);
                     start_plan_layout.setVisibility(View.GONE);
                     lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                            DensityUtil.dip2px(DrawUpPlanActivity.this, 330));
+                            DensityUtil.dip2px(DrawUpPlanActivity.this, 310));
                     mPager.setLayoutParams(lp);
                     break;
                 case 2:

@@ -54,12 +54,14 @@ public class FirstLoginActivity extends AppCompatActivity {
     private String schoolId;
     private String classId;
     private ArrayList<Class> classes;
+    private long mtpye;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_login);
         userId = getIntent().getStringExtra("userID");
+        mtpye = getIntent().getLongExtra("mtype", 0);
         initViews();
         requestSchool();
     }
@@ -93,15 +95,39 @@ public class FirstLoginActivity extends AppCompatActivity {
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                attemptRegister();
+                switch ((int)mtpye){
+                    case 0: //学生
+                        attemptRegisterStu();
+                        break;
+                    case 1: //家长
+                        attemptRegisterPar();
+                        break;
+                    case 2: //教师
+                        attemptRegisterTea();
+                        break;
+                }
             }
         });
 
+        switch ((int)mtpye){
+            case 0: //学生
+                break;
+            case 1: //家长
+                mHeight.setVisibility(View.GONE);
+                mWeight.setVisibility(View.GONE);
+                mSchool.setVisibility(View.GONE);
+                mClass.setVisibility(View.GONE);
+                break;
+            case 2: //教师
+                mHeight.setVisibility(View.GONE);
+                mWeight.setVisibility(View.GONE);
+                break;
+        }
 
     }
 
 
-    private void attemptRegister() {
+    private void attemptRegisterStu() {
 
         // Reset errors.
         mAge.setError(null);
@@ -150,6 +176,126 @@ public class FirstLoginActivity extends AppCompatActivity {
             classId = classes.get(mClass.getSelectedItemPosition()).getClassId();
             OkHttp.get(AppUtil.ADDPERSONINFO + "userID=" + userId + "&name=" + name + "&sex=" + check_age + "&age=" + age +
                     "&height=" + height + "&weight=" + weight + "&schoolID=" + schoolId + "&classID=" + classId, new OkHttp.ResultCallBack() {
+                @Override
+                public void onError(String str, Exception e) {
+                    Toast.makeText(FirstLoginActivity.this, "网络出错", Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onResponse(String str) {
+                    boolean result = parseAddInfo(str);
+                    if (result) {
+                        Toast.makeText(FirstLoginActivity.this, "注册成功", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(FirstLoginActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(FirstLoginActivity.this, "网络出错", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+
+        }
+
+
+    }
+
+    private void attemptRegisterPar() {
+
+        // Reset errors.
+        mAge.setError(null);
+        mHeight.setError(null);
+        mWeight.setError(null);
+
+        // Store values at the time of the login attempt.
+
+        String age = mAge.getText().toString();
+        String name = mName.getText().toString();
+
+        boolean cancel = false;
+        View focusView = null;
+
+        if (TextUtils.isEmpty(name)) {
+            mName.setError(getString(R.string.error_field_required));
+            focusView = mName;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(age)) {
+            mAge.setError(getString(R.string.error_field_required));
+            focusView = mAge;
+            cancel = true;
+        }
+
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        } else {
+            // Show a progress spinner, and kick off a background task to
+            // perform the user login attempt.
+            OkHttp.get(AppUtil.AddParentInfo + "parentID=" + userId + "&name=" + name + "&sex=" + check_age + "&age=" + age ,
+                    new OkHttp.ResultCallBack() {
+                @Override
+                public void onError(String str, Exception e) {
+                    Toast.makeText(FirstLoginActivity.this, "网络出错", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onResponse(String str) {
+                    boolean result = parseAddInfo(str);
+                    if (result) {
+                        Toast.makeText(FirstLoginActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(FirstLoginActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(FirstLoginActivity.this, "网络出错", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+        }
+
+
+    }
+
+    private void attemptRegisterTea() {
+
+        // Reset errors.
+        mAge.setError(null);
+        mHeight.setError(null);
+        mWeight.setError(null);
+
+        // Store values at the time of the login attempt.
+
+        String age = mAge.getText().toString();
+        String name = mName.getText().toString();
+
+        boolean cancel = false;
+        View focusView = null;
+
+        if (TextUtils.isEmpty(name)) {
+            mName.setError(getString(R.string.error_field_required));
+            focusView = mName;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(age)) {
+            mAge.setError(getString(R.string.error_field_required));
+            focusView = mAge;
+            cancel = true;
+        }
+
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        } else {
+            // Show a progress spinner, and kick off a background task to
+            // perform the user login attempt.
+            schoolId = schools.get(mSchool.getSelectedItemPosition()).getId();
+            classId = classes.get(mClass.getSelectedItemPosition()).getClassId();
+            OkHttp.get(AppUtil.AddTeacherInfo + "teacherID=" + userId + "&name=" + name + "&sex=" + check_age + "&age=" + age +
+                    "&schoolID=" + schoolId + "&classID=" + classId, new OkHttp.ResultCallBack() {
                 @Override
                 public void onError(String str, Exception e) {
                     Toast.makeText(FirstLoginActivity.this, "网络出错", Toast.LENGTH_LONG).show();
