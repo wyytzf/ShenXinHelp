@@ -70,6 +70,7 @@ public class AppUtil extends Application {
 
     public static String GetTopThreeStudent = getBaseUrl() + "GetTopThreeStudent";
     public static String GetLastThreeStudent = getBaseUrl() + "GetLastThreeStudent";
+    public static String GetUpTopThreeStudent = getBaseUrl() + "GetUpTopThreeStudent";
 
     public static String getBaseUrl() {
        return BASE_URL;
