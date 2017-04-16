@@ -183,21 +183,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/text_16_sec"
-                        android:text="Top1  王尚"/>
+                        android:text="当前没有排名"/>
                     <TextView
                         android:id="@+id/second_up_student"
                         android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/text_16_sec"
-                        android:text="Top2  张聪明"/>
+                        style="@style/text_16_sec"/>
                     <TextView
                         android:id="@+id/third_up_student"
                         android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/text_16_sec"
-                        android:text="Top3  小花儿"/>
+                        style="@style/text_16_sec"/>
 
                 </LinearLayout>
             </LinearLayout>

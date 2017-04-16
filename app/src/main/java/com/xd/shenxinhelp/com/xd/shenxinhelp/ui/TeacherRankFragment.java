@@ -53,7 +53,7 @@ public class TeacherRankFragment extends Fragment {
                 textViews[0]=most_first;
                 textViews[1]=most_second;
                 textViews[2]=most_third;
-                if(topStudents!=null){
+                if(topStudents.size()>0){
                     for (int i=0;i<topStudents.size();i++){
                         int j=i+1;
                         textViews[i].setText("Top"+j+"   "+topStudents.get(i).get("studentName"));
@@ -68,7 +68,7 @@ public class TeacherRankFragment extends Fragment {
                 textViews[0]=last_first;
                 textViews[1]=last_second;
                 textViews[2]=last_third;
-                if(lastStudents!=null){
+                if(lastStudents.size()>0){
                     for (int i=0;i<lastStudents.size();i++){
                         int j=i+1;
                         textViews[i].setText("Top"+j+"   "+lastStudents.get(i).get("studentName"));
@@ -81,7 +81,7 @@ public class TeacherRankFragment extends Fragment {
                 textViews[0]=up_first;
                 textViews[1]=up_second;
                 textViews[2]=up_third;
-                if(upTopStudents!=null){
+                if(upTopStudents.size()>0){
                     for (int i=0;i<lastStudents.size();i++){
                         int j=i+1;
                         textViews[i].setText("Top"+j+"   "+upTopStudents.get(i).get("studentName"));
@@ -91,8 +91,10 @@ public class TeacherRankFragment extends Fragment {
 
             if(msg.what==0){
                 Toast.makeText(getContext(), (String) msg.obj, Toast.LENGTH_LONG).show();
-            }else
-                Toast.makeText(getContext(), (String) msg.obj, Toast.LENGTH_LONG).show();
+            }else{
+
+            }
+                //Toast.makeText(getContext(), "没有获取到当前排名", Toast.LENGTH_LONG).show();
 
         }
     };
@@ -223,9 +225,6 @@ public class TeacherRankFragment extends Fragment {
 
                         @Override
                         public void onFailure(Throwable e) {
-                            message.what = 0;
-                            message.obj = "获取失败，请重试";
-                            handler.sendMessage(message);
                         }
                     });
                 }
@@ -273,9 +272,6 @@ public class TeacherRankFragment extends Fragment {
 
                         @Override
                         public void onFailure(Throwable e) {
-                            message.what = 0;
-                            message.obj = "获取失败，请重试";
-                            handler.sendMessage(message);
                         }
                     });
                 }
