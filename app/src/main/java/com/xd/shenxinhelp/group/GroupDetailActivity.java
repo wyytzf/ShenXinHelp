@@ -468,6 +468,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                 break;
             //来自按钮1的请求，作相应业务处理
             case 2:
+                gridAdapter.notifyDataSetChanged();
                 //来自按钮2的请求，作相应业务处理
         }
     }
