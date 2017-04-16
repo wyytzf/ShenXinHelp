@@ -233,6 +233,7 @@ public class DrawUpPlanActivity extends AppCompatActivity {
                                         String reCode = jsonObject.getString("reCode");
                                         if ("SUCCESS".equals(reCode)){
                                             Toast.makeText(DrawUpPlanActivity.this, "分享计划成功！", Toast.LENGTH_SHORT).show();
+                                            getTodayPlanList();
                                         }
                                         else {
                                             Log.e("Fail", jsonObject.getString("message"));
