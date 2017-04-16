@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -223,6 +224,7 @@ public class BodyHelpActivity extends AppCompatActivity {
                 Calendar calendar = Calendar.getInstance();
                 int i = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
+                Log.e("value",""+value);
                 return (i + 1) + "月" + (day - 7 + (int) value) + "日";
             }
         });

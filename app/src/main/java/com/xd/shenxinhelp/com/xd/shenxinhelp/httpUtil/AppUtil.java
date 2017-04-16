@@ -65,6 +65,8 @@ public class AppUtil extends Application {
     public static String AddCloseRelationship = getBaseUrl() + "AddCloseRelationship?";
     public static String GetAllRelationshipType = getBaseUrl() + "GetAllRelationshipType";
     public static String GetMyAllRelationship = getBaseUrl() + "GetMyAllRelationship";
+    public static String GetMyChild = getBaseUrl() + "GetMyChild";
+    public static String GetAChildConsumedCaloriesADay = getBaseUrl() + "GetAChildConsumedCaloriesADay";
 
     public static String getBaseUrl() {
        return BASE_URL;

@@ -8,15 +8,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.xd.shenxinhelp.R;
+import com.xd.shenxinhelp.model.Student;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ParentYearFragment extends Fragment {
 
+    private ArrayList<Student> stu_list;
 
-    public ParentYearFragment() {
+    public ParentYearFragment(ArrayList<Student> stu_list) {
         // Required empty public constructor
+        this.stu_list = stu_list;
     }
 
 

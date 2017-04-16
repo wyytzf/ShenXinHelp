@@ -8,17 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.xd.shenxinhelp.R;
+import com.xd.shenxinhelp.model.Student;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ParentWeekFragment extends Fragment {
 
+    private ArrayList<Student> stu_list;
 
-    public ParentWeekFragment() {
+    public ParentWeekFragment(ArrayList<Student> stu_list) {
         // Required empty public constructor
+        this.stu_list = stu_list;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

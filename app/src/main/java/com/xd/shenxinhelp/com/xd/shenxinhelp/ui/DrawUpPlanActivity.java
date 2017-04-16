@@ -29,6 +29,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,6 +69,7 @@ public class DrawUpPlanActivity extends AppCompatActivity {
     private JSONArray today_plan_list;
     private JSONArray tomo_plan_list;
     private Map<Integer, Boolean> state_map;
+    private Map<Integer, Boolean> states;
 
     private ViewPager mPager;//页卡内容
     private List<ListView> listview_list;// Tab页面列表
@@ -84,7 +87,6 @@ public class DrawUpPlanActivity extends AppCompatActivity {
     private String today;
     private String tomo;
     private Calendar calendar;
-    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,7 +175,6 @@ public class DrawUpPlanActivity extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            //System.out.println("params-------------------"+params);
                             OkHttp.get(AppUtil.CustomPlan + params, new OkHttp.ResultCallBack() {
                                 @Override
                                 public void onError(String str, Exception e) {
@@ -200,13 +201,19 @@ public class DrawUpPlanActivity extends AppCompatActivity {
         start_plan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                count=0;
+                int position = -1;
                 if (today_plan_list.length()>0){
-                    if (!"".equals(share_content.getText().toString().trim())){
-                        for (int i=0; i<today_plan_list.length(); i++){
+                    for (int i : states.keySet()){
+                        if (states.get(i)){
+                            position = i;
+                            break;
+                        }
+                    }
+                    if (position>-1){
+                        if (!"".equals(share_content.getText().toString().trim())){
                             String plan_id=null;
                             try {
-                                JSONObject temp = today_plan_list.getJSONObject(i);
+                                JSONObject temp = today_plan_list.getJSONObject(position);
                                 plan_id = temp.getString("id");
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -215,7 +222,7 @@ public class DrawUpPlanActivity extends AppCompatActivity {
                                     share_content.getText().toString().trim(), new OkHttp.ResultCallBack() {
                                 @Override
                                 public void onError(String str, Exception e) {
-                                    Log.e("getTomoPlanList", str);
+                                    Log.e("ShareToRing", str);
                                     e.printStackTrace();
                                 }
 
@@ -225,9 +232,7 @@ public class DrawUpPlanActivity extends AppCompatActivity {
                                         JSONObject jsonObject = new JSONObject(str);
                                         String reCode = jsonObject.getString("reCode");
                                         if ("SUCCESS".equals(reCode)){
-                                            count++;
-                                            if (count==today_plan_list.length())
-                                                Toast.makeText(DrawUpPlanActivity.this, "已成功开始计划！", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(DrawUpPlanActivity.this, "分享计划成功！", Toast.LENGTH_SHORT).show();
                                         }
                                         else {
                                             Log.e("Fail", jsonObject.getString("message"));
@@ -239,9 +244,12 @@ public class DrawUpPlanActivity extends AppCompatActivity {
                                 }
                             });
                         }
+                        else {
+                            Toast.makeText(DrawUpPlanActivity.this, "分享时说点什么吧", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     else {
-                        Toast.makeText(DrawUpPlanActivity.this, "分享时说点什么吧", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DrawUpPlanActivity.this, "想分享哪个计划呢？", Toast.LENGTH_SHORT).show();
                     }
                 }
                 else {
@@ -292,8 +300,6 @@ public class DrawUpPlanActivity extends AppCompatActivity {
             @Override
             public void onResponse(String str) {
                 try {
-                    //Log.e("optional_plan_list", str);
-                    //System.out.println("optional_plan_list-------------------------"+str);
                     JSONObject jsonObject = new JSONObject(str);
                     String reCode = jsonObject.getString("reCode");
                     if ("SUCCESS".equals(reCode)){
@@ -319,11 +325,11 @@ public class DrawUpPlanActivity extends AppCompatActivity {
                 switch (flag){
                     case "today":
                         today_plan_list = jsonObject.getJSONArray("plans");
-                        today_plan_list_view.setAdapter(new PlanListAdapter(DrawUpPlanActivity.this, today_plan_list));
+                        today_plan_list_view.setAdapter(new PlanListAdapter(DrawUpPlanActivity.this, today_plan_list, "today"));
                         break;
                     case "tomo":
                         tomo_plan_list = jsonObject.getJSONArray("plans");
-                        tomo_plan_list_view.setAdapter(new PlanListAdapter(DrawUpPlanActivity.this, tomo_plan_list));
+                        tomo_plan_list_view.setAdapter(new PlanListAdapter(DrawUpPlanActivity.this, tomo_plan_list, "tomo"));
                         break;
                 }
             }
@@ -462,7 +468,7 @@ public class DrawUpPlanActivity extends AppCompatActivity {
             }
             currIndex = arg0;
             animation.setFillAfter(true);// True:图片停在动画结束位置
-            animation.setDuration(300);//动画时长
+            animation.setDuration(200);//动画时长
             cursor.startAnimation(animation);
         }
 
@@ -513,10 +519,18 @@ public class DrawUpPlanActivity extends AppCompatActivity {
 
         private Context context;
         private JSONArray jsonArray;
+        private String type;
 
-        PlanListAdapter(Context context, JSONArray jsonArray){
+        PlanListAdapter(Context context, JSONArray jsonArray, String type){
             this.context = context;
             this.jsonArray = jsonArray;
+            this.type = type;
+            if ("today".equals(type)){
+                states = new HashMap<>();
+                for (int i=0; i<jsonArray.length(); i++){
+                    states.put(i, false);
+                }
+            }
         }
 
         @Override
@@ -540,7 +554,7 @@ public class DrawUpPlanActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder = null;
             if (convertView==null){
                 convertView = LayoutInflater.from(context).inflate(R.layout.list_view_draw_up_plan, null);
@@ -551,12 +565,15 @@ public class DrawUpPlanActivity extends AppCompatActivity {
                 viewHolder.picture2 = (ImageView) convertView.findViewById(R.id.picture2);
                 viewHolder.name1 = (TextView) convertView.findViewById(R.id.name1);
                 viewHolder.name2 = (TextView) convertView.findViewById(R.id.name2);
+                viewHolder.radioButton = (RadioButton) convertView.findViewById(R.id.radio_button);
+                viewHolder.already_share = (TextView) convertView.findViewById(R.id.already_share);
                 convertView.setTag(viewHolder);
             }
 
             viewHolder = (ViewHolder) convertView.getTag();
             try {
                 JSONObject jsonObject = jsonArray.getJSONObject(position);
+                int isShare = jsonObject.getInt("isShare");
                 JSONArray items = jsonObject.getJSONArray("items");
                 viewHolder.plan.setText("计划"+(position+1));
                 JSONObject item1 = items.getJSONObject(0);
@@ -571,6 +588,32 @@ public class DrawUpPlanActivity extends AppCompatActivity {
                 else {
                     viewHolder.second.setVisibility(View.GONE);
                 }
+                if ("today".equals(type)){
+                    if (isShare==0){
+                        viewHolder.already_share.setVisibility(View.GONE);
+                        viewHolder.radioButton.setVisibility(View.VISIBLE);
+                        viewHolder.radioButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //重置，确保最多只有一项被选中
+                                for (int i=0; i<jsonArray.length(); i++){
+                                    states.put(i, false);
+                                }
+                                states.put(position, true);
+                                PlanListAdapter.this.notifyDataSetChanged();
+                            }
+                        });
+                        viewHolder.radioButton.setChecked(states.get(position));
+                    }
+                    else {
+                        viewHolder.radioButton.setVisibility(View.GONE);
+                        viewHolder.already_share.setVisibility(View.VISIBLE);
+                    }
+                }
+                else if ("tomo".equals(type)){
+                    viewHolder.radioButton.setVisibility(View.GONE);
+                    viewHolder.already_share.setVisibility(View.GONE);
+                }
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -580,12 +623,14 @@ public class DrawUpPlanActivity extends AppCompatActivity {
         }
 
         private class ViewHolder{
-            public TextView plan;
-            public RelativeLayout second;
-            public ImageView picture1;
-            public ImageView picture2;
-            public TextView name1;
-            public TextView name2;
+            TextView plan;
+            RelativeLayout second;
+            ImageView picture1;
+            ImageView picture2;
+            TextView name1;
+            TextView name2;
+            RadioButton radioButton;
+            TextView already_share;
         }
     }
 
@@ -661,9 +706,9 @@ public class DrawUpPlanActivity extends AppCompatActivity {
         }
 
         private class ViewHolder{
-            public TextView name;
-            public ImageView picture;
-            public CheckBox checkBox;
+            TextView name;
+            ImageView picture;
+            CheckBox checkBox;
         }
     }
 
