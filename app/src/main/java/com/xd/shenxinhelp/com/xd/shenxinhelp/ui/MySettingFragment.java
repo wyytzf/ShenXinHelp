@@ -70,7 +70,7 @@ public class MySettingFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        if(type.equals("teacher")){
+        if(type.equals("teacher")||type.equals("parents")){
             rl_relationship.setVisibility(View.GONE);
         }
 
@@ -136,6 +136,7 @@ public class MySettingFragment extends Fragment {
             tv_credit.setText(sp.getString("credits","500"));
         }else{
             ly_student_item.setVisibility(View.GONE);
+
         }
 
 
