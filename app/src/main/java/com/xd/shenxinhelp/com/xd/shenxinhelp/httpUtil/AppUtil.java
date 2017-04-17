@@ -67,6 +67,9 @@ public class AppUtil extends Application {
     public static String GetMyAllRelationship = getBaseUrl() + "GetMyAllRelationship";
     public static String GetMyChild = getBaseUrl() + "GetMyChild";
     public static String GetAChildConsumedCaloriesADay = getBaseUrl() + "GetAChildConsumedCaloriesADay";
+    public static String GetAChildConsumedCaloriesAWeek = getBaseUrl() + "GetAChildConsumedCaloriesAWeek";
+    public static String GetAChildConsumedCaloriesAMonth = getBaseUrl() + "GetAChildConsumedCaloriesAMonth";
+    public static String GetAChildConsumedCaloriesAYear = getBaseUrl() + "GetAChildConsumedCaloriesAYear";
 
     public static String GetTopThreeStudent = getBaseUrl() + "GetTopThreeStudent";
     public static String GetLastThreeStudent = getBaseUrl() + "GetLastThreeStudent";

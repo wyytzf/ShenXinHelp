@@ -94,8 +94,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
+            android:layout_height="30dp">
 
             <TextView
                 android:id="@+id/total_heat"
@@ -108,6 +107,7 @@
             <TextView
                 android:layout_toLeftOf="@id/total_heat"
                 android:layout_marginRight="20dp"
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#333"
@@ -118,6 +118,7 @@
                 android:id="@+id/decrease_weight"
                 android:layout_toRightOf="@id/total_heat"
                 android:layout_marginLeft="20dp"
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#333"

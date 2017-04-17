@@ -3,8 +3,10 @@ package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,12 +25,14 @@ import android.widget.Toast;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.Utils;
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
 import com.xd.shenxinhelp.model.Student;
@@ -50,7 +54,6 @@ public class ParentDayFragment extends Fragment {
 
     private ArrayList<Student> stu_list;
     private String[] stu_names;
-    private Date date;
     private Calendar calendar;
     private SimpleDateFormat format;
 
@@ -82,7 +85,6 @@ public class ParentDayFragment extends Fragment {
             stu_names[i] = student.getStudent_name();
             i++;
         }
-        date = new Date();
         calendar = Calendar.getInstance();
         format = new SimpleDateFormat("yyyy-MM-dd");
     }
@@ -94,7 +96,8 @@ public class ParentDayFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_parent_day, container, false);
 
         date_txt = (TextView) view.findViewById(R.id.day_date);
-        date_txt.setText(format.format(date));
+        String date = format.format(calendar.getTime());
+        date_txt.setText(date);
 
         progressBar = (ProgressBar) view.findViewById(R.id.progress);
         no_data = (TextView) view.findViewById(R.id.no_data);
@@ -113,6 +116,7 @@ public class ParentDayFragment extends Fragment {
         lineChart.getAxisRight().setDrawLabels(false);
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         lineChart.setNoDataText("暂无数据");
+
         viewShowOrGone(READING);
 
         total_heat = (TextView) view.findViewById(R.id.total_heat);
@@ -145,6 +149,7 @@ public class ParentDayFragment extends Fragment {
                 calendar.add(Calendar.DATE, -1);
                 date_txt.setText(format.format(calendar.getTime()));
                 getData(null, format.format(calendar.getTime()));
+
             }
         });
 
@@ -158,6 +163,7 @@ public class ParentDayFragment extends Fragment {
                 calendar.add(Calendar.DATE, 1);
                 date_txt.setText(format.format(calendar.getTime()));
                 getData(null, format.format(calendar.getTime()));
+
             }
         });
 
@@ -168,7 +174,7 @@ public class ParentDayFragment extends Fragment {
 
             }
         });
-        getData(stu_list.get(0).getStudent_id(), format.format(date));
+        getData(stu_list.get(0).getStudent_id(), date);
 
         return view;
     }
@@ -219,28 +225,37 @@ public class ParentDayFragment extends Fragment {
         });
     }
 
-    private void drawLineChart(JSONArray jsonArray){
+    private void drawLineChart(final JSONArray jsonArray){
         List<Entry> entryList = new ArrayList<>();
         final String[] xAxis = new String[jsonArray.length()];
-        Log.e("jsonArray.length",""+jsonArray.length());
         try {
             for (int i=0; i<jsonArray.length(); i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                Log.e("i+1",""+(i+1));
-                entryList.add(new Entry(i+1, (float) jsonObject.getDouble("calories"), null));
+                entryList.add(new Entry(i, (float) jsonObject.getDouble("calories"), null));
                 xAxis[i] = jsonObject.getString("moment");
             }
         }
         catch (Exception e){
             e.printStackTrace();
         }
+
+        lineChart.getXAxis().setAxisMinimum(0);
+        lineChart.getXAxis().setAxisMaximum(jsonArray.length()-1);
+        lineChart.getXAxis().setLabelCount(jsonArray.length()-1);
+
         lineChart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 Log.e("value",""+value);
-                return xAxis[(int) value];
+                if (jsonArray.length()==2 && value==0.5)
+                    return "";
+                if ( 0<=value && value<jsonArray.length())
+                    return xAxis[(int)value];
+                else
+                    return "";
             }
         });
+
         LineDataSet dataSet = new LineDataSet(entryList, "消耗热量");
         dataSet.enableDashedHighlightLine(10f, 5f, 0f);
         dataSet.setColor(Color.argb(255, 255, 166, 166));
@@ -253,8 +268,49 @@ public class ParentDayFragment extends Fragment {
         dataSet.setFormLineWidth(1f);
         dataSet.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
         dataSet.setFormSize(15.f);
+        if (Utils.getSDKInt() >= 18) {
+            // fill drawable only supported on api level 18 and above
+            Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
+            dataSet.setFillDrawable(drawable);
+        } else {
+            dataSet.setFillColor(Color.BLACK);
+        }
+        ArrayList<Entry> values = new ArrayList<Entry>();
+        for (int i = 0; i < 5; i++) {
+            float val = (float) (Math.random() * 30) + 3;
+            values.add(new Entry(i + 1, val, null));
+        }
+        LineDataSet set1;
+
+            set1 = new LineDataSet(values, "消耗热量");
+
+//            set1.setDrawIcons(false);
+
+            // set the line to be drawn like this "- - - - - -"
+//            set1.enableDashedLine(10f, 5f, 0f);
+            set1.enableDashedHighlightLine(10f, 5f, 0f);
+            set1.setColor(Color.argb(255, 221, 170, 17));
+            set1.setCircleColor(Color.argb(255, 221, 170, 17));
+            set1.setLineWidth(1f);
+            set1.setCircleRadius(3f);
+            set1.setDrawCircleHole(false);
+            set1.setValueTextSize(9f);
+            set1.setDrawFilled(true);
+            set1.setFormLineWidth(1f);
+            set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+            set1.setFormSize(15.f);
+
+            if (Utils.getSDKInt() >= 18) {
+                // fill drawable only supported on api level 18 and above
+                Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
+                set1.setFillDrawable(drawable);
+            } else {
+                set1.setFillColor(Color.BLACK);
+            }
+
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(dataSet); // add the datasets
+        dataSets.add(set1); // add the datasets
         LineData lineData = new LineData(dataSets);
         lineChart.setData(lineData);
         lineChart.invalidate();
