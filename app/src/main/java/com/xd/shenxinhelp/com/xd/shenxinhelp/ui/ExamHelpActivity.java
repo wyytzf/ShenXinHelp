@@ -122,20 +122,26 @@ public class ExamHelpActivity extends AppCompatActivity {
         Liner1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ExamHelpActivity.this, WebViewActivity.class);
-                intent.putExtra("url", "file:///android_asset/huikao.html");
-                intent.putExtra("title", "会考");
-                intent.putExtra("image_url", "");
+//                Intent intent = new Intent(ExamHelpActivity.this, WebViewActivity.class);
+//                intent.putExtra("url", "file:///android_asset/huikao.html");
+//                intent.putExtra("title", "会考");
+//                intent.putExtra("image_url", "");
+//                startActivity(intent);
+                Intent intent = new Intent(ExamHelpActivity.this, ExamHelpItemActivity.class);
+                intent.putExtra("title", "会考项目");
                 startActivity(intent);
             }
         });
         Liner2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ExamHelpActivity.this, WebViewActivity.class);
-                intent.putExtra("url", "file:///android_asset/kaishi.html");
-                intent.putExtra("title", "考试");
-                intent.putExtra("image_url", "");
+//                Intent intent = new Intent(ExamHelpActivity.this, WebViewActivity.class);
+//                intent.putExtra("url", "file:///android_asset/kaishi.html");
+//                intent.putExtra("title", "考试");
+//                intent.putExtra("image_url", "");
+//                startActivity(intent);
+                Intent intent = new Intent(ExamHelpActivity.this, ExamHelpItemActivity.class);
+                intent.putExtra("title", "注意事项");
                 startActivity(intent);
             }
         });

@@ -138,27 +138,35 @@ public class EyeHelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EyeHelpActivity.this, HelpContentActivity.class);
-                intent.putExtra("type", "yan");
+                intent.putExtra("type", "1");
+                intent.putExtra("buwei", "1");
+                intent.putExtra("title", "眼保健操");
                 startActivity(intent);
             }
         });
         Liner3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EyeHelpActivity.this, WebViewActivity.class);
-                intent.putExtra("url", "file:///android_asset/yanbaojiancao.html");
-                intent.putExtra("title", "护眼动作");
-                intent.putExtra("image_url", "");
+                Intent intent = new Intent(EyeHelpActivity.this, HelpContentTwoActivity.class);
+//                intent.putExtra("url", "file:///android_asset/yanbaojiancao.html");
+//                intent.putExtra("title", "护眼动作");
+//                intent.putExtra("image_url", "");
+                intent.putExtra("type", "1");
+                intent.putExtra("buwei", "2");
+                intent.putExtra("title", "眨眼护眼");
                 startActivity(intent);
             }
         });
         Liner4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EyeHelpActivity.this, WebViewActivity.class);
-                intent.putExtra("url", "file:///android_asset/eyes_dong.html");
-                intent.putExtra("title", "观看动图，可有效缓解疲劳");
-                intent.putExtra("image_url", "");
+                Intent intent = new Intent(EyeHelpActivity.this, HelpContentTwoActivity.class);
+//                intent.putExtra("url", "file:///android_asset/eyes_dong.html");
+//                intent.putExtra("title", "观看动图，可有效缓解疲劳");
+//                intent.putExtra("image_url", "");
+                intent.putExtra("type", "1");
+                intent.putExtra("buwei", "3");
+                intent.putExtra("title", "缓解疲劳");
                 startActivity(intent);
             }
         });
