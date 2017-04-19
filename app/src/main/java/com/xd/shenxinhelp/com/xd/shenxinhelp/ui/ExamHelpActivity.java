@@ -113,7 +113,7 @@ public class ExamHelpActivity extends AppCompatActivity {
         func1_text1 = (TextView) findViewById(R.id.content_BEHE_text1);
         func1_text2 = (TextView) findViewById(R.id.content_BEHE_text2);
 
-        func1_text1.setText("会考项目");
+        func1_text1.setText("会考标准");
         func1_text2.setText("注意事项");
 
         Liner1 = findViewById(R.id.content_BEHE_liner1);
@@ -128,7 +128,9 @@ public class ExamHelpActivity extends AppCompatActivity {
 //                intent.putExtra("image_url", "");
 //                startActivity(intent);
                 Intent intent = new Intent(ExamHelpActivity.this, ExamHelpItemActivity.class);
-                intent.putExtra("title", "会考项目");
+                intent.putExtra("title", "会考标准");
+                intent.putExtra("type","3");
+                intent.putExtra("buwei","0");
                 startActivity(intent);
             }
         });
@@ -142,6 +144,8 @@ public class ExamHelpActivity extends AppCompatActivity {
 //                startActivity(intent);
                 Intent intent = new Intent(ExamHelpActivity.this, ExamHelpItemActivity.class);
                 intent.putExtra("title", "注意事项");
+                intent.putExtra("type","3");
+                intent.putExtra("buwei","1");
                 startActivity(intent);
             }
         });

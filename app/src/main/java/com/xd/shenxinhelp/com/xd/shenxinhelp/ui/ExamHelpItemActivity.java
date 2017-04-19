@@ -1,6 +1,8 @@
 package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,6 +16,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xd.shenxinhelp.R;
+import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
+import com.xd.shenxinhelp.model.HelpContent;
+import com.xd.shenxinhelp.netutils.OkHttp;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ExamHelpItemActivity extends AppCompatActivity {
@@ -22,10 +34,14 @@ public class ExamHelpItemActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
 
     private String title;
-
+    private String buwei;
+    private String type;
+    private String userID;
     //    String[] item_image = {};
     String[] item_text = {"1000米跑/800米跑", "立定跳远", "50米跑", "前掷实心球", "篮球", "排球", "足球"};
+    private ExamItemAdapter examItemAdapter;
 
+    List<HelpContent> lists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,20 +51,72 @@ public class ExamHelpItemActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         setSupportActionBar(toolbar);
 //
-
+        SharedPreferences sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
+        userID = sp.getString("userid", "1");
         Intent intent = getIntent();
         title = intent.getStringExtra("title");
+        buwei = intent.getStringExtra("buwei");
+        type = intent.getStringExtra("type");
         getSupportActionBar().setTitle(title);
-        ExamItemAdapter examItemAdapter = new ExamItemAdapter();
+        lists = new ArrayList<HelpContent>();
+
+
+        examItemAdapter = new ExamItemAdapter();
         recyclerView = (RecyclerView) findViewById(R.id.exam_item_recyclerview);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         recyclerView.setAdapter(examItemAdapter);
-//        examItemAdapter.setOnItemClickListener(new OnMyItemClickListener() {
-//            @Override
-//            public void OnItemClick(View view, int position) {
-//
-//            }
-//        });
+        examItemAdapter.setOnItemClickListener(new OnMyItemClickListener() {
+            @Override
+            public void OnItemClick(View view, int position) {
+                Intent intent = new Intent(ExamHelpItemActivity.this, WebViewActivity.class);
+                intent.putExtra("url", lists.get(position).getWebUrl());
+                intent.putExtra("title", lists.get(position).getName());
+                intent.putExtra("image_url", lists.get(position).getReosurce_url());
+                startActivity(intent);
+            }
+        });
+        GoRequest();
+    }
+
+    private void GoRequest() {
+        OkHttp.get(AppUtil.GetExerciseItem + "buwei=" + buwei + "&userID=" + userID + "&type=" + type, new OkHttp.ResultCallBack() {
+            @Override
+            public void onError(String str, Exception e) {
+
+            }
+
+            @Override
+            public void onResponse(String str) {
+                ParseResponse(str);
+//                helpContentAdapter.update(contentList);
+                examItemAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void ParseResponse(String str) {
+        try {
+            JSONObject js = new JSONObject(str);
+            JSONArray ja = js.getJSONArray("exercisees");
+            for (int i = 0; i < ja.length(); i++) {
+                JSONObject jb = ja.getJSONObject(i);
+                HelpContent content = new HelpContent();
+                content.setId(jb.getString("id"));
+                content.setBuwei(jb.getString("buwei"));
+                content.setName(jb.getString("title"));
+                content.setReosurce_url(jb.getString("reosurce_url"));
+                content.setTotal_time(jb.getString("total_time"));
+                content.setFee_cridits(jb.getString("fee_cridits"));
+                content.setHeat(jb.getString("heat"));
+                content.setGet_degree(jb.getString("get_degree"));
+                content.setDiffculty(jb.getString("diffculty"));
+                content.setWebUrl(jb.getString("webUrl"));
+                content.setHasBuy(jb.getString("hasBuy"));
+                lists.add(content);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -70,7 +138,7 @@ public class ExamHelpItemActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(ItemViewHodler holder, final int position) {
             holder.imageView.setText((position + 1) + "");
-            holder.textView.setText(item_text[position]);
+            holder.textView.setText(lists.get(position).getName());
             if (OnMyItemClickListener != null) {
                 holder.container.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -84,7 +152,7 @@ public class ExamHelpItemActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return item_text.length;
+            return lists.size();
         }
 
         class ItemViewHodler extends RecyclerView.ViewHolder {
