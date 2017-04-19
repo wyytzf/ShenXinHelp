@@ -85,7 +85,7 @@
                     android:id="@+id/user_school"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="西点附中"
+                    android:text=""
                     style="@style/text_14_sec"/>
             </LinearLayout>
 
@@ -102,7 +102,7 @@
                     android:id="@+id/user_class"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="高二一班"
+                    android:text=""
                     style="@style/text_14_sec"/>
             </LinearLayout>
         </LinearLayout>
