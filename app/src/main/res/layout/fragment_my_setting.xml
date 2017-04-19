@@ -187,6 +187,35 @@
         android:orientation="vertical"
         android:layout_marginTop="20dp"
         android:background="@color/viewgroup_unpressed">
+
+        <RelativeLayout
+            android:id="@+id/mysetting_changeinfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:paddingLeft="30dp"
+            tools:ignore="RtlSymmetry">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="修改信息"
+                style="@style/text_18_pri"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/go_next_arrow"/>
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/bg_color"/>
+
         <RelativeLayout
             android:id="@+id/mysetting_relationship"
             android:layout_width="match_parent"
