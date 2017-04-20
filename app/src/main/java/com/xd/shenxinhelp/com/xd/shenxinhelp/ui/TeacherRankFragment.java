@@ -109,6 +109,7 @@ public class TeacherRankFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view=inflater.inflate(R.layout.fragment_teacher_rank, container, false);
+        lastStudents=new ArrayList<HashMap<String, String>>();
         initView();
         initData();
         return view;

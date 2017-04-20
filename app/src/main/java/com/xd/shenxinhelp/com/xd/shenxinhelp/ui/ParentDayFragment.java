@@ -63,13 +63,14 @@ public class ParentDayFragment extends Fragment {
     private Spinner spinner;
     private ProgressBar progressBar;
     private LineChart lineChart;
-    private CheckBox same_class_check;
+    private TextView same_class_txt;
     private TextView total_heat;
     private TextView decrease_weight;
     private TextView no_data;
     private LinearLayout data_layout;
 
     private String buffer_userid;
+    private String buffer_classid;
     private String buffer_date;
 
     private final int READING = 0;
@@ -131,6 +132,7 @@ public class ParentDayFragment extends Fragment {
                 total_heat.setText("0千焦");
                 decrease_weight.setText("≈减掉0公斤");
                 getData(stu_list.get(position).getStudent_id(), null);
+                getClassData(stu_list.get(position).getClass_id());
             }
 
             @Override
@@ -149,7 +151,7 @@ public class ParentDayFragment extends Fragment {
                 calendar.add(Calendar.DATE, -1);
                 date_txt.setText(format.format(calendar.getTime()));
                 getData(null, format.format(calendar.getTime()));
-
+                getClassData(null);
             }
         });
 
@@ -163,18 +165,14 @@ public class ParentDayFragment extends Fragment {
                 calendar.add(Calendar.DATE, 1);
                 date_txt.setText(format.format(calendar.getTime()));
                 getData(null, format.format(calendar.getTime()));
-
+                getClassData(null);
             }
         });
 
-        same_class_check = (CheckBox) view.findViewById(R.id.same_class_check);
-        same_class_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        same_class_txt = (TextView) view.findViewById(R.id.same_class_txt);
 
-            }
-        });
         getData(stu_list.get(0).getStudent_id(), date);
+        getClassData(stu_list.get(0).getClass_id());
 
         return view;
     }
@@ -223,6 +221,40 @@ public class ParentDayFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void getClassData(String classid){
+        if (classid!=null){
+            buffer_classid = classid;
+        }
+        OkHttp.get(AppUtil.GetSameClassDayConsumedCalories + "?userId="+buffer_userid+"&classId="+buffer_classid+
+                        "&date="+buffer_date,
+                new OkHttp.ResultCallBack() {
+                    @Override
+                    public void onError(String str, Exception e) {
+                        Log.e("getClassData", str);
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(String str) {
+                        try {
+                            Log.e("onResponse",str);
+                            JSONObject jsonObject = new JSONObject(str);
+                            String reCode = jsonObject.getString("reCode");
+                            if ("SUCCESS".equals(reCode)){
+                                same_class_txt.setText(jsonObject.getString("dayAverageCalories")+"千焦");
+                            }
+                            else {
+                                Log.e("Fail", jsonObject.getString("message"));
+                                Toast.makeText(getActivity(), "获取数据失败", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     private void drawLineChart(final JSONArray jsonArray){
@@ -275,42 +307,9 @@ public class ParentDayFragment extends Fragment {
         } else {
             dataSet.setFillColor(Color.BLACK);
         }
-        ArrayList<Entry> values = new ArrayList<Entry>();
-        for (int i = 0; i < 5; i++) {
-            float val = (float) (Math.random() * 30) + 3;
-            values.add(new Entry(i + 1, val, null));
-        }
-        LineDataSet set1;
-
-            set1 = new LineDataSet(values, "消耗热量");
-
-//            set1.setDrawIcons(false);
-
-            // set the line to be drawn like this "- - - - - -"
-//            set1.enableDashedLine(10f, 5f, 0f);
-            set1.enableDashedHighlightLine(10f, 5f, 0f);
-            set1.setColor(Color.argb(255, 221, 170, 17));
-            set1.setCircleColor(Color.argb(255, 221, 170, 17));
-            set1.setLineWidth(1f);
-            set1.setCircleRadius(3f);
-            set1.setDrawCircleHole(false);
-            set1.setValueTextSize(9f);
-            set1.setDrawFilled(true);
-            set1.setFormLineWidth(1f);
-            set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
-            set1.setFormSize(15.f);
-
-            if (Utils.getSDKInt() >= 18) {
-                // fill drawable only supported on api level 18 and above
-                Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
-                set1.setFillDrawable(drawable);
-            } else {
-                set1.setFillColor(Color.BLACK);
-            }
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(dataSet); // add the datasets
-        dataSets.add(set1); // add the datasets
         LineData lineData = new LineData(dataSets);
         lineChart.setData(lineData);
         lineChart.invalidate();

@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +52,8 @@ public class ParentMainFragment extends Fragment {
     private int bmpW;// 动画图片宽度
     private List<Fragment> fragmentList;// Tab页面列表
 
+    private LinearLayout main_content;
+    private TextView no_child;
 
     public ParentMainFragment() {
         // Required empty public constructor
@@ -73,6 +76,10 @@ public class ParentMainFragment extends Fragment {
         t4 = (TextView) view.findViewById(R.id.parent_main_year);
         mPager = (ViewPager) view.findViewById(R.id.viewpager);
         cursor = (ImageView) view.findViewById(R.id.cursor);
+
+        main_content = (LinearLayout) view.findViewById(R.id.main_content);
+        no_child = (TextView) view.findViewById(R.id.no_child);
+
         getMyChild();
 
         return view;
@@ -94,19 +101,29 @@ public class ParentMainFragment extends Fragment {
                     String reCode = jsonObject.getString("reCode");
                     if ("SUCCESS".equals(reCode)){
                         JSONArray jsonArray = jsonObject.getJSONArray("children");
-                        for (int i=0; i<jsonArray.length(); i++){
-                            JSONObject temp = jsonArray.getJSONObject(i);
-                            Student student = new Student();
-                            student.setClass_id(temp.getString("classid"));
-                            student.setStudent_id(temp.getString("studentid"));
-                            student.setStudent_name(temp.getString("studentName"));
-                            stu_list.add(student);
+                        if (jsonArray.length()>0){
+                            for (int i=0; i<jsonArray.length(); i++){
+                                JSONObject temp = jsonArray.getJSONObject(i);
+                                Student student = new Student();
+                                student.setClass_id(temp.getString("classid"));
+                                student.setStudent_id(temp.getString("studentid"));
+                                student.setStudent_name(temp.getString("studentName"));
+                                stu_list.add(student);
+                            }
+                            no_child.setVisibility(View.GONE);
+                            main_content.setVisibility(View.VISIBLE);
+                            InitTextView();
+                            InitViewPager();
+                            InitImageView();
                         }
-                        InitTextView();
-                        InitViewPager();
-                        InitImageView();
+                        else {
+                            main_content.setVisibility(View.GONE);
+                            no_child.setVisibility(View.VISIBLE);
+                        }
                     }
                     else {
+                        main_content.setVisibility(View.GONE);
+                        no_child.setVisibility(View.GONE);
                         Log.e("Fail", jsonObject.getString("message"));
                         Toast.makeText(getActivity(), "获取数据失败", Toast.LENGTH_SHORT).show();
                     }

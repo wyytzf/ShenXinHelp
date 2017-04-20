@@ -55,6 +55,7 @@ public class ParentMonthFragment extends Fragment {
     private String[] stu_names;
     private Calendar calendar;
     private SimpleDateFormat format;
+    private String[] dates;
 
     private TextView date_txt;
     private ImageView left_arrow;
@@ -89,7 +90,6 @@ public class ParentMonthFragment extends Fragment {
         format = new SimpleDateFormat("yyyy-MM-dd");
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -97,9 +97,14 @@ public class ParentMonthFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_parent_month, container, false);
 
         date_txt = (TextView) view.findViewById(R.id.day_date);
-        String end_date = format.format(calendar.getTime());
-        calendar.add(Calendar.DATE, -29);
-        String begin_date = format.format(calendar.getTime());
+        dates = new String[7];
+        dates[0] = format.format(calendar.getTime());
+        for (int i=1; i<7; i++){
+            calendar.add(Calendar.DATE, -5);
+            dates[i] = format.format(calendar.getTime());
+        }
+        String end_date = dates[0];
+        String begin_date = dates[6];
         date_txt.setText(begin_date+"~"+end_date);
 
         progressBar = (ProgressBar) view.findViewById(R.id.progress);
@@ -120,6 +125,17 @@ public class ParentMonthFragment extends Fragment {
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         lineChart.setNoDataText("暂无数据");
 
+        lineChart.getXAxis().setAxisMinimum(0);
+        lineChart.getXAxis().setAxisMaximum(6);
+        lineChart.getXAxis().setLabelCount(6);
+
+        lineChart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                Log.e("value",""+value);
+                return dates[6-(int)value].substring(5);
+            }
+        });
         viewShowOrGone(READING);
 
         total_heat = (TextView) view.findViewById(R.id.total_heat);
@@ -149,10 +165,15 @@ public class ParentMonthFragment extends Fragment {
                 viewShowOrGone(READING);
                 total_heat.setText("0千焦");
                 decrease_weight.setText("≈减掉0公斤");
+
                 calendar.add(Calendar.DATE, -1);
-                String end_date = format.format(calendar.getTime());
-                calendar.add(Calendar.DATE, -29);
-                String begin_date = format.format(calendar.getTime());
+                dates[0] = format.format(calendar.getTime());
+                for (int i=1; i<7; i++){
+                    calendar.add(Calendar.DATE, -5);
+                    dates[i] = format.format(calendar.getTime());
+                }
+                String end_date = dates[0];
+                String begin_date = dates[6];
                 date_txt.setText(begin_date+"~"+end_date);
                 getData(null, begin_date, end_date);
 
@@ -166,10 +187,15 @@ public class ParentMonthFragment extends Fragment {
                 viewShowOrGone(READING);
                 total_heat.setText("0千焦");
                 decrease_weight.setText("≈减掉0公斤");
-                calendar.add(Calendar.DATE, 59);
-                String end_date = format.format(calendar.getTime());
-                calendar.add(Calendar.DATE, -29);
-                String begin_date = format.format(calendar.getTime());
+
+                calendar.add(Calendar.DATE, 61);
+                dates[0] = format.format(calendar.getTime());
+                for (int i=1; i<7; i++){
+                    calendar.add(Calendar.DATE, -5);
+                    dates[i] = format.format(calendar.getTime());
+                }
+                String end_date = dates[0];
+                String begin_date = dates[6];
                 date_txt.setText(begin_date+"~"+end_date);
                 getData(null, begin_date, end_date);
 
@@ -183,8 +209,10 @@ public class ParentMonthFragment extends Fragment {
 
             }
         });
+        Log.e("1111111111","111111111");
         getData(stu_list.get(0).getStudent_id(), begin_date, end_date);
 
+        Log.e("22222222","2222222222");
         return view;
     }
 
@@ -222,7 +250,7 @@ public class ParentMonthFragment extends Fragment {
                                     viewShowOrGone(EXIST_DATA);
                                 }
                                 else {
-                                    no_data.setText(spinner.getSelectedItem().toString()+"当天尚无锻炼数据");
+                                    no_data.setText(spinner.getSelectedItem().toString()+"当月尚无锻炼数据");
                                     viewShowOrGone(NO_DATA);
                                 }
                             }
@@ -240,34 +268,15 @@ public class ParentMonthFragment extends Fragment {
 
     private void drawLineChart(final JSONArray jsonArray){
         List<Entry> entryList = new ArrayList<>();
-        final String[] xAxis = new String[jsonArray.length()];
         try {
             for (int i=0; i<jsonArray.length(); i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                entryList.add(new Entry(i, (float) jsonObject.getDouble("calories"), null));
-                xAxis[i] = jsonObject.getString("day").substring(5);
+                entryList.add(new Entry( analyze(jsonObject.getString("day")), (float) jsonObject.getDouble("calories"), null));
             }
         }
         catch (Exception e){
             e.printStackTrace();
         }
-
-        lineChart.getXAxis().setAxisMinimum(0);
-        lineChart.getXAxis().setAxisMaximum(jsonArray.length()-1);
-        lineChart.getXAxis().setLabelCount(jsonArray.length()-1);
-
-        lineChart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                Log.e("value",""+value);
-                if (jsonArray.length()==2 && value==0.5)
-                    return "";
-                if ( 0<=value && value<jsonArray.length())
-                    return xAxis[(int)value];
-                else
-                    return "";
-            }
-        });
 
         LineDataSet dataSet = new LineDataSet(entryList, "消耗热量");
         dataSet.enableDashedHighlightLine(10f, 5f, 0f);
@@ -296,6 +305,25 @@ public class ParentMonthFragment extends Fragment {
         lineChart.invalidate();
     }
 
+    private float analyze(String date){
+        for (int i=0; i<dates.length; i++){
+            if (dates[i].equals(date)){
+                return i;
+            }
+        }
+        for (int i=0; i<dates.length-1; i++){
+            if (dates[6-i].compareTo(date)<0 && dates[5-i].compareTo(date)>0){
+                if (dates[6-i].substring(0,7).equals(date.substring(0,7))){
+                    return i + 0.2f * ( Float.parseFloat(date.substring(8)) - Float.parseFloat(dates[6-i].substring(8)) );
+                }
+                else {
+                    return i+1 - 0.2f * ( Float.parseFloat(dates[5-i].substring(8)) - Float.parseFloat(date.substring(8)) );
+                }
+            }
+        }
+        return 0;
+    }
+
     private void viewShowOrGone(int state){
         switch (state){
             case READING:
@@ -319,6 +347,6 @@ public class ParentMonthFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        calendar.add(Calendar.DATE, 29);
+        calendar.add(Calendar.DATE, 30);
     }
 }

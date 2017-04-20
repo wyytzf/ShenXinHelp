@@ -47,7 +47,8 @@
         android:id="@+id/progress"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="match_parent"
-        android:layout_height="200dp"/>
+        android:layout_height="200dp"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/no_data"
@@ -62,35 +63,13 @@
         android:id="@+id/data_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:orientation="vertical">
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/line_chart"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:background="@android:color/white"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/same_class_check"
-                android:layout_marginLeft="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_marginLeft="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#333"
-                android:textSize="14dp"
-                android:text="同班孩子"/>
-
-        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -125,6 +104,31 @@
                 android:textSize="16dp"/>
 
         </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textColor="#333"
+                android:textSize="14dp"
+                android:text="同班其他孩子当天消耗的平均热量为"/>
+
+            <TextView
+                android:id="@+id/same_class_txt"
+                android:layout_marginLeft="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textColor="#333"
+                android:textSize="18dp"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
