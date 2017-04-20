@@ -149,6 +149,9 @@
             android:name=".com.xd.shenxinhelp.ui.TeacherMainActivity"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".com.xd.shenxinhelp.ui.ExamHelpItemActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

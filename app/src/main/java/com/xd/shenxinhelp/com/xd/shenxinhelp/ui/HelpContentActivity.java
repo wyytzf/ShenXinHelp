@@ -60,27 +60,27 @@ public class HelpContentActivity extends AppCompatActivity {
         type = intent.getStringExtra("type");
         contentList = new ArrayList<HelpContent>();
         initView();
-        if (type.equals("yan")) {
-            HelpContent content1 = new HelpContent();
-            content1.setWebUrl("http://192.168.0.21:8080/BodyMindHelper/webview/yan1.FLV");
-            content1.setName("最新版眼保健操教学视频");
-            content1.setReosurce_url("http://192.168.0.21:8080/BodyMindHelper/images/yan1_cover.png");
-            content1.setDiffculty("1");
-            content1.setHeat("");
-            content1.setTotal_time("");
-            HelpContent content2 = new HelpContent();
-            content2.setWebUrl("http://192.168.0.21:8080/BodyMindHelper/webview/yan2.FLV");
-            content2.setName("如何找准穴位 正确做眼保健操");
-            content2.setReosurce_url("http://192.168.0.21:8080/BodyMindHelper/images/yan2_cover.png");
-            content2.setDiffculty("1");
-            content2.setHeat("");
-            content2.setTotal_time("");
-            contentList.add(content1);
-            contentList.add(content2);
-            helpContentAdapter.update(contentList);
-        } else {
-            Request();
-        }
+//        if (type.equals("yan")) {
+//            HelpContent content1 = new HelpContent();
+//            content1.setWebUrl("http://192.168.0.21:8080/BodyMindHelper/webview/yan1.FLV");
+//            content1.setName("最新版眼保健操教学视频");
+//            content1.setReosurce_url("http://192.168.0.21:8080/BodyMindHelper/images/yan1_cover.png");
+//            content1.setDiffculty("1");
+//            content1.setHeat("");
+//            content1.setTotal_time("");
+//            HelpContent content2 = new HelpContent();
+//            content2.setWebUrl("http://192.168.0.21:8080/BodyMindHelper/webview/yan2.FLV");
+//            content2.setName("如何找准穴位 正确做眼保健操");
+//            content2.setReosurce_url("http://192.168.0.21:8080/BodyMindHelper/images/yan2_cover.png");
+//            content2.setDiffculty("1");
+//            content2.setHeat("");
+//            content2.setTotal_time("");
+//            contentList.add(content1);
+//            contentList.add(content2);
+//            helpContentAdapter.update(contentList);
+//        } else {
+        Request();
+//        }
 
 
     }

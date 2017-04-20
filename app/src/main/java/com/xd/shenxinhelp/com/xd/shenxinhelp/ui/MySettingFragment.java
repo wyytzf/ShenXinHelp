@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class MySettingFragment extends Fragment {
     private TextView tv_healthDegree;
     private TextView tv_credit;
     private LinearLayout ly_student_item;
+    private RelativeLayout rl_changeinfo;
     private RelativeLayout rl_relationship;
     private RelativeLayout rl_feedback;
     private RelativeLayout rl_exit;
@@ -62,6 +64,20 @@ public class MySettingFragment extends Fragment {
         initView();
         initData();
 
+        rl_changeinfo = (RelativeLayout)view.findViewById(R.id.mysetting_changeinfo);
+        rl_changeinfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getContext(), FirstLoginActivity.class);
+                if(type.equals("teacher")){
+                    intent.putExtra("mtype",2);
+                }else if(type.equals("parents")){
+                    intent.putExtra("mtype",1);
+                }else
+                    intent.putExtra("mtype",0);
+                startActivity(intent);
+            }
+        });
         rl_relationship = (RelativeLayout) view.findViewById(R.id.mysetting_relationship);
         rl_relationship.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +86,13 @@ public class MySettingFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        if(type.equals("teacher")||type.equals("parents")){
+        if(type.equals("parents")){
+            tv_userSchool.setVisibility(View.GONE);
+            tv_userClass.setVisibility(View.GONE);
+            rl_relationship.setVisibility(View.GONE);
+        }
+        if(type.equals("parents")||type.equals("teacher")){
+            rl_changeinfo.setVisibility(view.GONE);
             rl_relationship.setVisibility(View.GONE);
         }
 
@@ -136,7 +158,7 @@ public class MySettingFragment extends Fragment {
             tv_credit.setText(sp.getString("credits","500"));
         }else{
             ly_student_item.setVisibility(View.GONE);
-
+            //rl_relationship.setVisibility(View.GONE);
         }
 
 

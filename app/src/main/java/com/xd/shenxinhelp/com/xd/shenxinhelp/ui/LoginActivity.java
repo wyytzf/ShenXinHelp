@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.AsyncTask;
@@ -20,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,10 +61,15 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private RadioGroup rg_role;
     private TextView register;
 
     private boolean isNetConnect = false;
     private String type;
+    private int role;
+    public static int STUDENT= 0;
+    public static int TEACHER = 2;
+    public static int PARENTS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +88,20 @@ public class LoginActivity extends AppCompatActivity {
                     return true;
                 }
                 return false;
+            }
+        });
+
+        rg_role = (RadioGroup)findViewById(R.id.radio_role_group);
+        rg_role.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                if(checkedId==R.id.radio_role_student){
+                    role=STUDENT;
+                }else if(checkedId==R.id.radio_role_teacher){
+                    role=TEACHER;
+                }else if(checkedId==R.id.radio_role_parent){
+                    role=PARENTS;
+                }
             }
         });
 
@@ -176,7 +197,7 @@ public class LoginActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(email, password,role);
             mAuthTask.execute((Void) null);
         }
     }
@@ -236,10 +257,12 @@ public class LoginActivity extends AppCompatActivity {
 
         private final String mEmail;
         private final String mPassword;
+        private  int mRole=0;
 
-        UserLoginTask(String email, String password) {
+        UserLoginTask(String email, String password,int role) {
             mEmail = email;
             mPassword = password;
+            mRole=role;
         }
 
         @Override
@@ -251,7 +274,7 @@ public class LoginActivity extends AppCompatActivity {
             boolean result = false;
             try {
                 // 解析拿到的String字符串，判断是否登录成功
-                String synchronous = OkHttp.getSynchronous(AppUtil.LOGIN + "account=" + mEmail + "&" + "psw=" + mPassword);
+                String synchronous = OkHttp.getSynchronous(AppUtil.LOGIN + "account=" + mEmail + "&" + "psw=" + mPassword+ "&" + "role=" + mRole);
                 //Log.i("mmm",AppUtil.LOGIN + "account=" + mEmail + "&" + "psw=" + mPassword);
                 result = parseResponse(synchronous);
             } catch (IOException e) {
