@@ -68,8 +68,8 @@ public class LoginActivity extends AppCompatActivity {
     private String type;
     private int role;
     public static int STUDENT= 0;
-    public static int TEACHER = 1;
-    public static int PARENTS = 2;
+    public static int TEACHER = 2;
+    public static int PARENTS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
