@@ -55,6 +55,7 @@ public class ParentWeekFragment extends Fragment {
     private String[] stu_names;
     private Calendar calendar;
     private SimpleDateFormat format;
+    private String[] dates;
 
     private TextView date_txt;
     private ImageView left_arrow;
@@ -96,9 +97,14 @@ public class ParentWeekFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_parent_week, container, false);
 
         date_txt = (TextView) view.findViewById(R.id.day_date);
-        String end_date = format.format(calendar.getTime());
-        calendar.add(Calendar.DATE, -6);
-        String begin_date = format.format(calendar.getTime());
+        dates = new String[7];
+        dates[0] = format.format(calendar.getTime());
+        for (int i=1; i<7; i++){
+            calendar.add(Calendar.DATE, -1);
+            dates[i] = format.format(calendar.getTime());
+        }
+        String end_date = dates[0];
+        String begin_date = dates[6];
         date_txt.setText(begin_date+"~"+end_date);
 
         progressBar = (ProgressBar) view.findViewById(R.id.progress);
@@ -148,11 +154,14 @@ public class ParentWeekFragment extends Fragment {
                 viewShowOrGone(READING);
                 total_heat.setText("0千焦");
                 decrease_weight.setText("≈减掉0公斤");
-                calendar.add(Calendar.DATE, -1);
-                String end_date = format.format(calendar.getTime());
-                calendar.add(Calendar.DATE, -6);
-                String begin_date = format.format(calendar.getTime());
+                for (int i=0; i<7; i++){
+                    calendar.add(Calendar.DATE, -1);
+                    dates[i] = format.format(calendar.getTime());
+                }
+                String end_date = dates[0];
+                String begin_date = dates[6];
                 date_txt.setText(begin_date+"~"+end_date);
+                Log.e("9999999","9999999999");
                 getData(null, begin_date, end_date);
 
             }
@@ -165,10 +174,13 @@ public class ParentWeekFragment extends Fragment {
                 viewShowOrGone(READING);
                 total_heat.setText("0千焦");
                 decrease_weight.setText("≈减掉0公斤");
-                calendar.add(Calendar.DATE, 13);
-                String end_date = format.format(calendar.getTime());
-                calendar.add(Calendar.DATE, -6);
-                String begin_date = format.format(calendar.getTime());
+                calendar.add(Calendar.DATE, 14);
+                for (int i=0; i<7; i++){
+                    calendar.add(Calendar.DATE, -1);
+                    dates[i] = format.format(calendar.getTime());
+                }
+                String end_date = dates[0];
+                String begin_date = dates[6];
                 date_txt.setText(begin_date+"~"+end_date);
                 getData(null, begin_date, end_date);
 
@@ -179,9 +191,52 @@ public class ParentWeekFragment extends Fragment {
         same_class_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    OkHttp.get(AppUtil.GetAChildConsumedCaloriesAWeek + "?userId="+buffer_userid+"&begin_date="
+                                    +buffer_begin_date+"&end_date="+buffer_end_date,
+                            new OkHttp.ResultCallBack() {
+                                @Override
+                                public void onError(String str, Exception e) {
+                                    Log.e("getData", str);
+                                    e.printStackTrace();
+                                }
 
+                                @Override
+                                public void onResponse(String str) {
+                                    try {
+                                        Log.e("WeekonResponse",str);
+                                        JSONObject jsonObject = new JSONObject(str);
+                                        String reCode = jsonObject.getString("reCode");
+                                        if ("SUCCESS".equals(reCode)){
+                                            total_heat.setText(jsonObject.getString("weekTotalCalories")+"千焦");
+                                            decrease_weight.setText("≈减掉"+jsonObject.getString("kilogram")+"公斤");
+                                            JSONArray differentMomentCalories = jsonObject.getJSONArray("differentDayCalories");
+                                            if (differentMomentCalories.length()>0){
+                                                drawLineChart(differentMomentCalories);
+                                                viewShowOrGone(EXIST_DATA);
+                                            }
+                                            else {
+                                                no_data.setText(spinner.getSelectedItem().toString()+"当周尚无锻炼数据");
+                                                viewShowOrGone(NO_DATA);
+                                            }
+                                        }
+                                        else {
+                                            Log.e("Fail", jsonObject.getString("message"));
+                                            Toast.makeText(getActivity(), "获取数据失败", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    catch (Exception e){
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                }
+                else {
+
+                }
             }
         });
+
         getData(stu_list.get(0).getStudent_id(), begin_date, end_date);
 
         return view;
@@ -209,7 +264,7 @@ public class ParentWeekFragment extends Fragment {
                     @Override
                     public void onResponse(String str) {
                         try {
-                            Log.e("onResponse",str);
+                            Log.e("WeekonResponse",str);
                             JSONObject jsonObject = new JSONObject(str);
                             String reCode = jsonObject.getString("reCode");
                             if ("SUCCESS".equals(reCode)){
@@ -221,7 +276,7 @@ public class ParentWeekFragment extends Fragment {
                                     viewShowOrGone(EXIST_DATA);
                                 }
                                 else {
-                                    no_data.setText(spinner.getSelectedItem().toString()+"当天尚无锻炼数据");
+                                    no_data.setText(spinner.getSelectedItem().toString()+"当周尚无锻炼数据");
                                     viewShowOrGone(NO_DATA);
                                 }
                             }
@@ -239,12 +294,14 @@ public class ParentWeekFragment extends Fragment {
 
     private void drawLineChart(final JSONArray jsonArray){
         List<Entry> entryList = new ArrayList<>();
-        final String[] xAxis = new String[jsonArray.length()];
         try {
             for (int i=0; i<jsonArray.length(); i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                entryList.add(new Entry(i, (float) jsonObject.getDouble("calories"), null));
-                xAxis[i] = jsonObject.getString("day").substring(5);
+                for (int j=0; j<dates.length; j++){
+                    if (dates[j].equals(jsonObject.getString("day"))){
+                        entryList.add(new Entry( 6-j, (float) jsonObject.getDouble("calories"), null));
+                    }
+                }
             }
         }
         catch (Exception e){
@@ -252,19 +309,14 @@ public class ParentWeekFragment extends Fragment {
         }
 
         lineChart.getXAxis().setAxisMinimum(0);
-        lineChart.getXAxis().setAxisMaximum(jsonArray.length()-1);
-        lineChart.getXAxis().setLabelCount(jsonArray.length()-1);
+        lineChart.getXAxis().setAxisMaximum(6);
+        lineChart.getXAxis().setLabelCount(6);
 
         lineChart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 Log.e("value",""+value);
-                if (jsonArray.length()==2 && value==0.5)
-                    return "";
-                if ( 0<=value && value<jsonArray.length())
-                    return xAxis[(int)value];
-                else
-                    return "";
+                return dates[6-(int)value].substring(5);
             }
         });
 
