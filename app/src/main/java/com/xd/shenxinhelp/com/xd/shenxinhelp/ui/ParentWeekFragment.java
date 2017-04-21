@@ -44,7 +44,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,6 +59,8 @@ public class ParentWeekFragment extends Fragment {
     private Calendar calendar;
     private SimpleDateFormat format;
     private String[] dates;
+    private Map<String, Float> map_date_calories;
+    private Map<String, Float> map_date_calories_same;
 
     private TextView date_txt;
     private ImageView left_arrow;
@@ -99,10 +104,16 @@ public class ParentWeekFragment extends Fragment {
 
         date_txt = (TextView) view.findViewById(R.id.day_date);
         dates = new String[7];
+        map_date_calories = new TreeMap<>();
+        map_date_calories_same = new TreeMap<>();
         dates[0] = format.format(calendar.getTime());
+        map_date_calories.put(dates[0], 0f);
+        map_date_calories_same.put(dates[0], 0f);
         for (int i=1; i<7; i++){
             calendar.add(Calendar.DATE, -1);
             dates[i] = format.format(calendar.getTime());
+            map_date_calories.put(dates[i], 0f);
+            map_date_calories_same.put(dates[i], 0f);
         }
         String end_date = dates[0];
         String begin_date = dates[6];
@@ -154,6 +165,10 @@ public class ParentWeekFragment extends Fragment {
                 buffer_classid = stu_list.get(position).getClass_id();
                 getData(stu_list.get(position).getStudent_id(), null, null);
                 same_class_check.setChecked(false);
+                for (String key : map_date_calories.keySet()){
+                    map_date_calories.put(key, 0f);
+                    map_date_calories_same.put(key, 0f);
+                }
             }
 
             @Override
@@ -169,9 +184,13 @@ public class ParentWeekFragment extends Fragment {
                 viewShowOrGone(READING);
                 total_heat.setText("0千焦");
                 decrease_weight.setText("≈减掉0公斤");
+                map_date_calories.clear();
+                map_date_calories_same.clear();
                 for (int i=0; i<7; i++){
                     calendar.add(Calendar.DATE, -1);
                     dates[i] = format.format(calendar.getTime());
+                    map_date_calories.put(dates[i], 0f);
+                    map_date_calories_same.put(dates[i], 0f);
                 }
                 String end_date = dates[0];
                 String begin_date = dates[6];
@@ -188,10 +207,14 @@ public class ParentWeekFragment extends Fragment {
                 viewShowOrGone(READING);
                 total_heat.setText("0千焦");
                 decrease_weight.setText("≈减掉0公斤");
+                map_date_calories.clear();
+                map_date_calories_same.clear();
                 calendar.add(Calendar.DATE, 14);
                 for (int i=0; i<7; i++){
                     calendar.add(Calendar.DATE, -1);
                     dates[i] = format.format(calendar.getTime());
+                    map_date_calories.put(dates[i], 0f);
+                    map_date_calories_same.put(dates[i], 0f);
                 }
                 String end_date = dates[0];
                 String begin_date = dates[6];
@@ -223,12 +246,12 @@ public class ParentWeekFragment extends Fragment {
                                         String reCode = jsonObject.getString("reCode");
                                         if ("SUCCESS".equals(reCode)){
                                             JSONArray weekAverageCalories = jsonObject.getJSONArray("weekAverageCalories");
-                                            if (weekAverageCalories.length()>0){
-                                                drawLineChartSameClass(weekAverageCalories);
+                                            drawLineChartSameClass(weekAverageCalories);
+                                            /*if (weekAverageCalories.length()>0){
                                             }
                                             else {
                                                 Toast.makeText(getActivity(), "同班同学当周无锻炼数据", Toast.LENGTH_SHORT).show();
-                                            }
+                                            }*/
                                         }
                                         else {
                                             Log.e("Fail", jsonObject.getString("message"));
@@ -314,15 +337,19 @@ public class ParentWeekFragment extends Fragment {
         try {
             for (int i=0; i<jsonArray.length(); i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                for (int j=0; j<dates.length; j++){
-                    if (dates[j].equals(jsonObject.getString("day"))){
-                        entryList.add(new Entry( 6-j, (float) jsonObject.getDouble("calories"), null));
-                    }
-                }
+                map_date_calories.put(jsonObject.getString("day"), (float) jsonObject.getDouble("calories"));
             }
         }
         catch (Exception e){
             e.printStackTrace();
+        }
+        for (String key : map_date_calories.keySet()){
+            Log.e(key, map_date_calories.get(key)+"");
+            for (int j=0; j<dates.length; j++){
+                if (dates[j].equals(key)){
+                    entryList.add(new Entry( 6-j, map_date_calories.get(key), null));
+                }
+            }
         }
 
         LineDataSet dataSet = new LineDataSet(entryList, "个人消耗热量");
@@ -357,15 +384,19 @@ public class ParentWeekFragment extends Fragment {
         try {
             for (int i=0; i<jsonArray.length(); i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                for (int j=0; j<dates.length; j++){
-                    if (dates[j].equals(jsonObject.getString("day"))){
-                        entryList.add(new Entry( 6-j, (float) jsonObject.getDouble("average_calories"), null));
-                    }
-                }
+                map_date_calories_same.put(jsonObject.getString("day"), (float) jsonObject.getDouble("average_calories"));
             }
         }
         catch (Exception e){
             e.printStackTrace();
+        }
+        for (String key : map_date_calories_same.keySet()){
+            Log.e(key, map_date_calories_same.get(key)+"");
+            for (int j=0; j<dates.length; j++){
+                if (dates[j].equals(key)){
+                    entryList.add(new Entry( 6-j, map_date_calories_same.get(key), null));
+                }
+            }
         }
 
         LineDataSet dataSet = new LineDataSet(entryList, "同班平均消耗热量");

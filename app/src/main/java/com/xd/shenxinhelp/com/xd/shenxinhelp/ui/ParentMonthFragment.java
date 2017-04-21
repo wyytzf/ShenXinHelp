@@ -45,6 +45,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,6 +58,8 @@ public class ParentMonthFragment extends Fragment {
     private Calendar calendar;
     private SimpleDateFormat format;
     private String[] dates;
+    private Map<String, Float> map_date_calories;
+    private Map<String, Float> map_date_calories_same;
 
     private TextView date_txt;
     private ImageView left_arrow;
@@ -99,7 +103,17 @@ public class ParentMonthFragment extends Fragment {
 
         date_txt = (TextView) view.findViewById(R.id.day_date);
         dates = new String[7];
+        map_date_calories = new TreeMap<>();
+        map_date_calories_same = new TreeMap<>();
         dates[0] = format.format(calendar.getTime());
+        map_date_calories.put(dates[0], 0f);
+        map_date_calories_same.put(dates[0], 0f);
+        for (int i=0; i<30; i++){
+            calendar.add(Calendar.DATE, -1);
+            map_date_calories.put(format.format(calendar.getTime()), 0f);
+            map_date_calories_same.put(format.format(calendar.getTime()), 0f);
+        }
+        calendar.add(Calendar.DATE, 30);
         for (int i=1; i<7; i++){
             calendar.add(Calendar.DATE, -5);
             dates[i] = format.format(calendar.getTime());
@@ -153,6 +167,10 @@ public class ParentMonthFragment extends Fragment {
                 buffer_classid = stu_list.get(position).getClass_id();
                 getData(stu_list.get(position).getStudent_id(), null, null);
                 same_class_check.setChecked(false);
+                for (String key : map_date_calories.keySet()){
+                    map_date_calories.put(key, 0f);
+                    map_date_calories_same.put(key, 0f);
+                }
             }
 
             @Override
@@ -168,9 +186,19 @@ public class ParentMonthFragment extends Fragment {
                 viewShowOrGone(READING);
                 total_heat.setText("0千焦");
                 decrease_weight.setText("≈减掉0公斤");
+                map_date_calories.clear();
+                map_date_calories_same.clear();
 
                 calendar.add(Calendar.DATE, -1);
                 dates[0] = format.format(calendar.getTime());
+                map_date_calories.put(dates[0], 0f);
+                map_date_calories_same.put(dates[0], 0f);
+                for (int i=0; i<30; i++){
+                    calendar.add(Calendar.DATE, -1);
+                    map_date_calories.put(format.format(calendar.getTime()), 0f);
+                    map_date_calories_same.put(format.format(calendar.getTime()), 0f);
+                }
+                calendar.add(Calendar.DATE, 30);
                 for (int i=1; i<7; i++){
                     calendar.add(Calendar.DATE, -5);
                     dates[i] = format.format(calendar.getTime());
@@ -190,9 +218,19 @@ public class ParentMonthFragment extends Fragment {
                 viewShowOrGone(READING);
                 total_heat.setText("0千焦");
                 decrease_weight.setText("≈减掉0公斤");
+                map_date_calories.clear();
+                map_date_calories_same.clear();
 
                 calendar.add(Calendar.DATE, 61);
                 dates[0] = format.format(calendar.getTime());
+                map_date_calories.put(dates[0], 0f);
+                map_date_calories_same.put(dates[0], 0f);
+                for (int i=0; i<30; i++){
+                    calendar.add(Calendar.DATE, -1);
+                    map_date_calories.put(format.format(calendar.getTime()), 0f);
+                    map_date_calories_same.put(format.format(calendar.getTime()), 0f);
+                }
+                calendar.add(Calendar.DATE, 30);
                 for (int i=1; i<7; i++){
                     calendar.add(Calendar.DATE, -5);
                     dates[i] = format.format(calendar.getTime());
@@ -227,12 +265,12 @@ public class ParentMonthFragment extends Fragment {
                                         String reCode = jsonObject.getString("reCode");
                                         if ("SUCCESS".equals(reCode)){
                                             JSONArray monthAverageCalories = jsonObject.getJSONArray("monthAverageCalories");
-                                            if (monthAverageCalories.length()>0){
-                                                drawLineChartSameClass(monthAverageCalories);
+                                            drawLineChartSameClass(monthAverageCalories);
+                                            /*if (monthAverageCalories.length()>0){
                                             }
                                             else {
                                                 Toast.makeText(getActivity(), "同班同学当月无锻炼数据", Toast.LENGTH_SHORT).show();
-                                            }
+                                            }*/
                                         }
                                         else {
                                             Log.e("Fail", jsonObject.getString("message"));
@@ -318,11 +356,15 @@ public class ParentMonthFragment extends Fragment {
         try {
             for (int i=0; i<jsonArray.length(); i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                entryList.add(new Entry( analyze(jsonObject.getString("day")), (float) jsonObject.getDouble("calories"), null));
+                map_date_calories.put(jsonObject.getString("day"), (float) jsonObject.getDouble("calories"));
             }
         }
         catch (Exception e){
             e.printStackTrace();
+        }
+        for (String key : map_date_calories.keySet()){
+            Log.e(key, map_date_calories.get(key)+"");
+            entryList.add(new Entry( analyze(key), map_date_calories.get(key), null));
         }
 
         LineDataSet dataSet = new LineDataSet(entryList, "个人消耗热量");
@@ -357,11 +399,15 @@ public class ParentMonthFragment extends Fragment {
         try {
             for (int i=0; i<jsonArray.length(); i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                entryList.add(new Entry( analyze(jsonObject.getString("day")), (float) jsonObject.getDouble("average_calories"), null));
+                map_date_calories_same.put(jsonObject.getString("day"), (float) jsonObject.getDouble("average_calories"));
             }
         }
         catch (Exception e){
             e.printStackTrace();
+        }
+        for (String key : map_date_calories_same.keySet()){
+            Log.e(key, map_date_calories_same.get(key)+"");
+            entryList.add(new Entry( analyze(key), map_date_calories_same.get(key), null));
         }
 
         LineDataSet dataSet = new LineDataSet(entryList, "同班平均消耗热量");
