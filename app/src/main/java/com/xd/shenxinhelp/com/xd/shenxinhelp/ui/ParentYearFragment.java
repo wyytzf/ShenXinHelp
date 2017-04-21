@@ -70,6 +70,7 @@ public class ParentYearFragment extends Fragment {
     private LinearLayout data_layout;
 
     private String buffer_userid;
+    private String buffer_classid;
     private String buffer_begin_date;
     private String buffer_end_date;
 
@@ -134,7 +135,7 @@ public class ParentYearFragment extends Fragment {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 Log.e("value",""+value);
-                return dates[6-(int)value].substring(0, 7);
+                return dates[6-(int)value].substring(2, 7);
             }
         });
 
@@ -151,7 +152,9 @@ public class ParentYearFragment extends Fragment {
                 viewShowOrGone(READING);
                 total_heat.setText("0千焦");
                 decrease_weight.setText("≈减掉0公斤");
+                buffer_classid = stu_list.get(position).getClass_id();
                 getData(stu_list.get(position).getStudent_id(), null, null);
+                same_class_check.setChecked(false);
             }
 
             @Override
@@ -208,13 +211,57 @@ public class ParentYearFragment extends Fragment {
         same_class_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    OkHttp.get(AppUtil.GetSameClassYearConsumedCalories + "?userId="+buffer_userid +"&classId="
+                                    +buffer_classid +"&begin_date=" +buffer_begin_date+"&end_date="+buffer_end_date,
+                            new OkHttp.ResultCallBack() {
+                                @Override
+                                public void onError(String str, Exception e) {
+                                    Log.e("same_class_check", str);
+                                    e.printStackTrace();
+                                }
 
+                                @Override
+                                public void onResponse(String str) {
+                                    try {
+                                        Log.e("year_same_class_check",str);
+                                        JSONObject jsonObject = new JSONObject(str);
+                                        String reCode = jsonObject.getString("reCode");
+                                        if ("SUCCESS".equals(reCode)){
+                                            JSONArray yearAverageCalories = jsonObject.getJSONArray("yearAverageCalories");
+                                            if (yearAverageCalories.length()>0){
+                                                drawLineChartSameClass(yearAverageCalories);
+                                            }
+                                            else {
+                                                Toast.makeText(getActivity(), "同班同学当年无锻炼数据", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                        else {
+                                            Log.e("Fail", jsonObject.getString("message"));
+                                            Toast.makeText(getActivity(), "获取数据失败", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    catch (Exception e){
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                }
+                else {
+                    if (lineChart.getData() != null &&
+                            lineChart.getData().getDataSetCount() > 1) {
+                        lineChart.getData().getDataSets().remove(1);
+                        lineChart.getData().notifyDataChanged();
+                        lineChart.notifyDataSetChanged();
+                        lineChart.invalidate();
+                    }
+                }
             }
         });
-        Log.e("333333333","333333333");
+
+        buffer_classid = stu_list.get(0).getClass_id();
         getData(stu_list.get(0).getStudent_id(), begin_date.substring(0, 7), end_date);
 
-        Log.e("4444444444","444444444");
         return view;
     }
 
@@ -280,7 +327,7 @@ public class ParentYearFragment extends Fragment {
             e.printStackTrace();
         }
 
-        LineDataSet dataSet = new LineDataSet(entryList, "消耗热量");
+        LineDataSet dataSet = new LineDataSet(entryList, "个人消耗热量");
         dataSet.enableDashedHighlightLine(10f, 5f, 0f);
         dataSet.setColor(Color.argb(255, 255, 166, 166));
         dataSet.setCircleColor(Color.argb(255, 255, 166, 166));
@@ -307,10 +354,54 @@ public class ParentYearFragment extends Fragment {
         lineChart.invalidate();
     }
 
+    private void drawLineChartSameClass(final JSONArray jsonArray){
+        List<Entry> entryList = new ArrayList<>();
+        try {
+            for (int i=0; i<jsonArray.length(); i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                entryList.add(new Entry( analyze(jsonObject.getString("day")), (float) jsonObject.getDouble("average_calories"), null));
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        LineDataSet dataSet = new LineDataSet(entryList, "同班平均消耗热量");
+        dataSet.enableDashedHighlightLine(10f, 5f, 0f);
+        dataSet.setColor(Color.argb(255, 255, 165, 0));
+        dataSet.setCircleColor(Color.argb(255, 255, 165, 0));
+        dataSet.setLineWidth(1f);
+        dataSet.setCircleRadius(3f);
+        dataSet.setDrawCircleHole(false);
+        dataSet.setValueTextSize(9f);
+        dataSet.setDrawFilled(true);
+        dataSet.setFormLineWidth(1f);
+        dataSet.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+        dataSet.setFormSize(15.f);
+        if (Utils.getSDKInt() >= 18) {
+            // fill drawable only supported on api level 18 and above
+            Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
+            dataSet.setFillDrawable(drawable);
+        } else {
+            dataSet.setFillColor(Color.BLACK);
+        }
+
+        if (lineChart.getData() != null &&
+                lineChart.getData().getDataSetCount() > 0) {
+            lineChart.getData().getDataSets().add(dataSet);
+            lineChart.getData().notifyDataChanged();
+            lineChart.notifyDataSetChanged();
+            lineChart.invalidate();
+        } else {
+            Log.e("lineChart.getData()","lineChart.getData()==0");
+        }
+
+    }
+
     private float analyze(String date){
         for (int i=0; i<dates.length; i++){
             if (dates[i].substring(0,7).equals(date)){
-                return i;
+                return 6-i;
             }
         }
         for (int i=0; i<dates.length-1; i++){

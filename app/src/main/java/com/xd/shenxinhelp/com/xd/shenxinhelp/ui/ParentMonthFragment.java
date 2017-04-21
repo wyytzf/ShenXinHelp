@@ -70,6 +70,7 @@ public class ParentMonthFragment extends Fragment {
     private LinearLayout data_layout;
 
     private String buffer_userid;
+    private String buffer_classid;
     private String buffer_begin_date;
     private String buffer_end_date;
 
@@ -149,7 +150,9 @@ public class ParentMonthFragment extends Fragment {
                 viewShowOrGone(READING);
                 total_heat.setText("0千焦");
                 decrease_weight.setText("≈减掉0公斤");
+                buffer_classid = stu_list.get(position).getClass_id();
                 getData(stu_list.get(position).getStudent_id(), null, null);
+                same_class_check.setChecked(false);
             }
 
             @Override
@@ -206,13 +209,57 @@ public class ParentMonthFragment extends Fragment {
         same_class_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    OkHttp.get(AppUtil.GetSameClassMonthConsumedCalories + "?userId="+buffer_userid +"&classId="
+                                    +buffer_classid +"&begin_date=" +buffer_begin_date+"&end_date="+buffer_end_date,
+                            new OkHttp.ResultCallBack() {
+                                @Override
+                                public void onError(String str, Exception e) {
+                                    Log.e("same_class_check", str);
+                                    e.printStackTrace();
+                                }
 
+                                @Override
+                                public void onResponse(String str) {
+                                    try {
+                                        Log.e("month_same_class_check",str);
+                                        JSONObject jsonObject = new JSONObject(str);
+                                        String reCode = jsonObject.getString("reCode");
+                                        if ("SUCCESS".equals(reCode)){
+                                            JSONArray monthAverageCalories = jsonObject.getJSONArray("monthAverageCalories");
+                                            if (monthAverageCalories.length()>0){
+                                                drawLineChartSameClass(monthAverageCalories);
+                                            }
+                                            else {
+                                                Toast.makeText(getActivity(), "同班同学当月无锻炼数据", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                        else {
+                                            Log.e("Fail", jsonObject.getString("message"));
+                                            Toast.makeText(getActivity(), "获取数据失败", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    catch (Exception e){
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                }
+                else {
+                    if (lineChart.getData() != null &&
+                            lineChart.getData().getDataSetCount() > 1) {
+                        lineChart.getData().getDataSets().remove(1);
+                        lineChart.getData().notifyDataChanged();
+                        lineChart.notifyDataSetChanged();
+                        lineChart.invalidate();
+                    }
+                }
             }
         });
-        Log.e("1111111111","111111111");
+
+        buffer_classid = stu_list.get(0).getClass_id();
         getData(stu_list.get(0).getStudent_id(), begin_date, end_date);
 
-        Log.e("22222222","2222222222");
         return view;
     }
 
@@ -278,7 +325,7 @@ public class ParentMonthFragment extends Fragment {
             e.printStackTrace();
         }
 
-        LineDataSet dataSet = new LineDataSet(entryList, "消耗热量");
+        LineDataSet dataSet = new LineDataSet(entryList, "个人消耗热量");
         dataSet.enableDashedHighlightLine(10f, 5f, 0f);
         dataSet.setColor(Color.argb(255, 255, 166, 166));
         dataSet.setCircleColor(Color.argb(255, 255, 166, 166));
@@ -305,19 +352,71 @@ public class ParentMonthFragment extends Fragment {
         lineChart.invalidate();
     }
 
+    private void drawLineChartSameClass(final JSONArray jsonArray){
+        List<Entry> entryList = new ArrayList<>();
+        try {
+            for (int i=0; i<jsonArray.length(); i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                entryList.add(new Entry( analyze(jsonObject.getString("day")), (float) jsonObject.getDouble("average_calories"), null));
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        LineDataSet dataSet = new LineDataSet(entryList, "同班平均消耗热量");
+        dataSet.enableDashedHighlightLine(10f, 5f, 0f);
+        dataSet.setColor(Color.argb(255, 255, 165, 0));
+        dataSet.setCircleColor(Color.argb(255, 255, 165, 0));
+        dataSet.setLineWidth(1f);
+        dataSet.setCircleRadius(3f);
+        dataSet.setDrawCircleHole(false);
+        dataSet.setValueTextSize(9f);
+        dataSet.setDrawFilled(true);
+        dataSet.setFormLineWidth(1f);
+        dataSet.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+        dataSet.setFormSize(15.f);
+        if (Utils.getSDKInt() >= 18) {
+            // fill drawable only supported on api level 18 and above
+            Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
+            dataSet.setFillDrawable(drawable);
+        } else {
+            dataSet.setFillColor(Color.BLACK);
+        }
+
+        if (lineChart.getData() != null &&
+                lineChart.getData().getDataSetCount() > 0) {
+            lineChart.getData().getDataSets().add(dataSet);
+            lineChart.getData().notifyDataChanged();
+            lineChart.notifyDataSetChanged();
+            lineChart.invalidate();
+        } else {
+            Log.e("lineChart.getData()","lineChart.getData()==0");
+        }
+
+    }
+
     private float analyze(String date){
         for (int i=0; i<dates.length; i++){
             if (dates[i].equals(date)){
-                return i;
+                //Log.e("date["+i+"]=====",date);
+                return 6-i;
             }
         }
         for (int i=0; i<dates.length-1; i++){
             if (dates[6-i].compareTo(date)<0 && dates[5-i].compareTo(date)>0){
+                //Log.e("dates["+(6-i)+"]==========", dates[6-i]);
+                //Log.e("dates["+(5-i)+"]==========", dates[5-i]);
+                //Log.e("date============",date);
                 if (dates[6-i].substring(0,7).equals(date.substring(0,7))){
-                    return i + 0.2f * ( Float.parseFloat(date.substring(8)) - Float.parseFloat(dates[6-i].substring(8)) );
+                    float result = i + 0.2f * ( Float.parseFloat(date.substring(8)) - Float.parseFloat(dates[6-i].substring(8)) );
+                    //Log.e("result",result+"");
+                    return result;
                 }
                 else {
-                    return i+1 - 0.2f * ( Float.parseFloat(dates[5-i].substring(8)) - Float.parseFloat(date.substring(8)) );
+                    float result = i+1 - 0.2f * ( Float.parseFloat(dates[5-i].substring(8)) - Float.parseFloat(date.substring(8)) );
+                    //Log.e("result",result+"");
+                    return result;
                 }
             }
         }

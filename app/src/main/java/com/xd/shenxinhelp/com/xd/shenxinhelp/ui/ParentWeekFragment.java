@@ -70,6 +70,7 @@ public class ParentWeekFragment extends Fragment {
     private LinearLayout data_layout;
 
     private String buffer_userid;
+    private String buffer_classid;
     private String buffer_begin_date;
     private String buffer_end_date;
 
@@ -125,6 +126,18 @@ public class ParentWeekFragment extends Fragment {
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         lineChart.setNoDataText("暂无数据");
 
+        lineChart.getXAxis().setAxisMinimum(0);
+        lineChart.getXAxis().setAxisMaximum(6);
+        lineChart.getXAxis().setLabelCount(6);
+
+        lineChart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                Log.e("value",""+value);
+                return dates[6-(int)value].substring(5);
+            }
+        });
+
         viewShowOrGone(READING);
 
         total_heat = (TextView) view.findViewById(R.id.total_heat);
@@ -138,7 +151,9 @@ public class ParentWeekFragment extends Fragment {
                 viewShowOrGone(READING);
                 total_heat.setText("0千焦");
                 decrease_weight.setText("≈减掉0公斤");
+                buffer_classid = stu_list.get(position).getClass_id();
                 getData(stu_list.get(position).getStudent_id(), null, null);
+                same_class_check.setChecked(false);
             }
 
             @Override
@@ -161,7 +176,6 @@ public class ParentWeekFragment extends Fragment {
                 String end_date = dates[0];
                 String begin_date = dates[6];
                 date_txt.setText(begin_date+"~"+end_date);
-                Log.e("9999999","9999999999");
                 getData(null, begin_date, end_date);
 
             }
@@ -192,32 +206,28 @@ public class ParentWeekFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    OkHttp.get(AppUtil.GetAChildConsumedCaloriesAWeek + "?userId="+buffer_userid+"&begin_date="
-                                    +buffer_begin_date+"&end_date="+buffer_end_date,
+                    OkHttp.get(AppUtil.GetSameClassWeekConsumedCalories + "?userId="+buffer_userid +"&classId="
+                                    +buffer_classid +"&begin_date=" +buffer_begin_date+"&end_date="+buffer_end_date,
                             new OkHttp.ResultCallBack() {
                                 @Override
                                 public void onError(String str, Exception e) {
-                                    Log.e("getData", str);
+                                    Log.e("same_class_check", str);
                                     e.printStackTrace();
                                 }
 
                                 @Override
                                 public void onResponse(String str) {
                                     try {
-                                        Log.e("WeekonResponse",str);
+                                        Log.e("week_same_class_check",str);
                                         JSONObject jsonObject = new JSONObject(str);
                                         String reCode = jsonObject.getString("reCode");
                                         if ("SUCCESS".equals(reCode)){
-                                            total_heat.setText(jsonObject.getString("weekTotalCalories")+"千焦");
-                                            decrease_weight.setText("≈减掉"+jsonObject.getString("kilogram")+"公斤");
-                                            JSONArray differentMomentCalories = jsonObject.getJSONArray("differentDayCalories");
-                                            if (differentMomentCalories.length()>0){
-                                                drawLineChart(differentMomentCalories);
-                                                viewShowOrGone(EXIST_DATA);
+                                            JSONArray weekAverageCalories = jsonObject.getJSONArray("weekAverageCalories");
+                                            if (weekAverageCalories.length()>0){
+                                                drawLineChartSameClass(weekAverageCalories);
                                             }
                                             else {
-                                                no_data.setText(spinner.getSelectedItem().toString()+"当周尚无锻炼数据");
-                                                viewShowOrGone(NO_DATA);
+                                                Toast.makeText(getActivity(), "同班同学当周无锻炼数据", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                         else {
@@ -232,11 +242,18 @@ public class ParentWeekFragment extends Fragment {
                             });
                 }
                 else {
-
+                    if (lineChart.getData() != null &&
+                            lineChart.getData().getDataSetCount() > 1) {
+                        lineChart.getData().getDataSets().remove(1);
+                        lineChart.getData().notifyDataChanged();
+                        lineChart.notifyDataSetChanged();
+                        lineChart.invalidate();
+                    }
                 }
             }
         });
 
+        buffer_classid = stu_list.get(0).getClass_id();
         getData(stu_list.get(0).getStudent_id(), begin_date, end_date);
 
         return view;
@@ -308,19 +325,7 @@ public class ParentWeekFragment extends Fragment {
             e.printStackTrace();
         }
 
-        lineChart.getXAxis().setAxisMinimum(0);
-        lineChart.getXAxis().setAxisMaximum(6);
-        lineChart.getXAxis().setLabelCount(6);
-
-        lineChart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                Log.e("value",""+value);
-                return dates[6-(int)value].substring(5);
-            }
-        });
-
-        LineDataSet dataSet = new LineDataSet(entryList, "消耗热量");
+        LineDataSet dataSet = new LineDataSet(entryList, "个人消耗热量");
         dataSet.enableDashedHighlightLine(10f, 5f, 0f);
         dataSet.setColor(Color.argb(255, 255, 166, 166));
         dataSet.setCircleColor(Color.argb(255, 255, 166, 166));
@@ -345,6 +350,54 @@ public class ParentWeekFragment extends Fragment {
         LineData lineData = new LineData(dataSets);
         lineChart.setData(lineData);
         lineChart.invalidate();
+    }
+
+    private void drawLineChartSameClass(final JSONArray jsonArray){
+        List<Entry> entryList = new ArrayList<>();
+        try {
+            for (int i=0; i<jsonArray.length(); i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                for (int j=0; j<dates.length; j++){
+                    if (dates[j].equals(jsonObject.getString("day"))){
+                        entryList.add(new Entry( 6-j, (float) jsonObject.getDouble("average_calories"), null));
+                    }
+                }
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        LineDataSet dataSet = new LineDataSet(entryList, "同班平均消耗热量");
+        dataSet.enableDashedHighlightLine(10f, 5f, 0f);
+        dataSet.setColor(Color.argb(255, 255, 165, 0));
+        dataSet.setCircleColor(Color.argb(255, 255, 165, 0));
+        dataSet.setLineWidth(1f);
+        dataSet.setCircleRadius(3f);
+        dataSet.setDrawCircleHole(false);
+        dataSet.setValueTextSize(9f);
+        dataSet.setDrawFilled(true);
+        dataSet.setFormLineWidth(1f);
+        dataSet.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+        dataSet.setFormSize(15.f);
+        if (Utils.getSDKInt() >= 18) {
+            // fill drawable only supported on api level 18 and above
+            Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
+            dataSet.setFillDrawable(drawable);
+        } else {
+            dataSet.setFillColor(Color.BLACK);
+        }
+
+        if (lineChart.getData() != null &&
+                lineChart.getData().getDataSetCount() > 0) {
+            lineChart.getData().getDataSets().add(dataSet);
+            lineChart.getData().notifyDataChanged();
+            lineChart.notifyDataSetChanged();
+            lineChart.invalidate();
+        } else {
+            Log.e("lineChart.getData()","lineChart.getData()==0");
+        }
+
     }
 
     private void viewShowOrGone(int state){
