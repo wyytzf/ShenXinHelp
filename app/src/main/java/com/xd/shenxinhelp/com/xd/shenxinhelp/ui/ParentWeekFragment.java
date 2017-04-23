@@ -30,8 +30,10 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
 import com.xd.shenxinhelp.model.Student;
@@ -348,11 +350,18 @@ public class ParentWeekFragment extends Fragment {
             for (int j=0; j<dates.length; j++){
                 if (dates[j].equals(key)){
                     entryList.add(new Entry( 6-j, map_date_calories.get(key), null));
+                    break;
                 }
             }
         }
 
         LineDataSet dataSet = new LineDataSet(entryList, "个人消耗热量");
+        dataSet.setValueFormatter(new IValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                return ""+(int)value;
+            }
+        });
         dataSet.enableDashedHighlightLine(10f, 5f, 0f);
         dataSet.setColor(Color.argb(255, 255, 166, 166));
         dataSet.setCircleColor(Color.argb(255, 255, 166, 166));
@@ -395,11 +404,18 @@ public class ParentWeekFragment extends Fragment {
             for (int j=0; j<dates.length; j++){
                 if (dates[j].equals(key)){
                     entryList.add(new Entry( 6-j, map_date_calories_same.get(key), null));
+                    break;
                 }
             }
         }
 
         LineDataSet dataSet = new LineDataSet(entryList, "同班平均消耗热量");
+        dataSet.setValueFormatter(new IValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                return ""+(int)value;
+            }
+        });
         dataSet.enableDashedHighlightLine(10f, 5f, 0f);
         dataSet.setColor(Color.argb(255, 255, 165, 0));
         dataSet.setCircleColor(Color.argb(255, 255, 165, 0));
