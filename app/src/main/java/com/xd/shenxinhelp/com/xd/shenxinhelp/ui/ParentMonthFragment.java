@@ -186,6 +186,7 @@ public class ParentMonthFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 viewShowOrGone(READING);
+                same_class_check.setChecked(false);
                 total_heat.setText("0千焦");
                 decrease_weight.setText("≈减掉0公斤");
                 map_date_calories.clear();
@@ -218,6 +219,7 @@ public class ParentMonthFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 viewShowOrGone(READING);
+                same_class_check.setChecked(false);
                 total_heat.setText("0千焦");
                 decrease_weight.setText("≈减掉0公斤");
                 map_date_calories.clear();

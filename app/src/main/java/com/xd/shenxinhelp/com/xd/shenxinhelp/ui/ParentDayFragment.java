@@ -177,6 +177,7 @@ public class ParentDayFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 viewShowOrGone(READING);
+                same_class_check.setChecked(false);
                 total_heat.setText("0千焦");
                 decrease_weight.setText("≈减掉0公斤");
                 for (int key : map_date_calories.keySet()){
@@ -186,6 +187,7 @@ public class ParentDayFragment extends Fragment {
                 calendar.add(Calendar.DATE, -1);
                 date_txt.setText(format.format(calendar.getTime()));
                 getData(null, format.format(calendar.getTime()));
+                same_class_check.setChecked(false);
             }
         });
 
@@ -194,6 +196,7 @@ public class ParentDayFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 viewShowOrGone(READING);
+                same_class_check.setChecked(false);
                 total_heat.setText("0千焦");
                 decrease_weight.setText("≈减掉0公斤");
                 for (int key : map_date_calories.keySet()){
@@ -203,6 +206,7 @@ public class ParentDayFragment extends Fragment {
                 calendar.add(Calendar.DATE, 1);
                 date_txt.setText(format.format(calendar.getTime()));
                 getData(null, format.format(calendar.getTime()));
+                same_class_check.setChecked(false);
             }
         });
 
