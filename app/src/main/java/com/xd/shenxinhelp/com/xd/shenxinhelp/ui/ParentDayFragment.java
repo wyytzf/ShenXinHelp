@@ -61,8 +61,8 @@ public class ParentDayFragment extends Fragment {
     private Calendar calendar;
     private SimpleDateFormat format;
     private String[] dates;
-    private Map<String, Float> map_date_calories;
-    private Map<String, Float> map_date_calories_same;
+    private Map<Integer, Float> map_date_calories;
+    private Map<Integer, Float> map_date_calories_same;
 
     private TextView date_txt;
     private ImageView left_arrow;
@@ -109,9 +109,9 @@ public class ParentDayFragment extends Fragment {
         map_date_calories = new TreeMap<>();
         map_date_calories_same = new TreeMap<>();
         dates = new String[]{"0", "2", "4", "6", "8", "10", "12", "14", "16", "18", "20", "22", "24"};
-        for (int i=0; i<13; i++){
-            map_date_calories.put(dates[i], 0f);
-            map_date_calories_same.put(dates[i], 0f);
+        for (int i=0; i<25; i++){
+            map_date_calories.put(i, 0f);
+            map_date_calories_same.put(i, 0f);
         }
 
         progressBar = (ProgressBar) view.findViewById(R.id.progress);
@@ -139,7 +139,7 @@ public class ParentDayFragment extends Fragment {
         lineChart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                Log.e("value",""+value);
+                //Log.e("value",""+value);
                 return dates[(int)value];
             }
         });
@@ -160,7 +160,7 @@ public class ParentDayFragment extends Fragment {
                 buffer_classid = stu_list.get(position).getClass_id();
                 getData(stu_list.get(position).getStudent_id(), null);
                 same_class_check.setChecked(false);
-                for (String key : map_date_calories.keySet()){
+                for (int key : map_date_calories.keySet()){
                     map_date_calories.put(key, 0f);
                     map_date_calories_same.put(key, 0f);
                 }
@@ -179,7 +179,7 @@ public class ParentDayFragment extends Fragment {
                 viewShowOrGone(READING);
                 total_heat.setText("0千焦");
                 decrease_weight.setText("≈减掉0公斤");
-                for (String key : map_date_calories.keySet()){
+                for (int key : map_date_calories.keySet()){
                     map_date_calories.put(key, 0f);
                     map_date_calories_same.put(key, 0f);
                 }
@@ -196,7 +196,7 @@ public class ParentDayFragment extends Fragment {
                 viewShowOrGone(READING);
                 total_heat.setText("0千焦");
                 decrease_weight.setText("≈减掉0公斤");
-                for (String key : map_date_calories.keySet()){
+                for (int key : map_date_calories.keySet()){
                     map_date_calories.put(key, 0f);
                     map_date_calories_same.put(key, 0f);
                 }
@@ -315,23 +315,18 @@ public class ParentDayFragment extends Fragment {
         try {
             for (int i=0; i<jsonArray.length(); i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                map_date_calories.put(""+jsonObject.getInt("moment"), (float) jsonObject.getDouble("calories"));
+                map_date_calories.put(jsonObject.getInt("moment"), (float) jsonObject.getDouble("calories"));
             }
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        for (String key : map_date_calories.keySet()){
-            Log.e(key, map_date_calories.get(key)+"");
-            for (int j=0; j<dates.length; j++){
-                if (dates[j].equals(key)){
-                    entryList.add(new Entry( j, map_date_calories.get(key), null));
-                    break;
-                }
-            }
+        for (int key : map_date_calories.keySet()){
+            Log.e(""+key, map_date_calories.get(key)+"");
+            entryList.add(new Entry( key/2.0f, map_date_calories.get(key), null));
         }
 
-        LineDataSet dataSet = new LineDataSet(entryList, "消耗热量");
+        LineDataSet dataSet = new LineDataSet(entryList, "个人消耗热量");
         dataSet.setValueFormatter(new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
@@ -369,20 +364,15 @@ public class ParentDayFragment extends Fragment {
         try {
             for (int i=0; i<jsonArray.length(); i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                map_date_calories_same.put(""+jsonObject.getInt("moment"), (float) jsonObject.getDouble("calories"));
+                map_date_calories_same.put(jsonObject.getInt("moment"), (float) jsonObject.getDouble("calories"));
             }
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        for (String key : map_date_calories_same.keySet()){
-            Log.e(key, map_date_calories_same.get(key)+"");
-            for (int j=0; j<dates.length; j++){
-                if (dates[j].equals(key)){
-                    entryList.add(new Entry( j, map_date_calories_same.get(key), null));
-                    break;
-                }
-            }
+        for (int key : map_date_calories_same.keySet()){
+            Log.e(""+key, map_date_calories_same.get(key)+"");
+            entryList.add(new Entry( key/2.0f , map_date_calories_same.get(key), null));
         }
 
         LineDataSet dataSet = new LineDataSet(entryList, "同班平均消耗热量");
