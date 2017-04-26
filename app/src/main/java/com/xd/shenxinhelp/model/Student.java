@@ -32,4 +32,5 @@ public class Student {
     public void setClass_id(String class_id) {
         this.class_id = class_id;
     }
+
 }
