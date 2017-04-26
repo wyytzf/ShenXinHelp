@@ -40,8 +40,10 @@ public class TeacherRankFragment extends Fragment {
     private SharedPreferences sp;
     private ArrayList<HashMap<String,String>> topStudents;
     private ArrayList<HashMap<String,String>> lastStudents;
+    private ArrayList<HashMap<String,String>> upTopStudents;
     private TextView most_first,most_second,most_third;
     private TextView last_first,last_second,last_third;
+    private TextView up_first,up_second,up_third;
     private Handler handler= new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -51,7 +53,7 @@ public class TeacherRankFragment extends Fragment {
                 textViews[0]=most_first;
                 textViews[1]=most_second;
                 textViews[2]=most_third;
-                if(topStudents!=null){
+                if(topStudents.size()>0){
                     for (int i=0;i<topStudents.size();i++){
                         int j=i+1;
                         textViews[i].setText("Top"+j+"   "+topStudents.get(i).get("studentName"));
@@ -66,7 +68,7 @@ public class TeacherRankFragment extends Fragment {
                 textViews[0]=last_first;
                 textViews[1]=last_second;
                 textViews[2]=last_third;
-                if(lastStudents!=null){
+                if(lastStudents.size()>0){
                     for (int i=0;i<lastStudents.size();i++){
                         int j=i+1;
                         textViews[i].setText("Top"+j+"   "+lastStudents.get(i).get("studentName"));
@@ -74,10 +76,25 @@ public class TeacherRankFragment extends Fragment {
                 }
             }
 
+            if(msg.what==3){
+                TextView[] textViews=new TextView[3];
+                textViews[0]=up_first;
+                textViews[1]=up_second;
+                textViews[2]=up_third;
+                if(upTopStudents.size()>0){
+                    for (int i=0;i<lastStudents.size();i++){
+                        int j=i+1;
+                        textViews[i].setText("Top"+j+"   "+upTopStudents.get(i).get("studentName"));
+                    }
+                }
+            }
+
             if(msg.what==0){
                 Toast.makeText(getContext(), (String) msg.obj, Toast.LENGTH_LONG).show();
-            }else
-                Toast.makeText(getContext(), (String) msg.obj, Toast.LENGTH_LONG).show();
+            }else{
+
+            }
+                //Toast.makeText(getContext(), "没有获取到当前排名", Toast.LENGTH_LONG).show();
 
         }
     };
@@ -92,6 +109,7 @@ public class TeacherRankFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view=inflater.inflate(R.layout.fragment_teacher_rank, container, false);
+        lastStudents=new ArrayList<HashMap<String, String>>();
         initView();
         initData();
         return view;
@@ -104,6 +122,9 @@ public class TeacherRankFragment extends Fragment {
         last_first=(TextView)view.findViewById(R.id.last_first_student);
         last_second = (TextView) view.findViewById(R.id.last_second_student);
         last_third = (TextView) view.findViewById(R.id.last_third_student);
+        up_first = (TextView) view.findViewById(R.id.first_up_student);
+        up_second = (TextView) view.findViewById(R.id.second_up_student);
+        up_third = (TextView) view.findViewById(R.id.third_up_student);
     }
 
     void initData(){
@@ -112,6 +133,7 @@ public class TeacherRankFragment extends Fragment {
         Log.i("www",teacherid);
         getTopThreeStudent();
         getLastThreeStudent();
+        getUpTopThreeStudent();
     }
 
     private void getTopThreeStudent(){
@@ -164,7 +186,6 @@ public class TeacherRankFragment extends Fragment {
         }
     }
 
-
     private void getLastThreeStudent(){
         {
             new Thread() {
@@ -205,9 +226,6 @@ public class TeacherRankFragment extends Fragment {
 
                         @Override
                         public void onFailure(Throwable e) {
-                            message.what = 0;
-                            message.obj = "获取失败，请重试";
-                            handler.sendMessage(message);
                         }
                     });
                 }
@@ -215,7 +233,52 @@ public class TeacherRankFragment extends Fragment {
         }
     }
 
+    private void getUpTopThreeStudent(){
+        {
+            new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+                    final Message message = new Message();
+                    String url = AppUtil.GetUpTopThreeStudent+ "?teacherID=" + teacherid;
+                    HttpUtil.get(getContext(), url, new ResponseHandler() {
+                        @Override
+                        public void onSuccess(byte[] response) {
+                            String jsonStr = new String(response);
+                            try {
+                                JSONObject result = new JSONObject(jsonStr);
+                                String status = result.getString("reCode");
+                                if (status.equalsIgnoreCase("SUCCESS")) {
+                                    JSONArray ja = result.getJSONArray("students");
+                                    upTopStudents=new ArrayList<HashMap<String, String>>();
+                                    for (int i = 0; i < ja.length(); i++) {
+                                        JSONObject jb = ja.getJSONObject(i);
+                                        HashMap map= new HashMap();
+                                        map.put("studentid",jb.getString("studentid"));
+                                        map.put("studentName",jb.getString("studentName"));
+                                        upTopStudents.add(map);
+                                    }
+                                    message.what = 3;
+                                    message.obj = upTopStudents;
+                                    handler.sendMessage(message);
+                                } else {
+                                    message.what = -1;
+                                    message.obj = "获取失败";
+                                    handler.sendMessage(message);
+                                }
+                            } catch (JSONException e) {
+                                Log.e("www", e.getMessage());
+                            }
+                        }
 
+                        @Override
+                        public void onFailure(Throwable e) {
+                        }
+                    });
+                }
+            }.start();
+        }
+    }
 
 
 }

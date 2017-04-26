@@ -60,6 +60,7 @@ public class RelationshipActivity extends AppCompatActivity {
         initUI();
         type_name_id_map = new HashMap<>();
         getTypeList();
+        getRelationshipList();
     }
 
     private void initUI(){
@@ -71,7 +72,7 @@ public class RelationshipActivity extends AppCompatActivity {
         add_relationship.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (types.length>0){
+                if (types !=null && types.length>0){
                     creatDialog();
                 }
                 else {
@@ -105,6 +106,7 @@ public class RelationshipActivity extends AppCompatActivity {
 
     private void analyzeRelationshipList(String str){
         try {
+            Log.e("analyzeRelationshipList",str);
             JSONObject jsonObject = new JSONObject(str);
             String reCode = jsonObject.getString("reCode");
             if ("SUCCESS".equals(reCode)){
@@ -142,16 +144,17 @@ public class RelationshipActivity extends AppCompatActivity {
 
     private void analyzeTypeList(String str){
         try {
+            Log.e("analyzeTypeList",str);
             JSONObject jsonObject = new JSONObject(str);
             String reCode = jsonObject.getString("reCode");
             if ("SUCCESS".equals(reCode)){
                 JSONArray relationshipTypes = jsonObject.getJSONArray("relationshipTypes");
+                types = new String[relationshipTypes.length()];
                 for (int i=0; i<relationshipTypes.length(); i++){
                     JSONObject temp = relationshipTypes.getJSONObject(i);
                     type_name_id_map.put(temp.getString("relationshipName"), temp.getInt("relationshipid"));
                     types[i] = temp.getString("relationshipName");
                 }
-                getRelationshipList();
             }
             else {
                 dismissRequestDialog();
@@ -195,7 +198,7 @@ public class RelationshipActivity extends AppCompatActivity {
 
     private void addRelationship(String parentAccount, int relationshipTypeID){
         OkHttp.get(AppUtil.AddCloseRelationship + "studentID="+userID+"&parentAccount="+parentAccount+
-                        "&relationshipTypeID"+relationshipTypeID, new OkHttp.ResultCallBack() {
+                        "&relationshipTypeID="+relationshipTypeID, new OkHttp.ResultCallBack() {
             @Override
             public void onError(String str, Exception e) {
                 Log.e("addRelationship", str);
@@ -209,6 +212,7 @@ public class RelationshipActivity extends AppCompatActivity {
                     String reCode = jsonObject.getString("reCode");
                     if ("SUCCESS".equals(reCode)){
                         Toast.makeText(RelationshipActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
+                        getRelationshipList();
                     }
                     else {
                         Log.e("Fail", jsonObject.getString("message"));

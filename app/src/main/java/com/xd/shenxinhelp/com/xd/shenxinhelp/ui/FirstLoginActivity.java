@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +62,8 @@ public class FirstLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_login);
         userId = getIntent().getStringExtra("userID");
-        mtpye = getIntent().getLongExtra("mtype", 0);
+        mtpye = getIntent().getLongExtra("mtype",0);
+        Log.i("www"," "+mtpye);
         initViews();
         requestSchool();
     }
@@ -483,9 +485,10 @@ public class FirstLoginActivity extends AppCompatActivity {
     }
 
 
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK&&userId!=null) {
             return false;
         }
         return super.onKeyDown(keyCode, event);

@@ -38,9 +38,11 @@ public class ParentMainActivity extends AppCompatActivity {
                 FragmentTransaction transaction = manager.beginTransaction();
                 switch (item.getItemId()) {
                     case R.id.bottom_navi_first:
+                        parentMainFragment = new ParentMainFragment();
                         transaction.replace(R.id.content, parentMainFragment);
                         break;
                     case R.id.bottom_navi_third:
+                        mySettingFragment = new MySettingFragment();
                         transaction.replace(R.id.content, mySettingFragment);
                         break;
                 }

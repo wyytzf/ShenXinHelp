@@ -131,26 +131,29 @@ public class MentalityActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MentalityActivity.this, HelpContentTwoActivity.class);
+                intent.putExtra("type", "2");
+                intent.putExtra("buwei","0");
+                intent.putExtra("title","心理检测");
                 startActivity(intent);
             }
         });
         Liner2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MentalityActivity.this, WebViewActivity.class);
-                intent.putExtra("url", "file:///android_asset/jianya.html");
-                intent.putExtra("title", "减压百科");
-                intent.putExtra("image_url", "");
+                Intent intent = new Intent(MentalityActivity.this, HelpContentTwoActivity.class);
+                intent.putExtra("type", "2");
+                intent.putExtra("buwei","1");
+                intent.putExtra("title","减压百科");
                 startActivity(intent);
             }
         });
         Liner3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MentalityActivity.this, WebViewActivity.class);
-                intent.putExtra("url", "file:///android_asset/gushi.html");
-                intent.putExtra("title", "心理故事");
-                intent.putExtra("image_url", "");
+                Intent intent = new Intent(MentalityActivity.this, HelpContentTwoActivity.class);
+                intent.putExtra("type", "2");
+                intent.putExtra("buwei","2");
+                intent.putExtra("title","心理故事");
                 startActivity(intent);
             }
         });

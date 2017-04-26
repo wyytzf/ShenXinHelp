@@ -113,8 +113,8 @@ public class ExamHelpActivity extends AppCompatActivity {
         func1_text1 = (TextView) findViewById(R.id.content_BEHE_text1);
         func1_text2 = (TextView) findViewById(R.id.content_BEHE_text2);
 
-        func1_text1.setText("会考");
-        func1_text2.setText("考试");
+        func1_text1.setText("会考标准");
+        func1_text2.setText("注意事项");
 
         Liner1 = findViewById(R.id.content_BEHE_liner1);
         Liner2 = findViewById(R.id.content_BEHE_liner2);
@@ -122,20 +122,30 @@ public class ExamHelpActivity extends AppCompatActivity {
         Liner1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ExamHelpActivity.this, WebViewActivity.class);
-                intent.putExtra("url", "file:///android_asset/huikao.html");
-                intent.putExtra("title", "会考");
-                intent.putExtra("image_url", "");
+//                Intent intent = new Intent(ExamHelpActivity.this, WebViewActivity.class);
+//                intent.putExtra("url", "file:///android_asset/huikao.html");
+//                intent.putExtra("title", "会考");
+//                intent.putExtra("image_url", "");
+//                startActivity(intent);
+                Intent intent = new Intent(ExamHelpActivity.this, ExamHelpItemActivity.class);
+                intent.putExtra("title", "会考标准");
+                intent.putExtra("type","3");
+                intent.putExtra("buwei","0");
                 startActivity(intent);
             }
         });
         Liner2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ExamHelpActivity.this, WebViewActivity.class);
-                intent.putExtra("url", "file:///android_asset/kaishi.html");
-                intent.putExtra("title", "考试");
-                intent.putExtra("image_url", "");
+//                Intent intent = new Intent(ExamHelpActivity.this, WebViewActivity.class);
+//                intent.putExtra("url", "file:///android_asset/kaishi.html");
+//                intent.putExtra("title", "考试");
+//                intent.putExtra("image_url", "");
+//                startActivity(intent);
+                Intent intent = new Intent(ExamHelpActivity.this, ExamHelpItemActivity.class);
+                intent.putExtra("title", "注意事项");
+                intent.putExtra("type","3");
+                intent.putExtra("buwei","1");
                 startActivity(intent);
             }
         });
