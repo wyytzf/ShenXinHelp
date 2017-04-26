@@ -95,12 +95,10 @@ public class PKHistoryActivity extends AppCompatActivity {
                     id = detail.getId();
                 }
                 String urlget =  AppUtil.GetAllPKRecords+"?id="+id+"&type="+detail.getType();
-                Log.i("kmj","---urlget----" + urlget);
                 HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
                     @Override
                     public void onSuccess(byte[] response) {
                         String jsonStr = new String(response);
-                        Log.i("kmj","-------" + jsonStr);
                         parseResponse(jsonStr);
                     }
 

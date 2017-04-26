@@ -59,6 +59,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -277,8 +279,8 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                     post.setHead_url(jo.getString("head_url"));
                     post.setDate(jo.getString("date"));
                     post.setContent(jo.getString("content"));
-                    post.setIsPraise(jo.getString("isPraise"));
-                    post.setPraiseCount(jo.getInt("praiseCount"));
+//                    post.setIsPraise(jo.getString("isPraise"));
+//                    post.setPraiseCount(jo.getInt("praiseCount"));
                     JSONArray planArray = jo.getJSONArray("plans");
                     List<Plan> plans = new ArrayList<Plan>();
                     for (int j = 0; j < planArray.length(); j++) {
@@ -291,6 +293,8 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
                     post.setPlans(plans);
                     postList.add(post);
                 }
+
+                Collections.sort(postList, new SortByPostID());
                 adapter.notifyDataSetChanged();
             } else {
                 Toast.makeText(GroupDetailActivity.this, "获取圈子动态失败，请重试", Toast.LENGTH_LONG).show();
@@ -299,6 +303,15 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
         } catch (JSONException e) {
             e.printStackTrace();
 
+        }
+    }
+    class SortByPostID implements Comparator {
+        public int compare(Object o1, Object o2) {
+            Post s1 = (Post) o1;
+            Post s2 = (Post) o2;
+            String p1 = s1.getPostId() + "";
+            String p2 = s2.getPostId() + "";
+            return p2.compareTo(p1);
         }
     }
 
@@ -439,7 +452,7 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
             intent.putExtra("groupDetail", groupDetail);
             intent.setType("GroupDetailActivity");
             if (userList.size() < 3) {
-                Toast.makeText(GroupDetailActivity.this, "对不起，您暂时无权PK", Toast.LENGTH_LONG).show();
+                Toast.makeText(GroupDetailActivity.this, "对不起，您没有权限发起PK", Toast.LENGTH_LONG).show();
             } else {
                 startActivity(intent);
             }
@@ -462,14 +475,14 @@ public class GroupDetailActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (resultCode) {
-            case 100:
-                getGroupMember();
-                break;
-            //来自按钮1的请求，作相应业务处理
-            case 2:
-                gridAdapter.notifyDataSetChanged();
-                //来自按钮2的请求，作相应业务处理
-        }
+        getGroupMember();
+//        switch (resultCode) {
+//            case 100:
+//                getGroupMember();
+//                break;
+//            //来自按钮1的请求，作相应业务处理
+//            case 2:
+//                //来自按钮2的请求，作相应业务处理
+//        }
     }
 }
