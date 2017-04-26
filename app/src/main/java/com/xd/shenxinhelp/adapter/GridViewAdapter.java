@@ -67,8 +67,7 @@ public class GridViewAdapter extends MyBaseAdapter {
         @Override
         void setData(final int position) {
             if (position==datas.size()){
-                Log.i("mmm","-----tet");
-                imageView.setImageResource(R.drawable.ic_add_circle_outline_black_24dp);
+                imageView.setImageResource(R.drawable.ic_add_circle_outline_black_24dp);;
             }
             else {
                 final User single = datas.get(position);

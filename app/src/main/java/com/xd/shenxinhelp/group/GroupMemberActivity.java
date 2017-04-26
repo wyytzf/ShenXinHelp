@@ -206,9 +206,6 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
             if (tag.equals("1")){
                 setResult(100);
             }
-            else {
-                setResult(2);
-            }
             finish();
         }
         return super.onOptionsItemSelected(item);

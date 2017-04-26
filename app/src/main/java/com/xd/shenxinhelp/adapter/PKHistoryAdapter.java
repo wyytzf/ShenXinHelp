@@ -75,41 +75,41 @@ public class PKHistoryAdapter extends BaseAdapter {
         }
 
 
-        if(detail.getType().equals("0")){
-            if(history.getWinTeamID() == Integer.parseInt(history.getParticipateTeam().get(0).getTeamId())) {
-                List<Team> students = history.getParticipateTeam().get(0).getStudents();
-                int i = 0;
-                for (i = 0; i < students.size(); i++) {
-                    if (students.get(i).getAccount().equals(account)) {
-                        holder.takerName.setText(history.getParticipateTeam().get(1).getTitle());
-                        holder.result.setText("赢");
-                        holder.result.setTextColor(mContext.getResources().getColor(R.color.red_light));
-                        break;
-                    }
-                }
-                if (i == 3) {
-                    holder.takerName.setText(history.getParticipateTeam().get(0).getTitle());
-                    holder.result.setText("败");
-                    holder.result.setTextColor(mContext.getResources().getColor(R.color.green_light));
-                }
-            }else{
-                List<Team> students = history.getParticipateTeam().get(0).getStudents();
-                int i = 0;
-                for (i = 0; i < students.size(); i++) {
-                    if (students.get(i).getAccount().equals(account)) {
-                        holder.takerName.setText(history.getParticipateTeam().get(1).getTitle());
-                        holder.result.setText("败");
-                        holder.result.setTextColor(mContext.getResources().getColor(R.color.green_light));
-                        break;
-                    }
-                }
-                if (i == 3) {
-                    holder.takerName.setText(history.getParticipateTeam().get(0).getTitle());
-                    holder.result.setText("赢");
-                    holder.result.setTextColor(mContext.getResources().getColor(R.color.red_light));
-                }
-            }
-        }else{
+//        if(detail.getType().equals("0")){
+//            if(history.getWinTeamID() == Integer.parseInt(history.getParticipateTeam().get(0).getTeamId())) {
+//                List<Team> students = history.getParticipateTeam().get(0).getStudents();
+//                int i = 0;
+//                for (i = 0; i < students.size(); i++) {
+//                    if (students.get(i).getAccount().equals(account)) {
+//                        holder.takerName.setText(history.getParticipateTeam().get(1).getTitle());
+//                        holder.result.setText("赢");
+//                        holder.result.setTextColor(mContext.getResources().getColor(R.color.red_light));
+//                        break;
+//                    }
+//                }
+//                if (i == 3) {
+//                    holder.takerName.setText(history.getParticipateTeam().get(0).getTitle());
+//                    holder.result.setText("败");
+//                    holder.result.setTextColor(mContext.getResources().getColor(R.color.green_light));
+//                }
+//            }else{
+//                List<Team> students = history.getParticipateTeam().get(0).getStudents();
+//                int i = 0;
+//                for (i = 0; i < students.size(); i++) {
+//                    if (students.get(i).getAccount().equals(account)) {
+//                        holder.takerName.setText(history.getParticipateTeam().get(1).getTitle());
+//                        holder.result.setText("败");
+//                        holder.result.setTextColor(mContext.getResources().getColor(R.color.green_light));
+//                        break;
+//                    }
+//                }
+//                if (i == 3) {
+//                    holder.takerName.setText(history.getParticipateTeam().get(0).getTitle());
+//                    holder.result.setText("赢");
+//                    holder.result.setTextColor(mContext.getResources().getColor(R.color.red_light));
+//                }
+//            }
+//        }else{
             if(history.getParticipateTeam().get(0).getTitle().equals(detail.getName())){
                 holder.takerName.setText(history.getParticipateTeam().get(1).getTitle());
             }else{
@@ -134,7 +134,7 @@ public class PKHistoryAdapter extends BaseAdapter {
                 }
             }
 
-        }
+//        }
 
 
 
