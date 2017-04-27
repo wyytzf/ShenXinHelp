@@ -3,7 +3,7 @@ package com.xd.shenxinhelp.netutils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.sina.weibo.sdk.auth.Oauth2AccessToken;
+//import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.xd.shenxinhelp.model.QQAccessToken;
 
 import java.util.Map;
@@ -53,18 +53,18 @@ public class MyAccessTokenKeeper {
      *
      * @return 返回 Token 对象
      */
-    public static Oauth2AccessToken readWeiboAccessToken(Context context) {
-        if (null == context) {
-            return null;
-        }
-
-        Oauth2AccessToken token = new Oauth2AccessToken();
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
-        token.setUid(pref.getString(KEY_UID, ""));
-        token.setToken(pref.getString(KEY_ACCESS_TOKEN, ""));
-        token.setExpiresTime(pref.getLong(KEY_EXPIRES_IN, 0));
-        return token;
-    }
+//    public static Oauth2AccessToken readWeiboAccessToken(Context context) {
+//        if (null == context) {
+//            return null;
+//        }
+//
+//        Oauth2AccessToken token = new Oauth2AccessToken();
+//        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
+//        token.setUid(pref.getString(KEY_UID, ""));
+//        token.setToken(pref.getString(KEY_ACCESS_TOKEN, ""));
+//        token.setExpiresTime(pref.getLong(KEY_EXPIRES_IN, 0));
+//        return token;
+//    }
     /**
      * 保存 Token 对象到 SharedPreferences。
      *

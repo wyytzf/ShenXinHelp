@@ -23,6 +23,8 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,10 +33,10 @@ import android.widget.Toast;
 //import com.sina.weibo.sdk.auth.WeiboAuthListener;
 //import com.sina.weibo.sdk.auth.sso.SsoHandler;
 //import com.sina.weibo.sdk.exception.WeiboException;
-import com.sina.weibo.sdk.auth.AuthInfo;
-import com.tsy.sdk.social.PlatformConfig;
-import com.tsy.sdk.social.PlatformType;
-import com.tsy.sdk.social.SocialApi;
+//import com.sina.weibo.sdk.auth.AuthInfo;
+//import com.tsy.sdk.social.PlatformConfig;
+//import com.tsy.sdk.social.PlatformType;
+//import com.tsy.sdk.social.SocialApi;
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ConnectUtil;
@@ -73,7 +75,8 @@ public class LoginActivity extends AppCompatActivity {
     };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
-     */    private UserLoginTask mAuthTask = null;
+     */
+    private UserLoginTask mAuthTask = null;
 
     // UI references.
     private EditText mEmailView;
@@ -84,6 +87,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isNetConnect = false;
     private String type;
+
 //    /** 微博 Web 授权类，提供登陆等功能  */
 //    private WeiboAuth mWeiboAuth;
 //    /** 封装了 "access_token"，"expires_in"，"refresh_token"，并提供了他们的管理功能  */
@@ -92,14 +96,21 @@ public class LoginActivity extends AppCompatActivity {
 //    private TextView mTokenText;
 //    /** 注意：SsoHandler 仅当 SDK 支持 SSO 时有效 */
 //    private SsoHandler mSsoHandler;
-    private AuthInfo mAuthInfo;
+    // private AuthInfo mAuthInfo;
+
+
+    private RadioGroup r;
+    private RadioButton r1;
+    private RadioButton r2;
+    private RadioButton r3;
 
 
     private static final String WX_APPID = "your wx appid";    //申请的wx appid
     private static final String QQ_APPID = "1105442761";    //申请的qq appid
     private static final String SINA_WB_APPKEY = "606791959";       //申请的新浪微博 appkey
 
-    private SocialApi mSocialApi;
+    //
+    //  private SocialApi mSocialApi;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +130,13 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
+        r = (RadioGroup) findViewById(R.id.radio_role_group);
+        r1 = (RadioButton) findViewById(R.id.radio_role_student);
+        r2 = (RadioButton) findViewById(R.id.radio_role_teacher);
+        r3 = (RadioButton) findViewById(R.id.radio_role_parent);
+
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
@@ -145,11 +163,11 @@ public class LoginActivity extends AppCompatActivity {
         // 创建授权认证信息
         //mAuthInfo = new AuthInfo(this, Constants.APP_KEY, Constants.REDIRECT_URL, Constants.SCOPE);
 
-        PlatformConfig.setWeixin(WX_APPID);
-        PlatformConfig.setQQ(QQ_APPID);
-        PlatformConfig.setSinaWB(SINA_WB_APPKEY);
-
-        mSocialApi = SocialApi.get(getApplicationContext());
+//        PlatformConfig.setWeixin(WX_APPID);
+//        PlatformConfig.setQQ(QQ_APPID);
+//        PlatformConfig.setSinaWB(SINA_WB_APPKEY);
+//
+//        mSocialApi = SocialApi.get(getApplicationContext());
 
 
         //findViewById(R.id.weibo_login).setWeiboAuthInfo(mAuthInfo, mLoginListener);
@@ -158,10 +176,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                mSsoHandler = new SsoHandler(LoginActivity.this, mWeiboAuth);
 //                mSsoHandler.authorize(new AuthListener());
-               // mWeiboAuth.anthorize(new AuthListener());
+                // mWeiboAuth.anthorize(new AuthListener());
                 // 或者使用：mWeiboAuth.authorize(new AuthListener(), Weibo.OBTAIN_AUTH_TOKEN);
                 //Toast.makeText(LoginActivity.this, "功能开发中……", Toast.LENGTH_LONG).show();
-                mSocialApi.doOauthVerify(LoginActivity.this, PlatformType.SINA_WB, new MyAuthListener());
+                //      mSocialApi.doOauthVerify(LoginActivity.this, PlatformType.SINA_WB, new MyAuthListener());
             }
         });
 
@@ -169,63 +187,65 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(LoginActivity.this, "功能开发中……", Toast.LENGTH_LONG).show();
-                mSocialApi.doOauthVerify(LoginActivity.this, PlatformType.WEIXIN , new MyAuthListener());
+                //  mSocialApi.doOauthVerify(LoginActivity.this, PlatformType.WEIXIN , new MyAuthListener());
             }
         });
 
         findViewById(R.id.qq_login).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Toast.makeText(LoginActivity.this, "功能开发中……", Toast.LENGTH_LONG).show();
-                mSocialApi.doOauthVerify(LoginActivity.this, PlatformType.QQ, new MyAuthListener());
+                // Toast.makeText(LoginActivity.this, "功能开发中……", Toast.LENGTH_LONG).show();
+                //  mSocialApi.doOauthVerify(LoginActivity.this, PlatformType.QQ, new MyAuthListener());
             }
         });
     }
-    public class MyAuthListener implements com.tsy.sdk.social.listener.AuthListener {
-        @Override
-        public void onComplete(PlatformType platform_type, Map<String, String> map) {
 
-            if (platform_type.equals(PlatformType.SINA_WB)){
-                //Log.i("mmm", "-----------------login onComplete:" + map);
-                MyAccessTokenKeeper.writeWeiboAccessToken(LoginActivity.this,map);
-                String accesstoken=map.get("access_token");
-                String uid=map.get("uid");
-                if (accesstoken==null||accesstoken.equals("")){
-                    Toast.makeText(LoginActivity.this, platform_type + " 登录失败:" , Toast.LENGTH_SHORT).show();
-                }else {
-                    getIsAssociated("0",uid);
-                    //getWeiboStatusInfo(accesstoken,uid);
-
-                }
-            }else if (platform_type.equals(PlatformType.WEIXIN)){
-
-            }
-            else if (platform_type.equals(PlatformType.QQ)){
-                Log.i("mmm", "-----------------login onComplete:" + map);
-                MyAccessTokenKeeper.writeQQAccessToken(LoginActivity.this,map);
-                QQAccessToken aa=MyAccessTokenKeeper.readQQAccessToken(LoginActivity.this);
-                getQQStatusInfo(aa);
-            }
-            //Toast.makeText(LoginActivity.this, platform_type + " login onComplete", Toast.LENGTH_SHORT).show();
-            //Log.i("tsy", "login onComplete:" + map);
-        }
-
-        @Override
-        public void onError(PlatformType platform_type, String err_msg) {
-            Toast.makeText(LoginActivity.this, platform_type + " 登录失败:" + err_msg, Toast.LENGTH_SHORT).show();
-            //Log.i("tsy", "login onError:" + err_msg);
-        }
-
-        @Override
-        public void onCancel(PlatformType platform_type) {
-            //Toast.makeText(LoginActivity.this, platform_type + " login onCancel", Toast.LENGTH_SHORT).show();
-            //Log.i("tsy", "login onCancel");
-        }
-    }
+    //    public class MyAuthListener implements com.tsy.sdk.social.listener.AuthListener {
+//        @Override
+//        public void onComplete(PlatformType platform_type, Map<String, String> map) {
+//
+//            if (platform_type.equals(PlatformType.SINA_WB)){
+//                //Log.i("mmm", "-----------------login onComplete:" + map);
+//                MyAccessTokenKeeper.writeWeiboAccessToken(LoginActivity.this,map);
+//                String accesstoken=map.get("access_token");
+//                String uid=map.get("uid");
+//                if (accesstoken==null||accesstoken.equals("")){
+//                    Toast.makeText(LoginActivity.this, platform_type + " 登录失败:" , Toast.LENGTH_SHORT).show();
+//                }else {
+//                    getIsAssociated("0",uid);
+//                    //getWeiboStatusInfo(accesstoken,uid);
+//
+//                }
+//            }else if (platform_type.equals(PlatformType.WEIXIN)){
+//
+//            }
+//            else if (platform_type.equals(PlatformType.QQ)){
+//                Log.i("mmm", "-----------------login onComplete:" + map);
+//                MyAccessTokenKeeper.writeQQAccessToken(LoginActivity.this,map);
+//                QQAccessToken aa=MyAccessTokenKeeper.readQQAccessToken(LoginActivity.this);
+//                getQQStatusInfo(aa);
+//            }
+//            //Toast.makeText(LoginActivity.this, platform_type + " login onComplete", Toast.LENGTH_SHORT).show();
+//            //Log.i("tsy", "login onComplete:" + map);
+//        }
+//
+//        @Override
+//        public void onError(PlatformType platform_type, String err_msg) {
+//            Toast.makeText(LoginActivity.this, platform_type + " 登录失败:" + err_msg, Toast.LENGTH_SHORT).show();
+//            //Log.i("tsy", "login onError:" + err_msg);
+//        }
+//
+//        @Override
+//        public void onCancel(PlatformType platform_type) {
+//            //Toast.makeText(LoginActivity.this, platform_type + " login onCancel", Toast.LENGTH_SHORT).show();
+//            //Log.i("tsy", "login onCancel");
+//        }
+//    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mSocialApi.onActivityResult(requestCode, resultCode, data);
+        // mSocialApi.onActivityResult(requestCode, resultCode, data);
     }
+
     private Bitmap readBitMap(Context context, int resId) {
         BitmapFactory.Options opt = new BitmapFactory.Options();
         opt.inPreferredConfig = Bitmap.Config.RGB_565;
@@ -234,13 +254,14 @@ public class LoginActivity extends AppCompatActivity {
         InputStream is = context.getResources().openRawResource(resId);
         return BitmapFactory.decodeStream(is, null, opt);
     }
-    public void getIsAssociated(final String type,final String uid) {
+
+    public void getIsAssociated(final String type, final String uid) {
 
 
         new Thread() {
             @Override
             public void run() {
-                String urlget = AppUtil.getBaseUrl()  + "IsAssociated?associate_type="+type+"&associate_account="+uid;
+                String urlget = AppUtil.getBaseUrl() + "IsAssociated?associate_type=" + type + "&associate_account=" + uid;
                 HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
                     @Override
                     public void onSuccess(byte[] response) {
@@ -248,11 +269,11 @@ public class LoginActivity extends AppCompatActivity {
                         try {
                             JSONObject result = new JSONObject(jsonStr);
                             String status = result.getString("reCode");
-                            if(status.equals("SUCCESS")){
+                            if (status.equals("SUCCESS")) {
                                 parseResponse(jsonStr);
                                 gotoMainPage(result.getString("type"));
 
-                            }else {
+                            } else {
 
                             }
                             //Log.i("mmm","-------------------------"+result.toString());
@@ -270,9 +291,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         }.start();
     }
-    public void gotoMainPage(String type){
-        Intent intent=null;
-        switch (type){
+
+    public void gotoMainPage(String type) {
+        Intent intent = null;
+        switch (type) {
             case "student":
                 intent.setClass(LoginActivity.this, ContainerActivity.class);
                 break;
@@ -286,29 +308,30 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
     public void getQQStatusInfo(final QQAccessToken accessToken) {
 
 
         new Thread() {
             @Override
             public void run() {
-                String yuanchuan="GET&"+ ConnectUtil.encodeParameters("/v3/user/get_info")+"&"+
-                        ConnectUtil.encodeParameters("appid="+QQ_APPID+"&openid="+accessToken.getQqOpenID()
-                                +"&openkey="+accessToken.getOpenKey()+"&pf="+accessToken.getPf());
-                String key="CTC0PEaCbCMXqeys"+"&";
-                String sign ="";
-                try{
+                String yuanchuan = "GET&" + ConnectUtil.encodeParameters("/v3/user/get_info") + "&" +
+                        ConnectUtil.encodeParameters("appid=" + QQ_APPID + "&openid=" + accessToken.getQqOpenID()
+                                + "&openkey=" + accessToken.getOpenKey() + "&pf=" + accessToken.getPf());
+                String key = "CTC0PEaCbCMXqeys" + "&";
+                String sign = "";
+                try {
                     SecretKeySpec localSecretKeySpec = new SecretKeySpec(key.getBytes("UTF-8"), "HmacSHA1");//加密密钥
                     Mac localMac = Mac.getInstance("HmacSHA1");
                     localMac.init(localSecretKeySpec);
                     localMac.update(yuanchuan.getBytes("UTF-8"));//加密内容，这里使用时间
                     sign = Base64.encodeToString(localMac.doFinal(), 0).trim(); //获取加密结果并转BASE64
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
-                String urlget = "http://openapi.sparta.html5.qq.com/v3/user/get_info?"+
-                        "appid="+QQ_APPID+"&openid="+accessToken.getQqOpenID() +"&openkey="+accessToken.getOpenKey()
-                                +"&pf="+accessToken.getPf()+"&sig="+sign;
+                String urlget = "http://openapi.sparta.html5.qq.com/v3/user/get_info?" +
+                        "appid=" + QQ_APPID + "&openid=" + accessToken.getQqOpenID() + "&openkey=" + accessToken.getOpenKey()
+                        + "&pf=" + accessToken.getPf() + "&sig=" + sign;
 
                 HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
                     @Override
@@ -331,13 +354,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         }.start();
     }
-    public void getWeiboStatusInfo(final String accesstoken,final String uid) {
+
+    public void getWeiboStatusInfo(final String accesstoken, final String uid) {
 
 
         new Thread() {
             @Override
             public void run() {
-                String urlget = "https://api.weibo.com/2/users/show.json"  + "?access_token="+accesstoken+"&uid="+uid;
+                String urlget = "https://api.weibo.com/2/users/show.json" + "?access_token=" + accesstoken + "&uid=" + uid;
                 HttpUtil.get(getApplicationContext(), urlget, new ResponseHandler() {
                     @Override
                     public void onSuccess(byte[] response) {
@@ -360,6 +384,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }.start();
     }
+
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -370,6 +395,15 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+
+        int yy = r.getCheckedRadioButtonId();
+        if (yy == R.id.radio_role_student) {
+            type = "0";
+        } else if (yy == R.id.radio_role_teacher) {
+            type = "2";
+        } else {
+            type = "1";
+        }
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -482,21 +516,23 @@ public class LoginActivity extends AppCompatActivity {
             boolean result = false;
             try {
                 // 解析拿到的String字符串，判断是否登录成功
-                String synchronous = OkHttp.getSynchronous(AppUtil.LOGIN + "account=" + mEmail + "&" + "psw=" + mPassword);
+
+
+                String synchronous = OkHttp.getSynchronous(AppUtil.LOGIN + "account=" + mEmail + "&" + "psw=" + mPassword + "&" + "role=" + type);
                 //Log.i("mmm",AppUtil.LOGIN + "account=" + mEmail + "&" + "psw=" + mPassword);
                 result = parseResponse(synchronous);
             } catch (IOException e) {
                 e.printStackTrace();
                 return false;
             }
-            isNetConnect = true;
+            // isNetConnect = true;
             return result;
         }
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
+            // mAuthTask = null;
+            //showProgress(false);
 //
             // sharePreference
 //            if (!isNetConnect) {
@@ -513,7 +549,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("password", mPassword);
                 editor.commit();
                 Intent intent = new Intent();
-                switch (type){
+                switch (type) {
                     case "student":
                         intent.setClass(LoginActivity.this, ContainerActivity.class);
                         break;
@@ -549,7 +585,7 @@ public class LoginActivity extends AppCompatActivity {
             if (recode.equals("SUCCESS")) {
                 SharedPreferences sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
-                switch (js.getString("type")){
+                switch (js.getString("type")) {
                     case "student":
                         editor.putString("userid", js.getString("userid"));
                         editor.putString("sex", js.getString("sex"));
@@ -593,17 +629,16 @@ public class LoginActivity extends AppCompatActivity {
                         break;
                 }
                 editor.commit();
-            } else{
+            } else {
                 return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        if (recode.equals("SUCCESS")){
+        if (recode.equals("SUCCESS")) {
             result = true;
-        }
-        else{
+        } else {
             result = false;
         }
         return result;

@@ -82,7 +82,7 @@ public class TeacherRankFragment extends Fragment {
                 textViews[1]=up_second;
                 textViews[2]=up_third;
                 if(upTopStudents.size()>0){
-                    for (int i=0;i<lastStudents.size();i++){
+                    for (int i=0;i<upTopStudents.size();i++){
                         int j=i+1;
                         textViews[i].setText("Top"+j+"   "+upTopStudents.get(i).get("studentName"));
                     }
