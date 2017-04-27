@@ -419,5 +419,4 @@ public class BodyHelpActivity extends AppCompatActivity {
         }
     }
 
-
 }
