@@ -128,7 +128,7 @@ public class DrawUpPlanActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         stu_name = (TextView) findViewById(R.id.stu_name);
-        stu_name.setText(userName+"你好，根据你所处的年级，");
+        stu_name.setText(userName+"您好，根据您所处的年级，");
         share_content = (EditText) findViewById(R.id.share_content);
 
         add_plan_layout = (RelativeLayout) findViewById(R.id.add_plan_layout);

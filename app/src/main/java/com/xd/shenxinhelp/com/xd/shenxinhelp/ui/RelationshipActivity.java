@@ -173,6 +173,8 @@ public class RelationshipActivity extends AppCompatActivity {
         builder.setMessage("输入亲密关系的账号和类型");
         View view = getLayoutInflater().inflate(R.layout.dialog_add_relationship, null);
         final EditText relationship_account = (EditText) view.findViewById(R.id.relationship_account);
+        final Button ask_addressBook = (Button) view.findViewById(R.id.relationship_address_book);
+
         final Spinner relationship_type = (Spinner) view.findViewById(R.id.relationship_type);
         relationship_type.setAdapter(new ArrayAdapter<String>(RelationshipActivity.this,
                 android.R.layout.simple_spinner_item, types));

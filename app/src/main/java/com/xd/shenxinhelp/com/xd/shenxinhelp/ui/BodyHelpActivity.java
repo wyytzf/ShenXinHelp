@@ -29,6 +29,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.Utils;
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
+import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.PushExercise;
 import com.xd.shenxinhelp.model.BodyItem;
 import com.xd.shenxinhelp.model.News;
 import com.xd.shenxinhelp.netutils.OkHttp;
@@ -108,6 +109,8 @@ public class BodyHelpActivity extends AppCompatActivity {
         RequestRecommendar();
         RequestLineChart();
 
+        PushExercise pushExercise = new PushExercise(this);
+        pushExercise.pushExercise();
     }
 
 
@@ -118,7 +121,7 @@ public class BodyHelpActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent().setClass(BodyHelpActivity.this, DrawUpPlanActivity.class));
+                startActivity(new Intent().setClass(BodyHelpActivity.this, SharePlanActivity.class));
             }
         });
 
