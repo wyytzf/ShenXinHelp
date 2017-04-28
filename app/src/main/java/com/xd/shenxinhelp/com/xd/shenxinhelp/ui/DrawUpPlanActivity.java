@@ -68,8 +68,8 @@ public class DrawUpPlanActivity extends AppCompatActivity {
     private JSONArray optional_plan_list;
     private JSONArray today_plan_list;
     private JSONArray tomo_plan_list;
-    private Map<Integer, Boolean> state_map;
-    private Map<Integer, Boolean> states;
+    private Map<Integer, Boolean> state_map;//明天添加计划对应map
+    private Map<Integer, Boolean> states;//今天分享计划对应map
 
     private ViewPager mPager;//页卡内容
     private List<ListView> listview_list;// Tab页面列表
@@ -680,7 +680,7 @@ public class DrawUpPlanActivity extends AppCompatActivity {
                 final JSONObject jsonObject = optional_plan_list.getJSONObject(position);
                 viewHolder.name.setText(jsonObject.getString("title"));
                 imageLoader.displayImage(DrawUpPlanActivity.this, jsonObject.getString("reosurce_url"), viewHolder.picture);
-                viewHolder.checkBox.setOnCheckedChangeListener(null);
+                viewHolder.checkBox.setOnCheckedChangeListener(null);//这句话能解决checkbox的check错乱问题
                 viewHolder.checkBox.setChecked(state_map.get(position)==null? false : true);
                 viewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override

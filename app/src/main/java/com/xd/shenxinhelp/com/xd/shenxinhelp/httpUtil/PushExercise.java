@@ -39,6 +39,8 @@ public class PushExercise {
     private ImageLoaderInterface imageLoader;
     private String today;
 
+    private int PushMax = 3;
+
     public PushExercise(Activity activity){
         this.activity = activity;
         sp = activity.getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
@@ -65,7 +67,7 @@ public class PushExercise {
                     JSONObject jsonObject = new JSONObject(str);
                     String reCode = jsonObject.getString("reCode");
                     if ("SUCCESS".equals(reCode)){
-                        if (jsonObject.getJSONArray("plans").length()==0){
+                        if (jsonObject.getJSONArray("plans").length()<PushMax){
                             getAllExercise();
                         }
                     }

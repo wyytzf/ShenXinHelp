@@ -50,7 +50,7 @@
                 android:gravity="right"
                 android:textSize="14dp"
                 android:textColor="#333"
-                android:text="你好，根据你所处的年级，"/>
+                android:text="您好，根据您所处的年级，"/>
 
             <TextView
                 android:layout_marginTop="10dp"
@@ -72,12 +72,17 @@
 
             <ListView
                 android:id="@+id/plan_list"
+                android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
-                android:layout_height="220dp"/>
+                android:layout_height="180dp"/>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textSize="16dp"
+                android:textColor="#333"
                 android:text="分享到"/>
 
             <ListView
@@ -101,7 +106,6 @@
                 android:hint="想说点什么"/>
 
             <RelativeLayout
-                android:id="@+id/start_plan_layout"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="40dp">

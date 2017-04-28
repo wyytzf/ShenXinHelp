@@ -227,7 +227,7 @@ public class BodyHelpActivity extends AppCompatActivity {
                 Calendar calendar = Calendar.getInstance();
                 int i = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
-                Log.e("value",""+value);
+                //Log.e("value",""+value);
                 return (i + 1) + "月" + (day - 7 + (int) value) + "日";
             }
         });
