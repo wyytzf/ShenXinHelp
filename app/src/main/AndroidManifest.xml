@@ -194,6 +194,9 @@
             android:name=".com.xd.shenxinhelp.ui.SharePlanActivity"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".group.GroupAdressBookActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar" ></activity>
     </application>
 
 </manifest>
