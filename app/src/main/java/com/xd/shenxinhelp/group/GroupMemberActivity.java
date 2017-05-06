@@ -15,6 +15,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,7 @@ import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ConnectUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.HttpUtil;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ResponseHandler;
+import com.xd.shenxinhelp.com.xd.shenxinhelp.ui.AdressBookActivity;
 import com.xd.shenxinhelp.listener.ListItemClickListener;
 import com.xd.shenxinhelp.model.GroupDetail;
 import com.xd.shenxinhelp.model.User;
@@ -49,9 +51,14 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
     private SwipeRefreshLayout listview;
     private GroupDetail groupDetail;
     private EditText editText;
+    private Button button;
     AlertDialog.Builder builder;
     AlertDialog alertDialog;
     private String tag="";
+    private LayoutInflater mLayoutInflater;
+    private View view;
+    private EditText et_friend_account;
+    private Button bt_contact;
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             // 要做的事情
@@ -68,7 +75,7 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
                         for (int i = 0; i < array.length(); i++) {
                             User user=new User();
                             object = array.getJSONObject(i);
-                            user.setName(object.getString("account"));
+                            user.setName(object.getString("name"));
                             user.setUid(object.getString("userid"));
                             user.setSex(object.getString("sex"));
                             user.setAge(object.getString("age"));
@@ -121,8 +128,21 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
+        mLayoutInflater=LayoutInflater.from(this);
+        view=mLayoutInflater.inflate(R.layout.add_into_group, null);
+        et_friend_account = (EditText)view.findViewById(R.id.friend_account);
+        bt_contact = (Button)view.findViewById(R.id.firend_address_book);
+
         datas= new ArrayList<User>();
         groupDetail= (GroupDetail) getIntent().getSerializableExtra("detail");
+        bt_contact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(), GroupAdressBookActivity.class);
+                intent.putExtra("detail",groupDetail);
+                startActivityForResult(intent,2);
+            }
+        });
 
         getGroupMember();
 
@@ -157,6 +177,7 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
             }
         });
         editText = new EditText(this);
+        button = new Button(this);
     }
     public void getGroupMember() {
 
@@ -199,6 +220,7 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
             }
         }.start();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
@@ -218,6 +240,16 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
         }
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==153){
+            String tel=data.getStringExtra("tel");
+            et_friend_account.setText(tel);
+        }
+    }
+
     private void creatDialog(){
         if (builder!=null || alertDialog!=null){
 
@@ -227,12 +259,17 @@ public class GroupMemberActivity extends AppCompatActivity implements ListItemCl
             builder = new AlertDialog.Builder(this);
             builder.setTitle("添加小伙伴进圈子");
             builder.setMessage("输入小伙伴的账号");
-            builder.setView(editText,60,0,60,0);
+            //builder.setView(editText,60,0,60,0);
+            builder.setView(view);
             builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    if (!editText.getText().toString().trim().equals("")){
+                    /*if (!editText.getText().toString().trim().equals("")){
                         save(editText.getText().toString());
+                        dialogInterface.dismiss();
+                    }*/
+                    if (!et_friend_account.getText().toString().trim().equals("")){
+                        save(et_friend_account.getText().toString());
                         dialogInterface.dismiss();
                     }
 

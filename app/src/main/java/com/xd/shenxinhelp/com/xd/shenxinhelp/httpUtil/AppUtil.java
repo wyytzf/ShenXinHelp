@@ -31,7 +31,7 @@ public class AppUtil extends Application {
 
     //private static final String BASE_URL= "http://10.170.67.107:8080/";
     private static final String BASE_URL = "http://192.168.0.75:8080/BodyMindHelper/";
-    //private static final String BASE_URL = "http://10.170.9.30:8080/BodyMindHelper/";
+   // private static final String BASE_URL = "http://10.170.66.39:8080/BodyMindHelper/";
     private static final String BASE_AUTH_URL = getBaseUrl() + "authz/oauth/token";
     private static final String BASE_RS_URL = getBaseUrl() + "rs/rs/";
 
@@ -79,6 +79,8 @@ public class AppUtil extends Application {
     public static String GetTopThreeStudent = getBaseUrl() + "GetTopThreeStudent";
     public static String GetLastThreeStudent = getBaseUrl() + "GetLastThreeStudent";
     public static String GetUpTopThreeStudent = getBaseUrl() + "GetUpTopThreeStudent";
+
+    public static String GetRegisteredShenxinbangFriends = getBaseUrl() + "RegisteredShenxinbangFriends";
 
     public static String getBaseUrl() {
        return BASE_URL;
