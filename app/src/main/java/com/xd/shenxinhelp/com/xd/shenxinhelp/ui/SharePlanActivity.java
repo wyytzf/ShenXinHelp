@@ -107,14 +107,14 @@ public class SharePlanActivity extends AppCompatActivity {
                         boolean exist = false;
                         String params = "";
                         if (group_check.get(0)){
-                            params+=("schoolID="+school_id);
+                            params+=("&schoolID="+school_id);
                             exist = true;
                         }
                         if (group_check.get(1)){
-                            params+=("classID="+class_id);
+                            params+=("&classID="+class_id);
                             exist = true;
                         }
-                        params+="ringsID=";
+                        params+="&ringsID=";
                         for (int i : group_check.keySet()){
                             if (i==0 || i==1)
                                 continue;

@@ -31,6 +31,7 @@ import java.util.Random;
 public class PushExercise {
 
     private Activity activity;
+    private int type;
     private JSONArray exercise_list;
     private SharedPreferences sp;
     private String userID;
@@ -41,8 +42,9 @@ public class PushExercise {
 
     private int PushMax = 3;
 
-    public PushExercise(Activity activity){
+    public PushExercise(Activity activity, int type){
         this.activity = activity;
+        this.type = type;
         sp = activity.getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
         userID = sp.getString("userid", "1");
         imageLoader = new GlideImageLoader();
@@ -139,7 +141,7 @@ public class PushExercise {
     }
 
     private void getAllExercise(){
-        OkHttp.get(AppUtil.GetAllExercise + "?type=0", new OkHttp.ResultCallBack() {
+        OkHttp.get(AppUtil.GetAllExercise + "?type="+type, new OkHttp.ResultCallBack() {
             @Override
             public void onError(String str, Exception e) {
                 Log.e("getAllExercise", str);
@@ -153,6 +155,8 @@ public class PushExercise {
                     String reCode = jsonObject.getString("reCode");
                     if ("SUCCESS".equals(reCode)){
                         exercise_list = jsonObject.getJSONArray("items");
+                        Log.e("exercise_list",exercise_list.toString());
+                        Log.e("length",""+exercise_list.length());
                         individualPush();
                         creatDialog();
                     }
@@ -172,22 +176,23 @@ public class PushExercise {
         if (exercise_list.length()>=4){
             if (sp.getString("className", "").startsWith("初")){
                 int end = exercise_list.length()/2;
+                Log.e("end",""+end);
                 Random random = new Random();
-                first = random.nextInt(end-1);
-                second = random.nextInt(end-1);
+                first = random.nextInt(end);
+                second = random.nextInt(end);
                 while (second==first){
-                    second = random.nextInt(end-1);
+                    second = random.nextInt(end);
                 }
             }
             else {
                 int start = exercise_list.length()/2;
                 Random random = new Random();
-                first = random.nextInt(exercise_list.length()-1)
+                first = random.nextInt(exercise_list.length())
                         %(exercise_list.length()-start)+start;
-                second = random.nextInt(exercise_list.length()-1)
+                second = random.nextInt(exercise_list.length())
                         %(exercise_list.length()-start)+start;
                 while (second==first){
-                    second = random.nextInt(exercise_list.length()-1)
+                    second = random.nextInt(exercise_list.length())
                             %(exercise_list.length()-start)+start;
                 }
             }

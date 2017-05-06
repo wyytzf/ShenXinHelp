@@ -109,7 +109,7 @@ public class BodyHelpActivity extends AppCompatActivity {
         RequestRecommendar();
         RequestLineChart();
 
-        PushExercise pushExercise = new PushExercise(this);
+        PushExercise pushExercise = new PushExercise(this, 0);
         pushExercise.pushExercise();
     }
 
