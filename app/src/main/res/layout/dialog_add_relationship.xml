@@ -8,10 +8,22 @@
         android:id="@+id/relationship_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-
-    <EditText
-        android:id="@+id/relationship_account"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/relationship_account"
+            android:layout_weight="3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/relationship_address_book"
+            android:text="从通讯录添加"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
     
 </LinearLayout>

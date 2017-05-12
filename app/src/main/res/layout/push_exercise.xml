@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#fff">
-
-    <TextView
-        android:id="@+id/plan_number"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:gravity="center"
-        android:textSize="14dp"
-        android:textColor="#333" />
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_weight="1.0"
@@ -42,7 +32,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/second"
         android:layout_weight="1.0"
         android:layout_width="0dp"
         android:layout_height="wrap_content">
@@ -68,24 +57,5 @@
             android:textColor="#333"/>
 
     </RelativeLayout>
-
-    <RadioButton
-        android:id="@+id/radio_button"
-        android:layout_gravity="center_vertical"
-        android:layout_marginRight="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/already_share"
-        android:layout_gravity="center_vertical"
-        android:layout_marginRight="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/red_light"
-        android:textSize="14dp"
-        android:text="已分享"
-        android:visibility="gone"/>
 
 </LinearLayout>

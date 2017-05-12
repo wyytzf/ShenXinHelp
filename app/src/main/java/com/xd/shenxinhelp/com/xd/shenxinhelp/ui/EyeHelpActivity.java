@@ -28,6 +28,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.Utils;
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
+import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.PushExercise;
 import com.xd.shenxinhelp.model.News;
 import com.xd.shenxinhelp.netutils.OkHttp;
 
@@ -86,6 +87,9 @@ public class EyeHelpActivity extends AppCompatActivity {
         initViews();
         RequestRecommendar();
 
+        PushExercise pushExercise = new PushExercise(this, 1);
+        pushExercise.pushExercise();
+
     }
 
     private void initViews() {
@@ -97,11 +101,11 @@ public class EyeHelpActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent().setClass(EyeHelpActivity.this, SharePlanActivity.class));
             }
         });
 
-        fab.setVisibility(View.GONE);
+        //fab.setVisibility(View.GONE);
 
         func1_image = (ImageView) findViewById(R.id.content_BEHE_image1);
         func2_image = (ImageView) findViewById(R.id.content_BEHE_image2);

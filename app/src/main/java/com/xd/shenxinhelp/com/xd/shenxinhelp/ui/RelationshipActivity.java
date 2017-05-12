@@ -3,6 +3,7 @@ package com.xd.shenxinhelp.com.xd.shenxinhelp.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -49,6 +50,8 @@ public class RelationshipActivity extends AppCompatActivity {
     private Dialog mDialog=null;
     private ImageLoaderInterface imageLoader;
 
+    private EditText relationship_account;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,7 @@ public class RelationshipActivity extends AppCompatActivity {
 
         SharedPreferences sp = getSharedPreferences("ShenXinBang", Context.MODE_PRIVATE);
         userID = sp.getString("userid", "1");
+
 
         initUI();
         type_name_id_map = new HashMap<>();
@@ -172,7 +176,15 @@ public class RelationshipActivity extends AppCompatActivity {
         builder.setTitle("添加亲密关系");
         builder.setMessage("输入亲密关系的账号和类型");
         View view = getLayoutInflater().inflate(R.layout.dialog_add_relationship, null);
-        final EditText relationship_account = (EditText) view.findViewById(R.id.relationship_account);
+        relationship_account = (EditText) view.findViewById(R.id.relationship_account);
+        final Button ask_addressBook = (Button) view.findViewById(R.id.relationship_address_book);
+        ask_addressBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),AdressBookActivity.class);
+                startActivityForResult(intent,1);
+            }
+        });
         final Spinner relationship_type = (Spinner) view.findViewById(R.id.relationship_type);
         relationship_type.setAdapter(new ArrayAdapter<String>(RelationshipActivity.this,
                 android.R.layout.simple_spinner_item, types));
@@ -228,6 +240,15 @@ public class RelationshipActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode==152){
+            String tel=data.getStringExtra("tel");
+            relationship_account.setText(tel);
+        }
+
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == android.R.id.home) {
@@ -236,6 +257,14 @@ public class RelationshipActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+   /* @Override
+    protected void onResume() {
+        if (relationship_account!=null){
+            relationship_account.setText(Constants.TEL);
+        }
+        super.onResume();
+    }
+*/
     public void showRequestDialog() {
         if (mDialog != null) {
             mDialog.dismiss();
