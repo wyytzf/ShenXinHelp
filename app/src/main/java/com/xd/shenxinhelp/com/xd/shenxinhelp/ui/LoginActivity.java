@@ -51,10 +51,15 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+
+import cn.smssdk.EventHandler;
+import cn.smssdk.SMSSDK;
+import cn.smssdk.gui.RegisterPage;
 
 /**
  * A login screen that offers login via email/password.
@@ -76,6 +81,9 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
+
+    private static final int ROLETYPE = 0;
+
     private UserLoginTask mAuthTask = null;
 
     // UI references.
@@ -150,6 +158,7 @@ public class LoginActivity extends AppCompatActivity {
         mProgressView = findViewById(R.id.login_progress);
 
 
+//        SMSSDK.getVerificationCode("86","17802929571");
         register = (TextView) findViewById(R.id.register);
         register.setOnClickListener(new OnClickListener() {
             @Override
@@ -518,7 +527,7 @@ public class LoginActivity extends AppCompatActivity {
                 // 解析拿到的String字符串，判断是否登录成功
 
 
-                String synchronous = OkHttp.getSynchronous(AppUtil.LOGIN + "account=" + mEmail + "&" + "psw=" + mPassword + "&" + "role=" + type);
+                String synchronous = OkHttp.getSynchronous(AppUtil.LOGIN + "account=" + mEmail + "&" + "psw=" + mPassword + "&" + "role=" + ROLETYPE);
                 //Log.i("mmm",AppUtil.LOGIN + "account=" + mEmail + "&" + "psw=" + mPassword);
                 result = parseResponse(synchronous);
             } catch (IOException e) {
@@ -549,17 +558,18 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("password", mPassword);
                 editor.commit();
                 Intent intent = new Intent();
-                switch (type) {
-                    case "student":
-                        intent.setClass(LoginActivity.this, ContainerActivity.class);
-                        break;
-                    case "teacher":
-                        intent.setClass(LoginActivity.this, TeacherMainActivity.class);
-                        break;
-                    case "parents":
-                        intent.setClass(LoginActivity.this, ParentMainActivity.class);
-                        break;
-                }
+//                switch (type) {
+//                    case "student":
+//                        intent.setClass(LoginActivity.this, ContainerActivity.class);
+//                        break;
+//                    case "teacher":1
+//                        intent.setClass(LoginActivity.this, TeacherMainActivity.class);
+//                        break;
+//                    case "parents":
+//                        intent.setClass(LoginActivity.this, ParentMainActivity.class);
+//                        break;
+//                }
+                intent.setClass(LoginActivity.this, ContainerActivity.class);
                 startActivity(intent);
                 finish();
             } else {
@@ -645,6 +655,10 @@ public class LoginActivity extends AppCompatActivity {
         return result;
     }
 
-
+    @Override
+    protected void onDestroy() {
+        SMSSDK.unregisterAllEventHandler();
+        super.onDestroy();
+    }
 }
 

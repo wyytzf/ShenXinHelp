@@ -7,14 +7,16 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.xd.shenxinhelp.R;
 import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.AppUtil;
@@ -24,21 +26,51 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import cn.smssdk.EventHandler;
+import cn.smssdk.SMSSDK;
 
 public class RegisterActivity extends AppCompatActivity {
+
+    private static final int ROLETYPE = 0;
+
+
     private UserRegisterTask mAuthTask = null;
     private View mProgressView;
     private View mRegisterFormView;
 
 
     private Button mRegisterButton;
+    private Button getV;
     private EditText mAccount;
     private EditText mPassword;
     private EditText mConfirmPassword;
+    private EditText mRegisterVCode;
     private String userID;
+
+    private TimeCount timeCount;
+
 
     private Spinner mType;
 
+    private String mVerificationCode;
+
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 0) {
+                attemptRegister2();
+            } else if (msg.what == 1) {
+                mRegisterButton.setClickable(true);
+            } else if (msg.what == 2) {
+                mRegisterVCode.setError("验证码输入错误");
+            }
+            super.handleMessage(msg);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,14 +89,62 @@ public class RegisterActivity extends AppCompatActivity {
         mAccount = (EditText) findViewById(R.id.register_account);
         mPassword = (EditText) findViewById(R.id.register_password);
         mConfirmPassword = (EditText) findViewById(R.id.register_comfirm_password);
-        mType = (Spinner) findViewById(R.id.type_chose);
-        mType.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new String[]{"青少年", "家长", "教师"}));
+        mRegisterVCode = (EditText) findViewById(R.id.register_v_code);
+
+
+///短信回调
+        EventHandler eh = new EventHandler() {
+            @Override
+            public void afterEvent(int event, int result, Object data) {
+//                if (result == SMSSDK.RESULT_COMPLETE) {
+//                    // 回调完成
+//                } else if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
+//                    // 提交验证码成功
+//                } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
+//                    // 获取验证码成功
+//
+//                } else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
+//                    // 返回支持的国家列表
+//                } else {
+//                    ((Throwable) data).printStackTrace();
+//                }
+
+                handler.sendEmptyMessage(1);
+                if (result == SMSSDK.RESULT_COMPLETE) {
+                    handler.sendEmptyMessage(0);
+
+                } else {
+                    ((Throwable) data).printStackTrace();
+                    handler.sendEmptyMessage(2);
+                }
+            }
+        };
+        SMSSDK.registerEventHandler(eh);
+        timeCount = new TimeCount(60000, 1000);
+        getV = (Button) findViewById(R.id.get_v);
+        getV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // 发送验证短信
+                /// 判断手机号是否合理
+                if (!checkPhoneNumber(mAccount.getText().toString())) {
+                    mAccount.setError(getString(R.string.error_field_required));
+                } else {
+                    timeCount.start();
+                    SMSSDK.getVerificationCode("86", mAccount.getText().toString());
+                }
+
+            }
+        });
+//        mType = (Spinner) findViewById(R.id.type_chose);
+//        mType.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new String[]{"青少年", "家长", "教师"}));
 
 
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                attemptRegister();
+                attemptRegister1();
             }
 
 
@@ -72,7 +152,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void attemptRegister() {
+    private void attemptRegister1() {
+        SMSSDK.submitVerificationCode("86", mAccount.getText().toString(), mRegisterVCode.getText().toString());
+        mRegisterButton.setClickable(false);
+    }
+
+    private void attemptRegister2() {
         if (mAuthTask != null) {
             return;
         }
@@ -86,7 +171,7 @@ public class RegisterActivity extends AppCompatActivity {
         String email = mAccount.getText().toString();
         String password = mPassword.getText().toString();
         String confimePassword = mConfirmPassword.getText().toString();
-        long type = mType.getSelectedItemId();
+//        long type = mType.getSelectedItemId();
         //Log.e("type", ""+type);
 
         boolean cancel = false;
@@ -100,7 +185,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
+        if (!checkPhoneNumber(email)) {
             mAccount.setError(getString(R.string.error_field_required));
             focusView = mAccount;
             cancel = true;
@@ -127,7 +212,7 @@ public class RegisterActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserRegisterTask(email, password, type);
+            mAuthTask = new UserRegisterTask(email, password, 0);
             mAuthTask.execute((Void) null);
         }
     }
@@ -154,12 +239,12 @@ public class RegisterActivity extends AppCompatActivity {
 
         private final String mEmail;
         private final String mPassword;
-        private final long mtype;
+//        private final long mtype;
 
         UserRegisterTask(String email, String password, long type) {
             mEmail = email;
             mPassword = password;
-            mtype = type;
+//            mtype = type;
         }
 
         @Override
@@ -170,7 +255,7 @@ public class RegisterActivity extends AppCompatActivity {
             // 返回true代表登录成功
             boolean result;
             try {
-                String synchronous = OkHttp.getSynchronous(AppUtil.REGISTER + "account=" + mEmail + "&" + "psw=" + mPassword + "&role="+mtype);
+                String synchronous = OkHttp.getSynchronous(AppUtil.REGISTER + "account=" + mEmail + "&" + "psw=" + mPassword + "&role=" + ROLETYPE);
                 result = parseRegister(synchronous);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -187,7 +272,7 @@ public class RegisterActivity extends AppCompatActivity {
             if (success) {
                 Intent intent = new Intent(RegisterActivity.this, FirstLoginActivity.class);
                 intent.putExtra("userID", userID);
-                intent.putExtra("mtype", mtype);
+//                intent.putExtra("mtype", mtype);
                 startActivity(intent);
                 finish();
             } else {
@@ -255,5 +340,37 @@ public class RegisterActivity extends AppCompatActivity {
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
+    }
+
+    private boolean checkPhoneNumber(String phoneNumber) {
+        String regExp = "^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\\d{8}$";
+        Pattern p = Pattern.compile(regExp);
+        Matcher m = p.matcher(phoneNumber);
+        return m.matches();
+    }
+
+    class TimeCount extends CountDownTimer {
+
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            getV.setClickable(false);
+            getV.setText(millisUntilFinished / 1000 + "s后重新获取验证码");
+        }
+
+        @Override
+        public void onFinish() {
+            getV.setClickable(true);
+            getV.setText("获取验证码");
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        SMSSDK.unregisterAllEventHandler();
+        super.onDestroy();
     }
 }

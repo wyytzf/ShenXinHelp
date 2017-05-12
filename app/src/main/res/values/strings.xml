@@ -9,7 +9,7 @@
     <string name="error_invalid_account">帐号长度不能小于3位</string>
     <string name="error_invalid_password">密码长度不能小于3位</string>
     <string name="error_incorrect_password">帐号或密码错误</string>
-    <string name="error_field_required">请填写！</string>
+    <string name="error_field_required">请输入正确的手机号！</string>
     <string name="permission_rationale">"需要添加读取联系人权限."
     </string>
     <string name="forget_password">忘记密码？</string>
@@ -138,4 +138,5 @@
     <string name="weibosdk_demo_toast_obtain_token_failed">获取 Token 失败</string>
     <string name="weibosdk_demo_toast_auth_success">授权成功</string>
     <string name="weibosdk_demo_toast_auth_failed">授权失败</string>
+    <string name="input_phonenumber">请输入手机号</string>
 </resources>

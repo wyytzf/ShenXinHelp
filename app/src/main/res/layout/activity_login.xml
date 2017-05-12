@@ -66,25 +66,29 @@
 
             <RadioGroup
                 android:id="@+id/radio_role_group"
-                android:paddingTop="5dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginLeft="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="25dp"
+                android:orientation="horizontal"
+                android:paddingTop="5dp"
+                android:visibility="gone">
+
                 <RadioButton
                     android:id="@+id/radio_role_student"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="青少年"
-                    android:checked="true"></RadioButton>
+                    android:checked="true"
+                    android:text="青少年"></RadioButton>
+
                 <RadioButton
                     android:id="@+id/radio_role_teacher"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="教师"></RadioButton>
+
                 <RadioButton
                     android:id="@+id/radio_role_parent"
                     android:layout_width="wrap_content"

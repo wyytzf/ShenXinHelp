@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mob.commons.SMSSDK;
 import com.xd.shenxinhelp.R;
 
 public class SplashActivity extends AppCompatActivity {
@@ -32,6 +33,10 @@ public class SplashActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
+
+        cn.smssdk.SMSSDK.initSDK(this,"1d8b895cb822c","4d7ebc8a426429f2687163d5d5d54614");
+
+
 //        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
 //        startActivity(intent);
         textView = (TextView) findViewById(R.id.guide_text);

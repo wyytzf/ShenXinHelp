@@ -39,10 +39,16 @@ dependencies {
     compile 'com.github.CarGuo:GSYVideoPlayer:v1.6.0'
     compile 'com.github.wseemann:FFmpegMediaMetadataRetriever:1.0.14'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile name:'SMSSDK-2.1.4',ext:'aar'
+    compile name:'SMSSDKGUI-2.1.4',ext:'aar'
+
     testCompile 'junit:junit:4.12'
 
 }
 repositories {
     maven { url "https://jitpack.io" }
     maven {url "https://dl.bintray.com/thelasterstar/maven/"}
+    flatDir{
+        dirs 'libs'
+    }
 }
