@@ -576,6 +576,7 @@ public class LoginActivity extends AppCompatActivity {
                 showProgress(false);
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
+                onCancelled();
             }
         }
 
