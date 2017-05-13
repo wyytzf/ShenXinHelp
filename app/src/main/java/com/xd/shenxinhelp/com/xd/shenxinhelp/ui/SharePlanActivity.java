@@ -153,6 +153,7 @@ public class SharePlanActivity extends AppCompatActivity {
                                         try {
                                             JSONObject jsonObject = new JSONObject(str);
                                             String reCode = jsonObject.getString("reCode");
+                                            Log.e("share",reCode);
                                             if ("SUCCESS".equals(reCode)){
                                                 Toast.makeText(SharePlanActivity.this, "分享计划成功！", Toast.LENGTH_SHORT).show();
                                                 getPlanList();

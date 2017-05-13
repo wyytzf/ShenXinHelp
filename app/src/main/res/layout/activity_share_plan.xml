@@ -43,7 +43,7 @@
 
             <TextView
                 android:id="@+id/stu_name"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginRight="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                 android:text="我们为你制定了相应的计划"/>
 
             <RelativeLayout
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_width="match_parent"
@@ -88,7 +88,7 @@
             <ListView
                 android:id="@+id/group_list"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"/>
+                android:layout_height="100dp"/>
 
             <EditText
                 android:id="@+id/share_content"
@@ -96,7 +96,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="40dp"
                 android:gravity="top"
                 android:maxLines="3"
                 android:background="@drawable/shape_textarea"

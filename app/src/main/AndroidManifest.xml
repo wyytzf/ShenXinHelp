@@ -169,8 +169,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".com.xd.shenxinhelp.ui.SharePlanActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="nosensor"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".group.GroupAdressBookActivity"
             android:screenOrientation="nosensor"
