@@ -45,6 +45,7 @@ import com.xd.shenxinhelp.com.xd.shenxinhelp.httpUtil.ResponseHandler;
 import com.xd.shenxinhelp.model.QQAccessToken;
 import com.xd.shenxinhelp.netutils.MyAccessTokenKeeper;
 import com.xd.shenxinhelp.netutils.OkHttp;
+import com.xd.shenxinhelp.service.LongRunningService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -113,6 +114,8 @@ public class LoginActivity extends AppCompatActivity {
     private RadioButton r3;
 
 
+
+
     private static final String WX_APPID = "your wx appid";    //申请的wx appid
     private static final String QQ_APPID = "1105442761";    //申请的qq appid
     private static final String SINA_WB_APPKEY = "606791959";       //申请的新浪微博 appkey
@@ -124,6 +127,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
+
+        Log.i("wyy", "start service");
+
+
+
         mEmailView = (EditText) findViewById(R.id.email);
 //        populateAutoComplete();
 
@@ -659,7 +667,13 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         SMSSDK.unregisterAllEventHandler();
+
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }
 

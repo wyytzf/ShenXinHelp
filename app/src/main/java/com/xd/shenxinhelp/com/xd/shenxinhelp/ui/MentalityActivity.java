@@ -103,7 +103,7 @@ public class MentalityActivity extends AppCompatActivity {
                 startActivity(new Intent().setClass(MentalityActivity.this, SharePlanActivity.class));
             }
         });
-        //fab.setVisibility(View.GONE);
+        fab.setVisibility(View.GONE);
 
         findViewById(R.id.linechart_container).setVisibility(View.GONE);
         func1_image = (ImageView) findViewById(R.id.content_BEHE_image1);

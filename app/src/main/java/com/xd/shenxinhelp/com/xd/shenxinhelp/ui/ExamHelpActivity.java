@@ -99,7 +99,7 @@ public class ExamHelpActivity extends AppCompatActivity {
                 startActivity(new Intent().setClass(ExamHelpActivity.this, SharePlanActivity.class));
             }
         });
-        //fab.setVisibility(View.GONE);
+        fab.setVisibility(View.GONE);
         findViewById(R.id.linechart_container).setVisibility(View.GONE);
 
         func1_image = (ImageView) findViewById(R.id.content_BEHE_image1);
@@ -133,8 +133,8 @@ public class ExamHelpActivity extends AppCompatActivity {
 //                startActivity(intent);
                 Intent intent = new Intent(ExamHelpActivity.this, ExamHelpItemActivity.class);
                 intent.putExtra("title", "会考标准");
-                intent.putExtra("type","3");
-                intent.putExtra("buwei","0");
+                intent.putExtra("type", "3");
+                intent.putExtra("buwei", "0");
                 startActivity(intent);
             }
         });
@@ -148,8 +148,8 @@ public class ExamHelpActivity extends AppCompatActivity {
 //                startActivity(intent);
                 Intent intent = new Intent(ExamHelpActivity.this, ExamHelpItemActivity.class);
                 intent.putExtra("title", "注意事项");
-                intent.putExtra("type","3");
-                intent.putExtra("buwei","1");
+                intent.putExtra("type", "3");
+                intent.putExtra("buwei", "1");
                 startActivity(intent);
             }
         });
